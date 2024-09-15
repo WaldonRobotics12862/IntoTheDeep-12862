@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot type="FirstInspires-FTC">
+    <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
+        <LynxModule name="Control Hub" port="173">
+            <goBILDASeriesMotor name="left_front" port="0" />
+            <goBILDASeriesMotor name="left_back" port="1" />
+            <goBILDASeriesMotor name="right_back" port="2" />
+            <goBILDASeriesMotor name = "right_front" port="3" />
+            <SparkFunOTOS name="sensor_otos" port="0" bus="1" />
+        </LynxModule>
+    </LynxUsbDevice>
+
+</Robot>
