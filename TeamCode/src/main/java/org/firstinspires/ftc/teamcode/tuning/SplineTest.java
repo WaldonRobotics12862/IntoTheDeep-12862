@@ -18,15 +18,10 @@ public final class SplineTest extends LinearOpMode {
             waitForStart();
             Actions.runBlocking(
                 drive.actionBuilder(beginPose)
-                        .raise(high)
                         .splineTo(new Vector2d(-7.62, -39.81), Math.toRadians(90.00))
-                        .raise(deliver)
-                        .release
                         .splineTo(new Vector2d(-26.29, -34.87), Math.toRadians(188.70))
                         .splineTo(new Vector2d(-39.17, -25.86), Math.toRadians(176.73))
-                        .raise(high_basket)
                         .splineTo(new Vector2d(-57.84, -57.62), Math.toRadians(225.00))
-
                         .build());
 
 
