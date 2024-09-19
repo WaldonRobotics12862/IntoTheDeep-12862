@@ -34,7 +34,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -53,7 +53,11 @@ import java.util.List;
 
 @Config
 public class MecanumDrive {
+
+
     public static class Params {
+        Variables variables = new Variables(this);
+
         // IMU orientation
         // TODO: fill in these values based on
         //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
@@ -63,19 +67,19 @@ public class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         // drive model parameters
-        public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
-        public double lateralInPerTick = 0.8314079123312399;
-        public double trackWidthTicks = 14.99006505644476;
+        //public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
+        //public double lateralInPerTick = 0.8314079123312399;
+        //  public double trackWidthTicks = 14.99006505644476;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.9050702071156618;
-        public double kV = 0.18885306466032104;
-        public double kA = 0.01;
+        // public double kS = 0.9050702071156618;
+        // public double kV = 0.18885306466032104;
+        // public double kA = 0.01;
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 50;
-        public double minProfileAccel = -30;
-        public double maxProfileAccel = 50;
+        // public double maxWheelVel = 50;
+        // public double minProfileAccel = -30;
+        //public double maxProfileAccel = 50;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
@@ -94,17 +98,17 @@ public class MecanumDrive {
     public static Params PARAMS = new Params();
 
     public final MecanumKinematics kinematics = new MecanumKinematics(
-            PARAMS.inPerTick * PARAMS.trackWidthTicks, PARAMS.inPerTick / PARAMS.lateralInPerTick);
+            PARAMS.variables.inPerTick * PARAMS.variables.trackWidthTicks, PARAMS.variables.inPerTick / PARAMS.variables.lateralInPerTick);
 
     public final TurnConstraints defaultTurnConstraints = new TurnConstraints(
             PARAMS.maxAngVel, -PARAMS.maxAngAccel, PARAMS.maxAngAccel);
     public final VelConstraint defaultVelConstraint =
             new MinVelConstraint(Arrays.asList(
-                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel),
+                    kinematics.new WheelVelConstraint(PARAMS.variables.maxWheelVel),
                     new AngularVelConstraint(PARAMS.maxAngVel)
             ));
     public final AccelConstraint defaultAccelConstraint =
-            new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
+            new ProfileAccelConstraint(PARAMS.variables.minProfileAccel, PARAMS.variables.maxProfileAccel);
 
     public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
 
@@ -177,19 +181,19 @@ public class MecanumDrive {
                     new DualNum<Time>(new double[]{
                             (leftFrontPosVel.position - lastLeftFrontPos),
                             leftFrontPosVel.velocity,
-                    }).times(PARAMS.inPerTick),
+                    }).times(PARAMS.variables.inPerTick),
                     new DualNum<Time>(new double[]{
                             (leftBackPosVel.position - lastLeftBackPos),
                             leftBackPosVel.velocity,
-                    }).times(PARAMS.inPerTick),
+                    }).times(PARAMS.variables.inPerTick),
                     new DualNum<Time>(new double[]{
                             (rightBackPosVel.position - lastRightBackPos),
                             rightBackPosVel.velocity,
-                    }).times(PARAMS.inPerTick),
+                    }).times(PARAMS.variables.inPerTick),
                     new DualNum<Time>(new double[]{
                             (rightFrontPosVel.position - lastRightFrontPos),
                             rightFrontPosVel.velocity,
-                    }).times(PARAMS.inPerTick)
+                    }).times(PARAMS.variables.inPerTick)
             ));
 
             lastLeftFrontPos = leftFrontPosVel.position;
@@ -312,8 +316,8 @@ public class MecanumDrive {
             MecanumKinematics.WheelVelocities<Time> wheelVels = kinematics.inverse(command);
             double voltage = voltageSensor.getVoltage();
 
-            final MotorFeedforward feedforward = new MotorFeedforward(PARAMS.kS,
-                    PARAMS.kV / PARAMS.inPerTick, PARAMS.kA / PARAMS.inPerTick);
+            final MotorFeedforward feedforward = new MotorFeedforward(PARAMS.variables.kS,
+                    PARAMS.variables.kV / PARAMS.variables.inPerTick, PARAMS.variables.kA / PARAMS.variables.inPerTick);
             double leftFrontPower = feedforward.compute(wheelVels.leftFront) / voltage;
             double leftBackPower = feedforward.compute(wheelVels.leftBack) / voltage;
             double rightBackPower = feedforward.compute(wheelVels.rightBack) / voltage;
@@ -403,8 +407,8 @@ public class MecanumDrive {
 
             MecanumKinematics.WheelVelocities<Time> wheelVels = kinematics.inverse(command);
             double voltage = voltageSensor.getVoltage();
-            final MotorFeedforward feedforward = new MotorFeedforward(PARAMS.kS,
-                    PARAMS.kV / PARAMS.inPerTick, PARAMS.kA / PARAMS.inPerTick);
+            final MotorFeedforward feedforward = new MotorFeedforward(PARAMS.variables.kS,
+                    PARAMS.variables.kV / PARAMS.variables.inPerTick, PARAMS.variables.kA / PARAMS.variables.inPerTick);
             double leftFrontPower = feedforward.compute(wheelVels.leftFront) / voltage;
             double leftBackPower = feedforward.compute(wheelVels.leftBack) / voltage;
             double rightBackPower = feedforward.compute(wheelVels.rightBack) / voltage;
