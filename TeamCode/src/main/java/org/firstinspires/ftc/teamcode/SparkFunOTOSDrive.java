@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  * Unless otherwise noted, comments are from SparkFun
  */
 public class SparkFunOTOSDrive extends MecanumDrive {
+    Variables variables = new Variables(this);
     public static class Params {
         // Assuming you've mounted your sensor to a robot and it's not centered,
         // you can specify the offset for the sensor relative to the center of the
@@ -38,7 +39,7 @@ public class SparkFunOTOSDrive extends MecanumDrive {
         // tweaked slightly to compensate for imperfect mounting (eg. 1.3 degrees).
 
         // RR localizer note: These units are inches and radians.
-        public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0.18, 0.48, Math.toRadians(-0.0753461746));
+        //public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0.18, 0.48, Math.toRadians(-0.0753461746));
 
         // Here we can set the linear and angular scalars, which can compensate for
         // scaling issues with the sensor measurements. Note that as of firmware
@@ -56,8 +57,8 @@ public class SparkFunOTOSDrive extends MecanumDrive {
         // multiple speeds to get an average, then set the linear scalar to the
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-        public double linearScalar = 1.011;
-        public double angularScalar = -0.98;
+        //public double linearScalar = 1.011;
+        //public double angularScalar = -0.98;
     }
 
     public static SparkFunOTOSDrive.Params PARAMS = new SparkFunOTOSDrive.Params();
@@ -73,10 +74,10 @@ public class SparkFunOTOSDrive extends MecanumDrive {
         otos.setLinearUnit(DistanceUnit.INCH);
         otos.setAngularUnit(AngleUnit.RADIANS);
 
-        otos.setOffset(PARAMS.offset);
+        otos.setOffset(variables.offset);
         System.out.println("OTOS calibration beginning!");
-        System.out.println(otos.setLinearScalar(PARAMS.linearScalar));
-        System.out.println(otos.setAngularScalar(PARAMS.angularScalar));
+        System.out.println(otos.setLinearScalar(variables.linearScalar));
+        System.out.println(otos.setAngularScalar(variables.angularScalar));
 
         otos.setPosition(RRPoseToOTOSPose(pose));
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
