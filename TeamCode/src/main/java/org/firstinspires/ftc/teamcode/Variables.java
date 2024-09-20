@@ -28,4 +28,10 @@ public class Variables {
    public double minProfileAccel = -30;
    public double maxProfileAccel = 50;
    public Variables(LinearOpMode opmode) { this.opMode =  opmode; }
+
+   public Variables(MecanumDrive.Params params) {
+   }
+
+   public Variables(SparkFunOTOSDrive sparkFunOTOSDrive) {
+   }
 }

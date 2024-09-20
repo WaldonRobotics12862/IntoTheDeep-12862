@@ -1,8 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
 
 
 public class WaldonHardware {
@@ -44,7 +51,7 @@ public class WaldonHardware {
     public SparkFunOTOS myOtos;
 
     //Servo variables
-    double dWristin = 0,49;
+    double dWristin = 0.49;
     double dWristDeliver = 0.77;
     double dOutsideIn = 0.43;
     double dOutside1Pixel = 0.65;
