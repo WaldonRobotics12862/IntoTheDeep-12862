@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class Variables {
    public LinearOpMode opMode = null;
    //OTOS Variables
-   public double linearScalar = 1.011;
-   public double angularScalar = -0.98;
+   public double linearScalar = 0.0592 ;
+   public double angularScalar = -0.9871  ;
    public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0.18, 0.48, Math.toRadians(-0.0753461746));
 
 
