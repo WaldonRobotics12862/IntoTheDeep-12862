@@ -20,19 +20,29 @@ public final class RightAuton extends LinearOpMode {
                           //3. drop lift to deliver
                           //4. pull pin
                           //5. drop all the way
-                        //Go to the 3 yellow samples and deliver to high basket
-                          //1. Back up to three yellow samples
-                          //2. Pick up yellow sample
-                            //Turn on intake
-                            //Slowly go into sample until we get it
-                              //Sense sample??
-                            //Hand off to delivery side
-                          //3. Raise linear slide to deliver sample to high basket
-                          //4. Lower linear slide back down to ground level
-                          //5. Repeat step two until out of yellow samples, then move to "Park"
+                        //Go over to red/blue samples and deliver to observation zone
+                          // 1.Drive up to red/blue sample area
+                          // 2.Pick up a red/blue sample
+                            // 1.Activate intake
+                            // 2.Slowly go into sample until picked up
+                            // 3.Transfer sample to delivery side
+                            // 4.Activate delivery to drop sample into the observation zone
+                            // moves backwards out of observation zone
+                            // the human player takes the sample and then puts on the clip then drops in  certain area
+                            // the robot moves back into observation zone
+                            // activate intake to pick up specimen
+                            // transfer intake to deliver
+                            // drive to high chamber
+                            // raise linear slide
+                            // activate deliver to put specimen on high chamber
+                            // back up off linear slide
+                            // lower linear slide
+                            // repeat back to step 1.
+
+
+                            // Drive back to samples then Repeat to step one until all samples gone
                         //Park
-                          //1. Drive over to ascension zone
-                          //2. Move linear slide to touch low bar
+                            //drive to observation zone
 
 
 
