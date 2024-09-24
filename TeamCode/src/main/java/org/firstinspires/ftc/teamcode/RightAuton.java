@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
+@Autonomous(name="RightAuton")
 public final class RightAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,7 +17,7 @@ public final class RightAuton extends LinearOpMode {
                         //Deliver Specimen to High Chamber
                           //1. raise lift to high chamber
                           //2. drive to submersible
-                        .splineTo(new Vector2d(x, y, Math.toRadians(90)))
+                        //.splineTo(new Vector2d(x, y, Math.toRadians(90)))
                           //3. drop lift to deliver
                           //4. pull pin
                           //5. drop all the way

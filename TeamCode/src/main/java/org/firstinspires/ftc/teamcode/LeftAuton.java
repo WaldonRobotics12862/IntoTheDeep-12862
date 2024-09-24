@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode.tuning;
+package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
+@Autonomous(name="LeftAuton")
 
 public final class LeftAuton extends LinearOpMode {
     @Override
@@ -49,13 +51,13 @@ public final class LeftAuton extends LinearOpMode {
                         .splineTo(new Vector2d(-9.00, -33.00), Math.toRadians(90.00))
                         .splineTo(new Vector2d(-9.34, -53.11), Math.toRadians(91.97))
                         .splineTo(new Vector2d(-41.31, -26.07), Math.toRadians(180.00))
-                        .splineTo(new Vector2d(-59.55, -57.41), Math.toRadians(225.00))
-                        .splineTo(new Vector2d(-57.62, -32.94), Math.toRadians(90.00))
-                        .splineTo(new Vector2d(-64.49, -58.05), Math.toRadians(263.47))
-                        .splineTo(new Vector2d(-68.78, -35.95), Math.toRadians(94.65))
-                        .splineTo(new Vector2d(-65.13, -57.19), Math.toRadians(265.94))
-                        .splineTo(new Vector2d(-63.63, -60.41), Math.toRadians(0.94))
-                        .splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00))
+                        //.splineTo(new Vector2d(-59.55, -57.41), Math.toRadians(225.00))
+                       // .splineTo(new Vector2d(-57.62, -32.94), Math.toRadians(90.00))
+                      //  .splineTo(new Vector2d(-64.49, -58.05), Math.toRadians(263.47))
+                      //  .splineTo(new Vector2d(-68.78, -35.95), Math.toRadians(94.65))
+                      //  .splineTo(new Vector2d(-65.13, -57.19), Math.toRadians(265.94))
+                       // .splineTo(new Vector2d(-63.63, -60.41), Math.toRadians(0.94))
+                       // .splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00))
                         .build());
     }
 }
