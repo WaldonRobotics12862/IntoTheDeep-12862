@@ -40,24 +40,34 @@ public final class LeftAuton extends LinearOpMode {
                         //Park
                           //1. Drive over to ascension zone
                           //2. Move linear slide to touch low bar
-
-
-
-
-//                        .splineTo(new Vector2d(-7.62, -39.81), Math.toRadians(90.00))
-//                        .splineTo(new Vector2d(-26.29, -34.87), Math.toRadians(188.70))
+ //                        .splineTo(new Vector2d(-7.62, -39.81), Math.toRadians(90.00))
+//                        .splineTo(new Vector2d(-26.29, -34.87), Math.t oRadians(188.70))
 //                        .splineTo(new Vector2d(-39.17, -25.86), Math.toRadians(176.73))
 //                        .splineTo(new Vector2d(-57.84, -57.62), Math.toRadians(225.00))
-                        .splineTo(new Vector2d(-9.00, -33.00), Math.toRadians(90.00))
+                       // .splineTo(new Vector2d(-9.00, -33.00), Math.toRadians(90.00))
                         //.splineTo(new Vector2d(-9.34, -53.11), Math.toRadians(91.97))
-                        .splineTo(new Vector2d(-41.31, -26.07), Math.toRadians(180.00))
-                        .splineTo(new Vector2d(-59.55, -57.41), Math.toRadians(225.00))
-                        .splineTo(new Vector2d(-57.62, -32.94), Math.toRadians(90.00))
-                        .splineTo(new Vector2d(-64.49, -58.05), Math.toRadians(263.47))
-                        .splineTo(new Vector2d(-68.78, -35.95), Math.toRadians(94.65))
-                        .splineTo(new Vector2d(-65.13, -57.19), Math.toRadians(265.94))
-                        .splineTo(new Vector2d(-63.63, -60.41), Math.toRadians(0.94))
-                        .splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00))
+                        //.splineTo(new Vector2d(-41.31, -26.07), Math.toRadians(180.00))
+                        //.splineTo(new Vector2d(-59.55, -57.41), Math.toRadians(225.00))
+                        //.splineTo(new Vector2d(-57.62, -32.94), Math.toRadians(90.00))
+                        //.splineTo(new Vector2d(-64.49, -58.05), Math.toRadians(263.47))
+                        //.splineTo(new Vector2d(-68.78, -35.95), Math.toRadians(94.65))
+                        //.splineTo(new Vector2d(-65.13, -57.19), Math.toRadians(265.94))
+                       // .splineTo(new Vector2d(-63.63, -60.41), Math.toRadians(0.94))
+                        //.splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00))
+                        //.build());
+                        .splineTo(new Vector2d(-6.25, -45), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-6.25, -50), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-55.25, -50), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-55.25, -46), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-58.5 , -58), Math.toRadians(225.00))
+                        .splineTo(new Vector2d(-59, -47), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-59, -47), Math.toRadians(215.00))
+                        .splineTo(new Vector2d(-67, -47), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-67, -47), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-67, -14), Math.toRadians(90.00))
+                        .splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
                         .build());
+
+
     }
 }
