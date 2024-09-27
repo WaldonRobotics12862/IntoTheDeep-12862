@@ -123,7 +123,7 @@ public class LeftAuton extends LinearOpMode {
                 return false;
             }
         }
-        public Action closeClaw() {
+        public Action RunIntake() {
             return new RunIntake();
         }
 
@@ -134,7 +134,7 @@ public class LeftAuton extends LinearOpMode {
                 return false;
             }
         }
-        public Action openClaw() {
+        public Action RevIntake() {
             return new RevIntake();
         }
     }
@@ -146,9 +146,10 @@ public class LeftAuton extends LinearOpMode {
         Lift Lift = new Lift(hardwareMap);
         Intake Intake = new Intake(hardwareMap);
 
-        TrajectoryActionBuilder AutonLeft = drive.actionBuilder(beginPose)
+        Action AutonLeft = drive.actionBuilder(beginPose)
                 .splineTo(new Vector2d(-9.00, -33.00), Math.toRadians(90.00))
                 //.splineTo(new Vector2d(-9.34, -53.11), Math.toRadians(91.97))
+                .waitSeconds(3)
                 .splineTo(new Vector2d(-41.31, -26.07), Math.toRadians(180.00))
                 .splineTo(new Vector2d(-59.55, -57.41), Math.toRadians(225.00))
                 .splineTo(new Vector2d(-57.62, -32.94), Math.toRadians(90.00))
@@ -156,9 +157,9 @@ public class LeftAuton extends LinearOpMode {
                 .splineTo(new Vector2d(-68.78, -35.95), Math.toRadians(94.65))
                 .splineTo(new Vector2d(-65.13, -57.19), Math.toRadians(265.94))
                 .splineTo(new Vector2d(-63.63, -60.41), Math.toRadians(0.94))
-                .splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00));
-
-
+                .splineTo(new Vector2d(-22.86, -11.91), Math.toRadians(0.00))
+                .turn(Math.toRadians(180))
+                .build();
 
         //actions that need to happen on init (if any)
 
@@ -170,7 +171,8 @@ public class LeftAuton extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         AutonLeft,
-                        Lift.LiftUp()
+                        Lift.LiftUp(),
+                        Intake.RunIntake()
                 )
         );
     }
