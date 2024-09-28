@@ -7,7 +7,11 @@
             <goBILDASeriesMotor name="right_back" port="2" />
             <goBILDASeriesMotor name="right_front" port="3" />
             <SparkFunOTOS name="sensor_otos" port="0" bus="1" />
+            <CRServo name="intake" port="1" bus="1" />
         </LynxModule>
-    </LynxUsbDevice>
-
+        <LynxModule name="Expansion Hub 2" port="2">
+            <goBILDASeriesMotor name="liftLeft" port="0" />
+            <goBildaSeriesMotor name="liftRight" port="1" />
+        </LynxModule>
+    </LynxUsbDevice>\>
 </Robot>
