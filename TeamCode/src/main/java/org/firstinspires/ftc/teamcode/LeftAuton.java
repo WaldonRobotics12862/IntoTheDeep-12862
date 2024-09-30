@@ -20,12 +20,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 
 @Config
 @Autonomous(name="LeftAuton", group="Autonomous")
 
 public class LeftAuton extends LinearOpMode {
 
+    public class LED{
+        private RevBlinkinLedDriver Blinkin;
+
+        public
+    }
     public class Lift {
         private DcMotorEx liftLeft;
         private DcMotorEx liftRight;
