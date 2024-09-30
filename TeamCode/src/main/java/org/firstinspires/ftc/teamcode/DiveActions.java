@@ -91,3 +91,17 @@ public class DiveActions {
         }
     }
 }
+   public class specimen {
+       public specimen(HardwareMap hardwareMap){
+           <>
+       }
+
+       public class open implements Action {
+
+       }
+
+       public Action open() {
+           return new open;
+       }
+
+   }
