@@ -40,7 +40,7 @@ public class WaldonHardware {
     public DcMotor rightfront_drive;
     public DcMotor ScissorLeft;
     public DcMotor ScissorRight;
-    public DcMotor Intake;
+    //public DcMotor Intake;
 
     // Now for all of our sensors: 3 distance, 1 IMU and 1 color
     public BNO055IMU imu;
