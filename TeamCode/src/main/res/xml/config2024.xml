@@ -8,7 +8,7 @@
             <goBILDASeriesMotor name="right_front" port="3" />
 
             <SparkFunOTOS name="sensor_otos" port="3" bus="1" />
-            <ColorSensor name="sampleColor" port="2" bus="0"/>
+            <RevColorSensorV3 name="sampleColor" port="2" bus="0"/>
             <DistanceSensor name="liftSensor" port="1" bus="0"/>
 
             <Servo name="intakeExtend" port="0" bus="0" />
