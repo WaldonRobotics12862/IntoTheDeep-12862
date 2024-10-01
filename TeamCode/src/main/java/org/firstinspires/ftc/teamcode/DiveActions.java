@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class DiveActions {
     public class Lift {
@@ -92,23 +91,43 @@ public class DiveActions {
             return new LeftAuton.Lift.LiftDown();
         }
     }
-    public class specimenDelivery {
-        public specimenDelivery(HardwareMap hardwareMap){
-            Servo specimenServo = hardwareMap.get(Servo.class,"specimenServo");
-        }
+}
+    public class specimen {
+       public specimen(HardwareMap hardwareMap){
+           <>
+       }
 
-        public class openServo implements Action {
-            specimenServo.setPosition(0.0);
-        }
+       public class open implements Action {
 
-        public Action openServo() {return new openServo;}
+       }
+
+       public Action open() {
+           return new open;
+
+       public class SampleDelivery {
+           public sample()
+       }
 
 
-        public class closeServo implements Action {
-            specimenServo.setPosition(1.0);
-        }
 
-        public Action closeServo() {return new closeServo;}
 
+       }
+
+   }
+    public class sampleDelivery{
+    public sampleDelivery (HardwareMap hardwareMap){
+        Servo sampleServo = hardwareMap.get(Servo.class,"sampleServo")
     }
+
+    public class openServo implements Action {
+        sampleServo.setPosition(0,0)
+    }
+
+    public Action openServo() {return new openServo}
+
+    public class closeServo implements Action {
+        sampleServo.setPosition(1,0);
+    }
+
+    public Action closeServo() {return new closeServo;}
 }
