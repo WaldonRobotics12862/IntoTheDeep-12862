@@ -14,13 +14,14 @@ public class DiveActions {
         private DcMotorEx liftRight;
 
         public Lift(HardwareMap hardwareMap) {
-            liftLeft = hardwareMap.get(DcMotorEx.class, "liftLeftMotor");
+            liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
             liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
 
-            liftRight = hardwareMap.get(DcMotorEx.class, "liftRightMotor");
+            liftRight = hardwareMap.get(DcMotorEx.class, "rightLift");
             liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftRight.setDirection(DcMotorEx.Direction.FORWARD);
+
         }
 
         public class LiftUp implements Action {
