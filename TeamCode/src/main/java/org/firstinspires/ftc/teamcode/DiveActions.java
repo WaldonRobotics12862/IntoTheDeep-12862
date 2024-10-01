@@ -109,5 +109,14 @@ public class DiveActions {
             }
         public Action Light(){return new Light}
         }
+        public class Ascend{
+        public Ascend(<Servo name="ascendServo1" port="0" bus="2" />
+                <Servo name="ascendServo2" port="0" bus="4" />
+                <goBILDASeriesMotor name="ascend" port="1"/>)}
+        public class Ascend implements Action {
+            "ascendServo1" set position (0)
+                    "ascendServo2" set position(0)
+                //put in the variables asap
+        }
         }
     }
