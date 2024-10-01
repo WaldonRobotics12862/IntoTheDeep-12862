@@ -91,26 +91,6 @@ public class DiveActions {
         }
     }
 }
-    public class specimen {
-       public specimen(HardwareMap hardwareMap){
-           <>
-       }
-
-       public class open implements Action {
-
-       }
-
-       public Action open() {
-           return new open;
-
-       public class SampleDelivery {
-           public sample()
-       }
-
-
-
-
-       }
 
    }
     public class sampleDelivery{
