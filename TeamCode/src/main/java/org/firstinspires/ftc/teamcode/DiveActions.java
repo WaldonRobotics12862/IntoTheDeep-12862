@@ -50,11 +50,8 @@ public class DiveActions {
                 }
                 // overall, the action powers the lift until it surpasses
                 // 3000 encoder ticks, then powers it off
-                public Action Open(){ return new Open;}
-
-                    }
             }
-
+        }
 
         public Action LiftUp() {
             return new LeftAuton.Lift.LiftUp();
@@ -94,18 +91,23 @@ public class DiveActions {
             return new LeftAuton.Lift.LiftDown();
         }
     }
+    public class specimenDelivery {
+        public specimenDelivery(HardwareMap hardwareMap){
+            Servo specimenServo = hardwareMap.get(Servo.class,"specimenServo");
+        }
 
-    public class intake {
-        public intake (HardwareMap hardwareMap) {
-        Servo ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
-        Servo WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
-        Servo Sample_ForIntake = hardwareMap.get(Servo.class,"sampleServo" );
+        public class openServo implements Action {
+            specimenServo.setPosition(0.0);
         }
-        public class Open Implaments Action{
-            ExtendIntake.setPosition(0);
-            WristIntake.setPosition(0);
-            Sample_ForIntake.serPosition(0);
+
+        public Action openServo() {return new openServo;}
+
+
+        public class closeServo implements Action {
+            specimenServo.setPosition(1.0);
         }
-        public Action Open(){return new Open}
+
+        public Action closeServo() {return new closeServo;}
+
     }
 }
