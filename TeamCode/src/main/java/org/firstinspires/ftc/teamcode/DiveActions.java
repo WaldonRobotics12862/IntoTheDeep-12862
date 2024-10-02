@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import java.util.function.Predicate;
 
 public class DiveActions {
-    public class Lift {
+     public class Lift {
         private DcMotorEx liftLeft;
         private DcMotorEx liftRight;
 
