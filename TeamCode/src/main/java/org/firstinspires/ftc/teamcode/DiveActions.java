@@ -184,10 +184,14 @@ public class DiveActions {
     }
 
     public class intake {
-        public intake (HardwareMap hardwareMap) {
-            Servo ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
-            Servo WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
-            Servo Sample_ForIntake = hardwareMap.get(Servo.class,"sampleServo" );
+         Servo ExtendIntake;
+         Servo WristIntake;
+         Servo Sample_ForIntake;
+
+         public intake (HardwareMap hardwareMap) {
+            ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
+            WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
+            Sample_ForIntake = hardwareMap.get(Servo.class,"sampleServo" );
         }
         public class Open Implaments Action{
             ExtendIntake.setPosition(0);
