@@ -6,6 +6,9 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import kotlin.OptionalExpectation;
 
 public class DiveActions {
     public class Lift {
@@ -54,7 +57,7 @@ public class DiveActions {
         }
 
         public Action LiftUp() {
-            return new LeftAuton.Lift.LiftUp();
+            return new LiftUp();
         }
 
         public class LiftDown implements Action {
@@ -73,7 +76,7 @@ public class DiveActions {
                 double posL = liftLeft.getCurrentPosition();
                 double posR = liftRight.getCurrentPosition();
                 packet.put("liftPos", posL);
-                if (posR >10.0 & posL > 10.0) {
+                if (posR > 10.0 & posL > 10.0) {
                     // true causes the action to rerun
                     return true;
                 } else {
@@ -88,46 +91,52 @@ public class DiveActions {
         }
 
         public Action LiftDown() {
-            return new LeftAuton.Lift.LiftDown();
+            return new LiftDown();
         }
     }
-}
+
     public class specimen {
-       public specimen(HardwareMap hardwareMap){
+        public specimen(HardwareMap hardwareMap) {
            <>
-       }
+        }
 
-       public class open implements Action {
+        public class open implements Action {
 
-       }
+        }
 
-       public Action open() {
-           return new open;
+        public Action open() {
+            return new open;
 
-       public class SampleDelivery {
-           public sample()
-       }
-
-
+            public class SampleDelivery {
+                public sample()
+            }
 
 
-       }
+        }
 
-   }
-    public class sampleDelivery{
-    public sampleDelivery (HardwareMap hardwareMap){
-        Servo sampleServo = hardwareMap.get(Servo.class,"sampleServo")
     }
 
-    public class openServo implements Action {
-        sampleServo.setPosition(0,0)
+    public class sampleDelivery {
+        Servo sampleServo;
+
+        public sampleDelivery(HardwareMap hardwareMap) {
+            sampleServo = hardwareMap.get(Servo.class, "sampleServo");
+        }
+
+        public class openServo implements Action {
+            sampleServo.setPosition(0.0);
+        }
+
+        public Action openServo() {
+            return new openServo();
+        }
+
+        public class closeServo implements Action {
+            sampleServo.setPosition(1.0);
+        }
+
+        public Action closeServo() {
+            return new closeServo();
+        }
     }
-
-    public Action openServo() {return new openServo}
-
-    public class closeServo implements Action {
-        sampleServo.setPosition(1,0);
-    }
-
-    public Action closeServo() {return new closeServo;}
 }
