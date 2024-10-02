@@ -8,8 +8,9 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import java.util.function.Predicate;
+import kotlin.OptionalExpectation;
 
 public class DiveActions {
      public class Lift {
@@ -17,13 +18,14 @@ public class DiveActions {
         private DcMotorEx liftRight;
 
         public Lift(HardwareMap hardwareMap) {
-            liftLeft = hardwareMap.get(DcMotorEx.class, "liftLeftMotor");
+            liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
             liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
 
-            liftRight = hardwareMap.get(DcMotorEx.class, "liftRightMotor");
+            liftRight = hardwareMap.get(DcMotorEx.class, "rightLift");
             liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftRight.setDirection(DcMotorEx.Direction.FORWARD);
+
         }
 
         public class LiftUp implements Action {
@@ -57,7 +59,7 @@ public class DiveActions {
         }
 
         public Action LiftUp() {
-            return new LeftAuton.Lift.LiftUp();
+            return new LiftUp();
         }
 
         public class LiftDown implements Action {
@@ -91,32 +93,93 @@ public class DiveActions {
         }
 
         public Action LiftDown() {
-            return new LeftAuton.Lift.LiftDown();
-        }
-
-        public class LED {
-            public LED(HardwareMap hardwareMap) {
-                RevBlinkinLedDriver blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-                RevColorSensorV3 Colorsensor=hardwareMap.get(RevColorSensorV3.class, "sampleColor")
-            }
-            public class Light implements Action {
-              if(ColorSensor="red"
-                Light blinkin "red"")
-                  if(Colorsensor="blue"
-                Light blinkin "blue")
-                      if(Colorsensor="yellow"
-                Light blinkin "yellow")
-            }
-        public Action Light(){return new Light}
-        }
-        public class Ascend{
-        public Ascend(<Servo name="ascendServo1" port="0" bus="2" />
-                <Servo name="ascendServo2" port="0" bus="4" />
-                <goBILDASeriesMotor name="ascend" port="1"/>)}
-        public class Ascend implements Action {
-            "ascendServo1" set position (0)
-                    "ascendServo2" set position(0)
-                //put in the variables asap
-        }
+            return new LiftDown();
         }
     }
+
+    public class specimen {
+        public specimen(HardwareMap hardwareMap) {
+           <>
+        }
+
+        public class open implements Action {
+
+        }
+
+        public Action open() {
+            return new open;
+
+            public class SampleDelivery {
+                public sample()
+            }
+
+
+        }
+
+    }
+
+    public class sampleDelivery {
+        Servo sampleServo;
+
+        public sampleDelivery(HardwareMap hardwareMap) {
+            sampleServo = hardwareMap.get(Servo.class, "sampleServo");
+        }
+
+        public class openServo implements Action {
+            sampleServo.setPosition(0.0);
+        }
+
+        public Action openServo() {
+            return new openServo();
+        }
+
+        public class closeServo implements Action {
+            sampleServo.setPosition(1.0);
+        }
+
+        public Action closeServo() {
+            return new closeServo();
+        }
+    }
+
+    public class LED {
+         RevBlinkinLedDriver blinkinLedDriver;
+         RevColorSensorV3 Colorsensor;
+
+         public LED(HardwareMap hardwareMap){
+             RevBlinkinLedDriver blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+             RevColorSensorV3 Colorsensor=hardwareMap.get(RevColorSensorV3.class, "sampleColor");
+         }
+
+         public class Light implements Action {
+             if(Colorsensor ="red"
+             Light blinkin "red")
+                     if(Colorsensor="blue"
+             Light blinkin "blue")
+                     if(Colorsensor="yellow"
+             Light blinkin "yellow")
+         }
+         public Action Light(){
+             return new Light();
+         }
+    }
+
+    public class Ascend{
+         Servo ascendServo1;
+         Servo ascendServo2;
+
+         public Ascend(HardwareMap hardwareMap){
+             Servo ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
+             Servo ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
+         }
+
+         public class Ascend implements Action{
+             ascendServo1.setPosition(0);
+             ascendServo2.setPosition(0);
+         }
+
+         public Action Ascend(){
+             return new Ascend();
+        }
+    }
+}
