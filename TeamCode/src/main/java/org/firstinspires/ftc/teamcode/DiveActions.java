@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import kotlin.OptionalExpectation;
 
 public class DiveActions {
-    public class Lift {
+     public class Lift {
         private DcMotorEx liftLeft;
         private DcMotorEx liftRight;
 
