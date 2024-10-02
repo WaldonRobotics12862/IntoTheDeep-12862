@@ -182,4 +182,18 @@ public class DiveActions {
              return new Ascend();
         }
     }
+
+    public class intake {
+        public intake (HardwareMap hardwareMap) {
+            Servo ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
+            Servo WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
+            Servo Sample_ForIntake = hardwareMap.get(Servo.class,"sampleServo" );
+        }
+        public class Open Implaments Action{
+            ExtendIntake.setPosition(0);
+            WristIntake.setPosition(0);
+            Sample_ForIntake.serPosition(0);
+        }
+        public Action Open(){return new Open}
+    }
 }
