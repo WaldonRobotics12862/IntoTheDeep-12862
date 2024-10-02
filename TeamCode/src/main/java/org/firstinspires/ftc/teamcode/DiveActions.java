@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -137,6 +139,47 @@ public class DiveActions {
 
         public Action closeServo() {
             return new closeServo();
+        }
+    }
+
+    public class LED {
+         RevBlinkinLedDriver blinkinLedDriver;
+         RevColorSensorV3 Colorsensor;
+
+         public LED(HardwareMap hardwareMap){
+             RevBlinkinLedDriver blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+             RevColorSensorV3 Colorsensor=hardwareMap.get(RevColorSensorV3.class, "sampleColor");
+         }
+
+         public class Light implements Action {
+             if(Colorsensor ="red"
+             Light blinkin "red")
+                     if(Colorsensor="blue"
+             Light blinkin "blue")
+                     if(Colorsensor="yellow"
+             Light blinkin "yellow")
+         }
+         public Action Light(){
+             return new Light();
+         }
+    }
+
+    public class Ascend{
+         Servo ascendServo1;
+         Servo ascendServo2;
+
+         public Ascend(HardwareMap hardwareMap){
+             Servo ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
+             Servo ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
+         }
+
+         public class Ascend implements Action{
+             ascendServo1.setPosition(0);
+             ascendServo2.setPosition(0);
+         }
+
+         public Action Ascend(){
+             return new Ascend();
         }
     }
 }
