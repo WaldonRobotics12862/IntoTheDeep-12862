@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import kotlin.OptionalExpectation;
 
 public class DiveActions {
-     public class Lift {
+    public class Lift {
         private DcMotorEx liftLeft;
         private DcMotorEx liftRight;
 
@@ -97,36 +97,44 @@ public class DiveActions {
         }
     }
 
-    public class specimen {
-        public specimen(HardwareMap hardwareMap) {
-           <>
+    public class SpecimenDelivery {
+        Servo specimenServo;
+
+        public SpecimenDelivery (HardwareMap hardwareMap) {
+            specimenServo = hardwareMap.get(Servo.class, "specimenServo");
         }
 
         public class open implements Action {
-
+            specimenServo.setPosition(0.0);
         }
 
         public Action open() {
             return new open;
-
-            public class SampleDelivery {
-                public sample()
-            }
-
-
         }
+        public class close implements Action {
+            specimenServo.setPosition(0.0);
+        }
+
+        public Action close() {
+            return new close;
+        }
+
+
 
     }
 
     public class sampleDelivery {
-        Servo sampleServo;
+        public Servo sampleServo;
 
         public sampleDelivery(HardwareMap hardwareMap) {
             sampleServo = hardwareMap.get(Servo.class, "sampleServo");
         }
 
         public class openServo implements Action {
-            sampleServo.setPosition(0.0);
+            public boolean run(@NonNull TelemetryPacket packet){
+                sampleServo.setPosition(0.0);
+                return false;
+            }
         }
 
         public Action openServo() {
@@ -134,7 +142,10 @@ public class DiveActions {
         }
 
         public class closeServo implements Action {
-            sampleServo.setPosition(1.0);
+            public boolean run(@NonNull TelemetryPacket packet){
+                sampleServo.setPosition((1.0);
+                return false;
+            }
         }
 
         public Action closeServo() {
@@ -164,7 +175,7 @@ public class DiveActions {
          }
     }
 
-    public class Ascend{
+    public class Ascend {
          Servo ascendServo1;
          Servo ascendServo2;
 
