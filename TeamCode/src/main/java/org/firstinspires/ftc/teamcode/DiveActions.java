@@ -109,23 +109,24 @@ public class DiveActions {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 specimenServo.setPosition(0.0);
-                return new open
+                return false;
             }
 
         }
 
         public Action open() {
-            return false;
+            return new open();
         }
         public class close implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 specimenServo.setPosition(0.0);
+                return false;
             }
         }
 
         public Action close() {
-            return new close;
+            return new close();
         }
 
 
@@ -152,7 +153,7 @@ public class DiveActions {
 
         public class closeServo implements Action {
             public boolean run(@NonNull TelemetryPacket packet){
-                sampleServo.setPosition((1.0);
+                sampleServo.setPosition(1.0);
                 return false;
             }
         }
@@ -171,17 +172,17 @@ public class DiveActions {
              RevColorSensorV3 Colorsensor=hardwareMap.get(RevColorSensorV3.class, "sampleColor");
          }
 
-         public class Light implements Action {
-             if(Colorsensor) = "red"
-             Light blinkin = "red")
-                     if(Colorsensor="blue"
-             Light blinkin "blue")
-                     if(Colorsensor="yellow"
-             Light blinkin "yellow")
-         }
-         public Action Light(){
-             return new Light();
-         }
+         //public class Light implements Action {
+         //    if(Colorsensor) = "red"
+         //    Light blinkin = "red")
+         //            if(Colorsensor="blue"
+         //    Light blinkin "blue")
+         //            if(Colorsensor="yellow"
+         //    Light blinkin "yellow")
+         //}
+         //public Action Light(){
+         //    return new Light();
+         //}
     }
 
     public class Ascend {
@@ -189,33 +190,38 @@ public class DiveActions {
          Servo ascendServo2;
 
          public Ascend(HardwareMap hardwareMap){
-             Servo ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
-             Servo ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
+             ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
+             ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
          }
 
-         public class Ascend implements Action{
-             ascendServo1.setPosition(0);
-             ascendServo2.setPosition(0);
+         public class Deploy implements Action{
+             @Override
+             public boolean run(@NonNull TelemetryPacket packet){
+                ascendServo1.setPosition(0);
+                ascendServo2.setPosition(0);
+                return false;
+             }
          }
 
-         public Action Ascend(){
-             return new Ascend();
+         public Action Deploy(){
+             return new Deploy();
         }
     }
 
     public class intake {
-         Servo ExtendIntake;
-         Servo WristIntake;
-         CRServo Sample_ForIntake;
+        Servo ExtendIntake;
+        Servo WristIntake;
+        CRServo Sample_ForIntake;
 
-         public intake (HardwareMap hardwareMap) {
+        public intake (HardwareMap hardwareMap) {
             ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
             WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
             Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );
         }
-        public class ExtendArm Implements Action{
+
+        public class ExtendArm implements Action{
             @Override
-            public boolean run(){
+            public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
                 WristIntake.setPosition(Variables.wristIntaking);
                 Sample_ForIntake.setPower(Variables.sampleIntaking);
@@ -223,11 +229,12 @@ public class DiveActions {
             }
         }
         public Action ExtendArm(){
-             return new ExtendArm;
+             return new ExtendArm();
         }
-        public class RetractArm Implements Action{
+
+        public class RetractArm implements Action{
             @Override
-            public boolean run(){
+            public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.retractedIntake);
                 WristIntake.setPosition(Variables.wristUp);
                 Sample_ForIntake.setPower(Variables.sampleStop);
@@ -235,39 +242,37 @@ public class DiveActions {
             }
         }
         public Action RetractArm(){
-            return new RetractArm;
+            return new RetractArm();
         }
-        public class On Implements Action{
-             @Override
-            public boolean run(@NonNull TelemetryPacket packet){
+
+        public class WheelOn implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
                 ExtendIntake.setPosition(Variables.extendedIntake);
                 WristIntake.setPosition(Variables.wristUp);
                 Sample_ForIntake.setPower(1);
                 return false;
             }
-            @Override
-            public boolean stop(@NonNull TelemetryPacket packet){
+
+            public boolean stop(@NonNull TelemetryPacket packet) {
                 ExtendIntake.setPosition(Variables.retractedIntake);
                 WristIntake.setPosition(Variables.wristIntaking);
                 Sample_ForIntake.setPower(0);
                 return false;
             }
-            public class On Implements Action{
+
+            public class On implements Action {
                 @Override
-                public boolean run(@NonNull TelemetryPacket packet){
+                public boolean run(@NonNull TelemetryPacket packet) {
                     ExtendIntake.setPosition(Variables.extendedIntake);
                     WristIntake.setPosition(Variables.wristUp);
                     Sample_ForIntake.setPower(-1);
                     return false;
-        public Action On(){
-                return new On
-
-
+                }
+            }
         }
-
+        public Action WheelOn() {
+            return new WheelOn();
         }
-    }
-
-
     }
 }

@@ -19,6 +19,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
+
+import org.firstinspires.ftc.teamcode.DiveActions;
 import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 
 @Config
