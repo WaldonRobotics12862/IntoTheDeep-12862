@@ -9,6 +9,7 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 import kotlin.OptionalExpectation;
 
@@ -105,14 +106,22 @@ public class DiveActions {
         }
 
         public class open implements Action {
-            specimenServo.setPosition(0.0);
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                specimenServo.setPosition(0.0);
+                return new open
+            }
+
         }
 
         public Action open() {
-            return new open;
+            return false;
         }
         public class close implements Action {
-            specimenServo.setPosition(0.0);
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                specimenServo.setPosition(0.0);
+            }
         }
 
         public Action close() {
@@ -163,8 +172,8 @@ public class DiveActions {
          }
 
          public class Light implements Action {
-             if(Colorsensor ="red"
-             Light blinkin "red")
+             if(Colorsensor) = "red"
+             Light blinkin = "red")
                      if(Colorsensor="blue"
              Light blinkin "blue")
                      if(Colorsensor="yellow"
@@ -197,18 +206,68 @@ public class DiveActions {
     public class intake {
          Servo ExtendIntake;
          Servo WristIntake;
-         Servo Sample_ForIntake;
+         CRServo Sample_ForIntake;
 
          public intake (HardwareMap hardwareMap) {
             ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
             WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
-            Sample_ForIntake = hardwareMap.get(Servo.class,"sampleServo" );
+            Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );
         }
-        public class Open Implaments Action{
-            ExtendIntake.setPosition(0);
-            WristIntake.setPosition(0);
-            Sample_ForIntake.serPosition(0);
+        public class ExtendArm Implements Action{
+            @Override
+            public boolean run(){
+                ExtendIntake.setPosition(Variables.extendedIntake);
+                WristIntake.setPosition(Variables.wristIntaking);
+                Sample_ForIntake.setPower(Variables.sampleIntaking);
+                return false;
+            }
         }
-        public Action Open(){return new Open}
+        public Action ExtendArm(){
+             return new ExtendArm;
+        }
+        public class RetractArm Implements Action{
+            @Override
+            public boolean run(){
+                ExtendIntake.setPosition(Variables.retractedIntake);
+                WristIntake.setPosition(Variables.wristUp);
+                Sample_ForIntake.setPower(Variables.sampleStop);
+                return false;
+            }
+        }
+        public Action RetractArm(){
+            return new RetractArm;
+        }
+        public class On Implements Action{
+             @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                ExtendIntake.setPosition(Variables.extendedIntake);
+                WristIntake.setPosition(Variables.wristUp);
+                Sample_ForIntake.setPower(1);
+                return false;
+            }
+            @Override
+            public boolean stop(@NonNull TelemetryPacket packet){
+                ExtendIntake.setPosition(Variables.retractedIntake);
+                WristIntake.setPosition(Variables.wristIntaking);
+                Sample_ForIntake.setPower(0);
+                return false;
+            }
+            public class On Implements Action{
+                @Override
+                public boolean run(@NonNull TelemetryPacket packet){
+                    ExtendIntake.setPosition(Variables.extendedIntake);
+                    WristIntake.setPosition(Variables.wristUp);
+                    Sample_ForIntake.setPower(-1);
+                    return false;
+        public Action On(){
+                return new On
+
+
+        }
+
+        }
+    }
+
+
     }
 }

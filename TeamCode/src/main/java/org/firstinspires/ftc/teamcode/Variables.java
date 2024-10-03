@@ -29,6 +29,12 @@ public class Variables {
    public double maxProfileAccel = 50;
    public Variables(LinearOpMode opmode) { this.opMode =  opmode; }
 
+   public static double extendedIntake = 1;
+   public static double retractedIntake = 0;
+   public static double wristUp = 1;
+   public static double wristIntaking = 0;
+   public static double sampleIntaking = 1;
+   public static double sampleStop = 0;
    public Variables(MecanumDrive.Params params) {
    }
 
