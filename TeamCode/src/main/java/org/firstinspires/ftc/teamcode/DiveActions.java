@@ -11,12 +11,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-import kotlin.OptionalExpectation;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class DiveActions {
-    public class Lift {
-        private DcMotorEx liftLeft;
-        private DcMotorEx liftRight;
+public class DiveActions{
+
+    // Lift is the class that will support the lift
+    // ITD-86
+    public static class Lift  {
+        private static DcMotorEx liftLeft;
+        private static DcMotorEx liftRight;
 
         public Lift(HardwareMap hardwareMap) {
             liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
@@ -29,7 +32,7 @@ public class DiveActions {
 
         }
 
-        public class LiftUp implements Action {
+        public static class LiftUp implements Action {
             private boolean initialized = false;
 
             @Override
@@ -59,11 +62,11 @@ public class DiveActions {
             }
         }
 
-        public Action LiftUp() {
+        public static Action LiftUp() {
             return new LiftUp();
         }
 
-        public class LiftDown implements Action {
+        public static class LiftDown implements Action {
             private boolean initialized = false;
 
             @Override
@@ -93,19 +96,21 @@ public class DiveActions {
             }
         }
 
-        public Action LiftDown() {
+        public static Action LiftDown() {
             return new LiftDown();
         }
     }
 
-    public class SpecimenDelivery {
-        Servo specimenServo;
+    // SpecimenDelivery is the class that supports the squeeze clamp for specimen delivery
+    // ITD-88
+    public static class SpecimenDelivery {
+        static Servo specimenServo;
 
         public SpecimenDelivery (HardwareMap hardwareMap) {
             specimenServo = hardwareMap.get(Servo.class, "specimenServo");
         }
 
-        public class open implements Action {
+        public static class open implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 specimenServo.setPosition(0.0);
@@ -114,10 +119,10 @@ public class DiveActions {
 
         }
 
-        public Action open() {
+        public static Action open() {
             return new open();
         }
-        public class close implements Action {
+        public static class close implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 specimenServo.setPosition(0.0);
@@ -125,7 +130,7 @@ public class DiveActions {
             }
         }
 
-        public Action close() {
+        public static Action close() {
             return new close();
         }
 
@@ -133,37 +138,43 @@ public class DiveActions {
 
     }
 
-    public class sampleDelivery {
-        public Servo sampleServo;
+    // sampleDelivery is the class that supports the basket that will dump a sample
+    // ITD-85
+    public static class sampleDelivery {
+        static Servo sampleServo;
 
         public sampleDelivery(HardwareMap hardwareMap) {
             sampleServo = hardwareMap.get(Servo.class, "sampleServo");
         }
 
-        public class openServo implements Action {
+        public static class openServo implements Action {
+            @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 sampleServo.setPosition(0.0);
                 return false;
             }
         }
 
-        public Action openServo() {
+        public static Action openServo() {
             return new openServo();
         }
 
-        public class closeServo implements Action {
+        public static class closeServo implements Action {
+            @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 sampleServo.setPosition(1.0);
                 return false;
             }
         }
 
-        public Action closeServo() {
+        public static Action closeServo() {
             return new closeServo();
         }
     }
 
-    public class LED {
+    // LED is the class that supports displaying LEDs to indicate status of the robot
+    // ITD-89
+    public static class LED {
          RevBlinkinLedDriver blinkinLedDriver;
          RevColorSensorV3 Colorsensor;
 
@@ -185,16 +196,19 @@ public class DiveActions {
          //}
     }
 
-    public class Ascend {
-         Servo ascendServo1;
-         Servo ascendServo2;
+    // Ascend is the class that supports the Ascend actions to lift the hooks up and pull them
+    // back in.
+    // ITD-84
+    public static class Ascend {
+         static Servo ascendServo1;
+         static Servo ascendServo2;
 
          public Ascend(HardwareMap hardwareMap){
              ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
              ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
          }
 
-         public class Deploy implements Action{
+         public static class Deploy implements Action {
              @Override
              public boolean run(@NonNull TelemetryPacket packet){
                 ascendServo1.setPosition(0);
@@ -203,15 +217,17 @@ public class DiveActions {
              }
          }
 
-         public Action Deploy(){
+         public static Action Deploy(){
              return new Deploy();
         }
     }
 
-    public class intake {
-        Servo ExtendIntake;
-        Servo WristIntake;
-        CRServo Sample_ForIntake;
+    // Intake is the class that supports us pulling in the sample from the field
+    // ITD-87
+    public static class intake {
+        static Servo ExtendIntake;
+        static Servo WristIntake;
+        static CRServo Sample_ForIntake;
 
         public intake (HardwareMap hardwareMap) {
             ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
@@ -219,7 +235,7 @@ public class DiveActions {
             Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );
         }
 
-        public class ExtendArm implements Action{
+        public static class ExtendArm implements Action{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
@@ -228,11 +244,11 @@ public class DiveActions {
                 return false;
             }
         }
-        public Action ExtendArm(){
+        public static Action ExtendArm(){
              return new ExtendArm();
         }
 
-        public class RetractArm implements Action{
+        public static class RetractArm implements Action{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.retractedIntake);
@@ -241,11 +257,11 @@ public class DiveActions {
                 return false;
             }
         }
-        public Action RetractArm(){
+        public static Action RetractArm(){
             return new RetractArm();
         }
 
-        public class WheelOn implements Action {
+        public static class WheelOn implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 ExtendIntake.setPosition(Variables.extendedIntake);
@@ -271,7 +287,7 @@ public class DiveActions {
                 }
             }
         }
-        public Action WheelOn() {
+        public static Action WheelOn() {
             return new WheelOn();
         }
     }

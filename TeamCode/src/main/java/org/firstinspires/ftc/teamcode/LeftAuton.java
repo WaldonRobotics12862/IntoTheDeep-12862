@@ -185,6 +185,7 @@ public class LeftAuton extends LinearOpMode {
                 new SequentialAction(
                         AutonLeft,
                         Lift.LiftUp(),
+                        DiveActions.sampleDelivery.closeServo(),
                         Intake.RunIntake()
                 )
         );
