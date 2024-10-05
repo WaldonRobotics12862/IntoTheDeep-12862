@@ -16,7 +16,7 @@
             <ContinuousRotationServo name="sampleServo" port="4" />
 
         </LynxModule>
-        <LynxModule name="Expansion Hub 2">
+        <LynxModule name="Expansion Hub 2" port = "2" >
             <goBILDASeriesMotor name="rightLift" port="0" />
             <goBILDASeriesMotor name="leftLift" port="2" />
             <goBILDASeriesMotor name="ascend" port="1"/>
