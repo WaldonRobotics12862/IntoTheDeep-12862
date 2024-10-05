@@ -2,10 +2,10 @@
 <Robot type="FirstInspires-FTC">
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <LynxModule name="Control Hub" port="173">
-            <goBILDA5201SeriesMotor name="left_front" port="0" />
-            <goBILDA5201SeriesMotor name="left_back" port="1" />
-            <goBILDA5201SeriesMotor name="right_back" port="2" />
-            <goBILDA5201SeriesMotor name="right_front" port="3" />
+            <goBILDA5202SeriesMotor name="left_front" port="0" />
+            <goBILDA5202SeriesMotor name="left_back" port="1" />
+            <goBILDA5202SeriesMotor name="right_back" port="2" />
+            <goBILDA5202SeriesMotor name="right_front" port="3" />
 
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
             <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
@@ -17,9 +17,9 @@
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >
-            <goBILDASeriesMotor name="rightLift" port="0" />
-            <goBILDASeriesMotor name="leftLift" port="2" />
-            <goBILDASeriesMotor name="ascend" port="1"/>
+            <goBILDA5202SeriesMotor name="rightLift" port="0" />
+            <goBILDA5202SeriesMotor name="leftLift" port="2" />
+            <goBILDA5202SeriesMotor name="ascend" port="1"/>
 
             <Servo name="specimenServo" port="0" />
             <Servo name="ascendServo1" port="2" />
