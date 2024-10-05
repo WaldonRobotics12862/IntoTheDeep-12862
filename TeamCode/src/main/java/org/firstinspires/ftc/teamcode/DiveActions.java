@@ -149,7 +149,7 @@ public class DiveActions{
 
         //since this is the basket, we probably don't want these actions called open and close servo
         // they probably should be something like 'dump' and 'load' or something.
-        public static class openServo implements Action {
+        public static class load implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 sampleServo.setPosition(0.0);
@@ -157,11 +157,11 @@ public class DiveActions{
             }
         }
 
-        public static Action openServo() {
-            return new openServo();
+        public static Action load() {
+            return new load();
         }
 
-        public static class closeServo implements Action {
+        public static class dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 sampleServo.setPosition(1.0);
@@ -169,8 +169,8 @@ public class DiveActions{
             }
         }
 
-        public static Action closeServo() {
-            return new closeServo();
+        public static Action dump() {
+            return new dump();
         }
     }
 
