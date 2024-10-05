@@ -35,6 +35,21 @@ public class Variables {
    public static double wristIntaking = 0;
    public static double sampleIntaking = 1;
    public static double sampleStop = 0;
+   public static double rightDownLift = -0.8;
+   public static double leftDownLift = -0.8;
+   public static double rightStopLift = 0;
+   public static double leftStopLift = 0;
+   public static double rightUpLift = 0.8;
+   public static double leftUpLift = 0.8;
+   public static double specimenLoose = 0;
+   public static double specimenPinch = 1;
+   public static double sampleLoad = 0.8;
+   public static double sampleDump = 0.8;
+   public static double ascend1Up = 1;
+   public static double ascend2Up = 1;
+   public static double ascend1Down = 0;
+   public static double ascend2Down = 0;
+   public static double ascend = 1;
    public Variables(MecanumDrive.Params params) {
    }
 

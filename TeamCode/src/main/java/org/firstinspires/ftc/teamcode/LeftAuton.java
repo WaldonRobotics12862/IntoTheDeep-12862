@@ -27,137 +27,10 @@ import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 @Autonomous(name="LeftAuton", group="Autonomous")
 
 public class LeftAuton extends LinearOpMode {
-
-    public class Lift {
-        private DcMotorEx liftLeft;
-        private DcMotorEx liftRight;
-
-        public Lift(HardwareMap hardwareMap) {
-            liftLeft = hardwareMap.get(DcMotorEx.class, "liftLeftMotor");
-            liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-            liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
-
-            liftRight = hardwareMap.get(DcMotorEx.class, "liftRightMotor");
-            liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-            liftRight.setDirection(DcMotorEx.Direction.FORWARD);
-        }
-
-        public class LiftUp implements Action {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                // powers on motor, if it is not on
-                if (!initialized) {
-                    liftLeft.setPower(0.8);
-                    liftRight.setPower(0.8);
-                    initialized = true;
-                }
-
-                // checks lift's current position
-                double posL = liftLeft.getCurrentPosition();
-                double posR = liftRight.getCurrentPosition();
-                packet.put("liftPos", posL);
-                if (posR < 3000.0 & posL < 3000.0) {
-                    // true causes the action to rerun
-                    return true;
-                } else {
-                    // false stops action rerun
-                    liftLeft.setPower(0);
-                    liftRight.setPower(0);
-                    return false;
-                }
-                // overall, the action powers the lift until it surpasses
-                // 3000 encoder ticks, then powers it off
-            }
-        }
-
-        public Action LiftUp() {
-            return new LiftUp();
-        }
-
-        public class LiftDown implements Action {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                // powers on motor, if it is not on
-                if (!initialized) {
-                    liftLeft.setPower(-0.8);
-                    liftRight.setPower(-0.8);
-                    initialized = true;
-                }
-
-                // checks lift's current position
-                double posL = liftLeft.getCurrentPosition();
-                double posR = liftRight.getCurrentPosition();
-                packet.put("liftPos", posL);
-                if (posR >10.0 & posL > 10.0) {
-                    // true causes the action to rerun
-                    return true;
-                } else {
-                    // false stops action rerun
-                    liftLeft.setPower(0);
-                    liftRight.setPower(0);
-                    return false;
-                }
-                // overall, the action powers the lift with negative power until it is under
-                // 10 encoder ticks, then powers it off
-            }
-        }
-
-        public Action LiftDown() {
-            return new LiftDown();
-        }
-    }
-
-    public class Intake {
-        private CRServo intake;
-
-        public Intake(HardwareMap hardwareMap) {
-            intake = hardwareMap.get(CRServo.class, "intake");
-        }
-
-        public class RunIntake implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                intake.setPower(1.0);
-                return false;
-            }
-        }
-        public Action RunIntake() {
-            return new RunIntake();
-        }
-        public class StopIntake implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                intake.setPower(0.0);
-                return false;
-            }
-        }
-        public Action StopIntake() {
-            return new StopIntake();
-        }
-
-
-        public class RevIntake implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                intake.setPower(-1.0);
-                return false;
-            }
-        }
-        public Action RevIntake() {
-            return new RevIntake();
-        }
-    }
-
-    @Override
+@Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-36, -63, Math.toRadians(90));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
-        Lift Lift = new Lift(hardwareMap);
-        Intake Intake = new Intake(hardwareMap);
 
         Action AutonLeft = drive.actionBuilder(beginPose)
                 .splineTo(new Vector2d(-6.25, -45.00), Math.toRadians(90.00))
@@ -184,9 +57,9 @@ public class LeftAuton extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         AutonLeft,
-                        Lift.LiftUp(),
+                        DiveActions.Lift.LiftUp(),
                         DiveActions.sampleDelivery.dump(),
-                        Intake.RunIntake()
+                        DiveActions.intake.ExtendArm()
                 )
         );
     }

@@ -11,9 +11,9 @@
             <RevColorSensorV3 name="sampleColor" port="2" bus="0"/>
             <DistanceSensor name="liftSensor" port="1" bus="0"/>
 
-            <Servo name="intakeExtend" port="0" bus="0" />
-            <Servo name="intakeWrist" port="0" bus="2" />
-            <CRServo name="sampleServo" port="0" bus="4" />
+            <Servo name="intakeExtend" port="0" />
+            <Servo name="intakeWrist" port="2" />
+            <CRServo name="sampleServo" port="4" />
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port="2">
@@ -21,10 +21,10 @@
             <goBILDASeriesMotor name="leftLift" port="2" />
             <goBILDASeriesMotor name="ascend" port="1"/>
 
-            <Servo name="specimenServo" port="0" bus="0" />
-            <Servo name="ascendServo1" port="0" bus="2" />
-            <RevBlinkinLedDriver name="blinkin" port="0" bus="3" />
-            <Servo name="ascendServo2" port="0" bus="4" />
+            <Servo name="specimenServo" port="0" />
+            <Servo name="ascendServo1" port="2" />
+            <RevBlinkinLedDriver name="blinkin" port="3" />
+            <Servo name="ascendServo2" port="4" />
 
         </LynxModule>
     </LynxUsbDevice>\>

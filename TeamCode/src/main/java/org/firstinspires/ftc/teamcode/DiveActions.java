@@ -39,8 +39,8 @@ public class DiveActions{
             public boolean run(@NonNull TelemetryPacket packet) {
                 // powers on motor, if it is not on
                 if (!initialized) {
-                    liftLeft.setPower(0.8);
-                    liftRight.setPower(0.8);
+                    liftLeft.setPower(Variables.leftUpLift);
+                    liftRight.setPower(Variables.rightUpLift);
                     initialized = true;
                 }
 
@@ -53,8 +53,8 @@ public class DiveActions{
                     return true;
                 } else {
                     // false stops action rerun
-                    liftLeft.setPower(0);
-                    liftRight.setPower(0);
+                    liftLeft.setPower(Variables.leftStopLift);
+                    liftRight.setPower(Variables.rightStopLift);
                     return false;
                 }
                 // overall, the action powers the lift until it surpasses
@@ -73,8 +73,8 @@ public class DiveActions{
             public boolean run(@NonNull TelemetryPacket packet) {
                 // powers on motor, if it is not on
                 if (!initialized) {
-                    liftLeft.setPower(-0.8);
-                    liftRight.setPower(-0.8);
+                    liftLeft.setPower(Variables.leftDownLift);
+                    liftRight.setPower(Variables.rightDownLift);
                     initialized = true;
                 }
 
@@ -87,8 +87,8 @@ public class DiveActions{
                     return true;
                 } else {
                     // false stops action rerun
-                    liftLeft.setPower(0);
-                    liftRight.setPower(0);
+                    liftLeft.setPower(Variables.leftDownLift);
+                    liftRight.setPower(Variables.rightDownLift);
                     return false;
                 }
                 // overall, the action powers the lift with negative power until it is under
@@ -113,7 +113,7 @@ public class DiveActions{
         public static class open implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                specimenServo.setPosition(0.0);
+                specimenServo.setPosition(Variables.specimenLoose);
                 return false;
             }
 
@@ -125,7 +125,7 @@ public class DiveActions{
         public static class close implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                specimenServo.setPosition(0.0);
+                specimenServo.setPosition(Variables.specimenPinch);
                 return false;
             }
         }
@@ -152,7 +152,7 @@ public class DiveActions{
         public static class load implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                sampleServo.setPosition(0.0);
+                sampleServo.setPosition(Variables.sampleLoad);
                 return false;
             }
         }
@@ -164,7 +164,7 @@ public class DiveActions{
         public static class dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                sampleServo.setPosition(1.0);
+                sampleServo.setPosition(Variables.sampleDump);
                 return false;
             }
         }
@@ -204,18 +204,28 @@ public class DiveActions{
     public static class Ascend {
          static Servo ascendServo1;
          static Servo ascendServo2;
+         static DcMotorEx ascend;
 
          public Ascend(HardwareMap hardwareMap){
              ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
              ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
+             ascend = hardwareMap.get(DcMotorEx.class, "ascend");
          }
 
          public static class Deploy implements Action {
              @Override
+             public boolean run(@NonNull TelemetryPacket packet) {
+                 ascendServo1.setPosition(Variables.ascend1Up);
+                 ascendServo2.setPosition(Variables.ascend2Up);
+                 return false;
+             }
+         }
+         public static class UnDeploy implements Action   {
+             @Override
              public boolean run(@NonNull TelemetryPacket packet){
-                ascendServo1.setPosition(0);
-                ascendServo2.setPosition(0);
-                return false;
+                 ascend.setPower(Variables.ascend);
+
+                 return false;
              }
          }
 
