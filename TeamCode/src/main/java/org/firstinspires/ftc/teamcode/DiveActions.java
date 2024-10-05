@@ -147,6 +147,8 @@ public class DiveActions{
             sampleServo = hardwareMap.get(Servo.class, "sampleServo");
         }
 
+        //since this is the basket, we probably don't want these actions called open and close servo
+        // they probably should be something like 'dump' and 'load' or something.
         public static class openServo implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
