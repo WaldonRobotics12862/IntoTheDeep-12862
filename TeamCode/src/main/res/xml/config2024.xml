@@ -13,10 +13,10 @@
             <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
             <DistanceSensor name="liftSensor" port="0" bus="1"/>
 
-            <Servo name="intakeExtend" port="0" />
+            <Servo name="bucketServo" port="0" />
+            <Servo name="intakeExtend" port="5" />
             <Servo name="intakeWrist" port="2" />
             <ContinuousRotationServo name="sampleServo" port="4" />
-            <Servo name="bucketServo" port="5" />
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >

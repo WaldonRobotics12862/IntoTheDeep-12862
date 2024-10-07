@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 @Autonomous(name="LeftAuton", group="Autonomous")
 
 public class LeftAuton extends LinearOpMode {
-@Override
+    @Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-36, -63, Math.toRadians(90));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
@@ -58,9 +58,43 @@ public class LeftAuton extends LinearOpMode {
                 new SequentialAction(
                         AutonLeft,
                         //DiveActions.Lift.LiftUp(),
-                        new DiveActions.sampleDelivery.dump()
+                        DiveActions.sampleDelivery.dump()
                         //new DiveActions.intake.ExtendArm()
                 )
         );
+    }
+
+    public static class Delivery {
+        static Servo bucketServo;
+
+        public Delivery(HardwareMap hardwareMap) {
+            bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        }
+
+        //since this is the basket, we probably don't want these actions called open and close servo
+        // they probably should be something like 'dump' and 'load' or something.
+        public class load implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                bucketServo.setPosition(Variables.sampleLoad);
+                return false;
+            }
+        }
+
+        public Action load() {
+            return new DiveActions.sampleDelivery.load();
+        }
+
+        public static class dump implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                bucketServo.setPosition(Variables.sampleDump);
+                return false;
+            }
+        }
+
+        public static Action dump() {
+            return new DiveActions.sampleDelivery.dump();
+        }
     }
 }
