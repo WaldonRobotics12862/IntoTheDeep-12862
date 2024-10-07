@@ -16,6 +16,7 @@
             <Servo name="intakeExtend" port="0" />
             <Servo name="intakeWrist" port="2" />
             <ContinuousRotationServo name="sampleServo" port="4" />
+            <Servo name="bucketServo" port="5" />
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >

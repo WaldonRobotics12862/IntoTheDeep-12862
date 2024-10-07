@@ -34,16 +34,16 @@ public class LeftAuton extends LinearOpMode {
 
         Action AutonLeft = drive.actionBuilder(beginPose)
                 .splineTo(new Vector2d(-6.25, -45.00), Math.toRadians(90.00))
-                .waitSeconds(3)
-                .setTangent(0)
-                .splineToConstantHeading(new Vector2d(-6.25, -50), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-55.25, -50), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-55.25, -46.0), Math.toRadians(90.00))
-                .splineTo(new Vector2d(-58.5, -58), Math.toRadians(225))
-                .splineTo(new Vector2d(-59, -47), Math.toRadians(90))
-                .turn(Math.toRadians(215))
-                .splineTo(new Vector2d(-67, -47), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-67, -14), Math.toRadians(90))
+                //.waitSeconds(3)
+                //.setTangent(0)
+                //.splineToConstantHeading(new Vector2d(-6.25, -50), Math.toRadians(90.00))
+                //.splineToConstantHeading(new Vector2d(-55.25, -50), Math.toRadians(90.00))
+                //.splineToConstantHeading(new Vector2d(-55.25, -46.0), Math.toRadians(90.00))
+                //.splineTo(new Vector2d(-58.5, -58), Math.toRadians(225))
+                //.splineTo(new Vector2d(-59, -47), Math.toRadians(90))
+                //.turn(Math.toRadians(215))
+                //.splineTo(new Vector2d(-67, -47), Math.toRadians(90))
+                //.splineToConstantHeading(new Vector2d(-67, -14), Math.toRadians(90))
                 .splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
                 .build();
 
@@ -58,8 +58,8 @@ public class LeftAuton extends LinearOpMode {
                 new SequentialAction(
                         AutonLeft,
                         //DiveActions.Lift.LiftUp(),
-                        new DiveActions.sampleDelivery.dump(),
-                        new DiveActions.intake.ExtendArm()
+                        new DiveActions.sampleDelivery.dump()
+                        //new DiveActions.intake.ExtendArm()
                 )
         );
     }

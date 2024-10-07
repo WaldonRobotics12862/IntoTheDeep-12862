@@ -142,10 +142,10 @@ public class DiveActions{
     // sampleDelivery is the class that supports the basket that will dump a sample
     // ITD-85
     public static class sampleDelivery {
-        static Servo sampleServo;
+        static Servo bucketServo;
 
         public sampleDelivery(HardwareMap hardwareMap) {
-            sampleServo = hardwareMap.get(Servo.class, "sampleServo");
+            bucketServo = hardwareMap.get(Servo.class, "bucketServo");
         }
 
         //since this is the basket, we probably don't want these actions called open and close servo
@@ -153,7 +153,7 @@ public class DiveActions{
         public static class load implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                sampleServo.setPosition(Variables.sampleLoad);
+                bucketServo.setPosition(Variables.sampleLoad);
                 return false;
             }
         }
@@ -165,7 +165,7 @@ public class DiveActions{
         public static class dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                sampleServo.setPosition(Variables.sampleDump);
+                bucketServo.setPosition(Variables.sampleDump);
                 return false;
             }
         }
