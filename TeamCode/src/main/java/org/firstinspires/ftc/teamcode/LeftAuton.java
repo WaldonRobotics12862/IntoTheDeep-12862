@@ -57,9 +57,9 @@ public class LeftAuton extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         AutonLeft,
-                        DiveActions.Lift.LiftUp(),
-                        DiveActions.sampleDelivery.dump(),
-                        DiveActions.intake.ExtendArm()
+                        //DiveActions.Lift.LiftUp(),
+                        new DiveActions.sampleDelivery.dump(),
+                        new DiveActions.intake.ExtendArm()
                 )
         );
     }

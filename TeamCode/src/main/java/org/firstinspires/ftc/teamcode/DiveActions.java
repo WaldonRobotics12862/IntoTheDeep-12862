@@ -114,6 +114,7 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 specimenServo.setPosition(Variables.specimenLoose);
+                specimenServo.resetDeviceConfigurationForOpMode();
                 return false;
             }
 
