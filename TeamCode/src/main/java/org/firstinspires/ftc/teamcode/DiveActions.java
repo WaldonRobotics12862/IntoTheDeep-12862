@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -114,7 +115,6 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 specimenServo.setPosition(Variables.specimenLoose);
-                specimenServo.resetDeviceConfigurationForOpMode();
                 return false;
             }
 
@@ -141,11 +141,11 @@ public class DiveActions{
 
     // sampleDelivery is the class that supports the basket that will dump a sample
     // ITD-85
-    public static class sampleDelivery {
-        static Servo bucketServo;
+    public static class SampleDelivery {
+        static Servo bucketServo = null;
 
-        public sampleDelivery(HardwareMap hardwareMap) {
-            bucketServo = hardwareMap.get(Servo.class, "bucketServo");
+        public SampleDelivery(HardwareMap config2024) {
+            bucketServo = config2024.get(Servo.class, "bucketServo");
         }
 
         //since this is the basket, we probably don't want these actions called open and close servo
@@ -165,7 +165,7 @@ public class DiveActions{
         public static class dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                bucketServo.setPosition(Variables.sampleDump);
+                bucketServo.setPosition(0.0);
                 return false;
             }
         }
@@ -237,12 +237,12 @@ public class DiveActions{
 
     // Intake is the class that supports us pulling in the sample from the field
     // ITD-87
-    public static class intake {
+    public static class Intake {
         static Servo ExtendIntake;
         static Servo WristIntake;
         static CRServo Sample_ForIntake;
 
-        public intake (HardwareMap hardwareMap) {
+        public Intake (HardwareMap hardwareMap) {
             ExtendIntake = hardwareMap.get(Servo.class,"intakeExtend" );
             WristIntake = hardwareMap.get(Servo.class,"intakeWrist" );
             Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );

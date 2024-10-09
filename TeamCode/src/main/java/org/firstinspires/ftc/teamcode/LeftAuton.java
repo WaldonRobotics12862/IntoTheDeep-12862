@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -31,6 +32,12 @@ public class LeftAuton extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-36, -63, Math.toRadians(90));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
+        DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
+        DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
+        DiveActions.SampleDelivery SampleDelivery = new DiveActions.SampleDelivery(hardwareMap);
+        DiveActions.LED LED = new DiveActions.LED(hardwareMap);
+        DiveActions.Ascend Ascend = new DiveActions.Ascend(hardwareMap);
+        DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
 
         Action AutonLeft = drive.actionBuilder(beginPose)
                 .splineTo(new Vector2d(-6.25, -45.00), Math.toRadians(90.00))
@@ -48,8 +55,8 @@ public class LeftAuton extends LinearOpMode {
                 .build();
 
         //actions that need to happen on init (if any)
-
-
+        //example below
+        //Actions.runBlocking(claw.closeClaw());
 
         waitForStart();
         if (isStopRequested()) return;
@@ -57,44 +64,11 @@ public class LeftAuton extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         AutonLeft,
-                        //DiveActions.Lift.LiftUp(),
-                        DiveActions.sampleDelivery.dump()
+                        DiveActions.SpecimenDelivery.close(),
+                        new SleepAction(2)
                         //new DiveActions.intake.ExtendArm()
                 )
         );
     }
 
-    public static class Delivery {
-        static Servo bucketServo;
-
-        public Delivery(HardwareMap hardwareMap) {
-            bucketServo = hardwareMap.get(Servo.class, "bucketServo");
-        }
-
-        //since this is the basket, we probably don't want these actions called open and close servo
-        // they probably should be something like 'dump' and 'load' or something.
-        public class load implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet){
-                bucketServo.setPosition(Variables.sampleLoad);
-                return false;
-            }
-        }
-
-        public Action load() {
-            return new DiveActions.sampleDelivery.load();
-        }
-
-        public static class dump implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet){
-                bucketServo.setPosition(Variables.sampleDump);
-                return false;
-            }
-        }
-
-        public static Action dump() {
-            return new DiveActions.sampleDelivery.dump();
-        }
-    }
 }

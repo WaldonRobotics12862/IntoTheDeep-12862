@@ -41,7 +41,7 @@ public class Variables {
    public static double leftStopLift = 0;
    public static double rightUpLift = 0.8;
    public static double leftUpLift = 0.8;
-   public static double specimenLoose = 0;
+   public static double specimenLoose = 0.5;
    public static double specimenPinch = 1;
    public static double sampleLoad = 0.8;
    public static double sampleDump = 0.8;
