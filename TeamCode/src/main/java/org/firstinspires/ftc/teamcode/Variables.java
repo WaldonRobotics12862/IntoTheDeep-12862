@@ -32,7 +32,7 @@ public class Variables {
    public static double extendedIntake = 1;
    public static double retractedIntake = 0;
    public static double wristUp = 1;
-   public static double wristIntaking = 0;
+   public static double wristDown = 0;
    public static double sampleIntaking = 1;
    public static double sampleStop = 0;
    public static double rightDownLift = -0.8;

@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -248,11 +249,12 @@ public class DiveActions{
             Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );
         }
 
+        //ExtendArm does:extends the arm, lowers wrist and turns on the intake wheel
         public static class ExtendArm implements Action{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
-                WristIntake.setPosition(Variables.wristIntaking);
+                WristIntake.setPosition(Variables.wristDown);
                 Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
             }
@@ -261,6 +263,7 @@ public class DiveActions{
              return new ExtendArm();
         }
 
+        //RetractArm does: pulls arm in, pulls the wrist up and stops the wheel
         public static class RetractArm implements Action{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
@@ -274,34 +277,42 @@ public class DiveActions{
             return new RetractArm();
         }
 
+        //WheelOn does: just turns on the wheel
         public static class WheelOn implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                ExtendIntake.setPosition(Variables.extendedIntake);
-                WristIntake.setPosition(Variables.wristUp);
-                Sample_ForIntake.setPower(1);
+                Sample_ForIntake.setDirection(CRServo.Direction.FORWARD);
+                Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
-            }
-
-            public boolean stop(@NonNull TelemetryPacket packet) {
-                ExtendIntake.setPosition(Variables.retractedIntake);
-                WristIntake.setPosition(Variables.wristIntaking);
-                Sample_ForIntake.setPower(0);
-                return false;
-            }
-
-            public class On implements Action {
-                @Override
-                public boolean run(@NonNull TelemetryPacket packet) {
-                    ExtendIntake.setPosition(Variables.extendedIntake);
-                    WristIntake.setPosition(Variables.wristUp);
-                    Sample_ForIntake.setPower(-1);
-                    return false;
-                }
             }
         }
         public static Action WheelOn() {
             return new WheelOn();
+        }
+
+        //RevWheel does: just turns on the wheel
+        public static class RevWheel implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Sample_ForIntake.setDirection(CRServo.Direction.REVERSE);
+                Sample_ForIntake.setPower(Variables.sampleIntaking);
+                return false;
+            }
+        }
+        public static Action RevWheel() {
+            return new RevWheel();
+        }
+
+        //Stop does: stop the wheel from turning
+        public static class Stop implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Sample_ForIntake.setPower(0);
+                return false;
+            }
+        }
+        public static Action Stop() {
+            return new Stop();
         }
     }
 }
