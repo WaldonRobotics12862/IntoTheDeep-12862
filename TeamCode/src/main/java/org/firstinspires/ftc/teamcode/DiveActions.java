@@ -166,7 +166,7 @@ public class DiveActions{
         public static class dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                bucketServo.setPosition(0.0);
+                bucketServo.setPosition(Variables.sampleDump);
                 return false;
             }
         }
