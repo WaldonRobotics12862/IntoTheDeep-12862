@@ -6,7 +6,9 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -32,7 +34,9 @@ public class TeleOp extends LinearOpMode {
             DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
             IMU imu = hardwareMap.get(IMU.class, "imu");
 
-            // Reverse the right side motors. This may be wrong for your setup.
+        DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
+        DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
+        // Reverse the right side motors. This may be wrong for your setup.
             // If your robot moves backwards when commanded to go forwards,
             // reverse the left side instead.
             // See the note about this earlier on this page.
@@ -64,7 +68,15 @@ public class TeleOp extends LinearOpMode {
                 if (gamepad1.a) {
                     imu.resetYaw();
                 }
-
+                if (gamepad2.right_bumper){
+                    Actions.runBlocking(new SequentialAction(DiveActions.SpecimenDelivery.open()));
+                }
+                if (gamepad2.left_bumper){
+                    Actions.runBlocking(new SequentialAction(DiveActions.SpecimenDelivery.close()));
+                }
+                if (gamepad2.y){
+                    Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
+                }
                 double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
                 // Rotate the movement direction counter to the bot's rotation
