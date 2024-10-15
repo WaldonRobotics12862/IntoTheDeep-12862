@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.IMU.Parameters;
 import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
@@ -35,15 +36,16 @@ public class TeleOp extends LinearOpMode {
             // If your robot moves backwards when commanded to go forwards,
             // reverse the left side instead.
             // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
-
-            // Adjust the orientation parameters to match your robot
+        // Adjust the orientation parameters to match your robot
 
             IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                     RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                    RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
             // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
             imu.initialize(parameters);
 
@@ -59,7 +61,7 @@ public class TeleOp extends LinearOpMode {
                 // This button choice was made so that it is hard to hit on accident,
                 // it can be freely changed based on preference.
                 // The equivalent button is start on Xbox-style controllers.
-                if (gamepad1.options) {
+                if (gamepad1.a) {
                     imu.resetYaw();
                 }
 
@@ -77,8 +79,8 @@ public class TeleOp extends LinearOpMode {
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
                 double frontLeftPower = (rotY + rotX + rx) / denominator;
                 double backLeftPower = (rotY - rotX + rx) / denominator;
-                double frontRightPower = (rotY - rotX - rx) / denominator;
-                double backRightPower = (rotY + rotX - rx) / denominator;
+                double frontRightPower = (rotY + rotX - rx) / denominator;
+                double backRightPower = (rotY - rotX - rx) / denominator;
 
                 frontLeftMotor.setPower(frontLeftPower);
                 backLeftMotor.setPower(backLeftPower);
