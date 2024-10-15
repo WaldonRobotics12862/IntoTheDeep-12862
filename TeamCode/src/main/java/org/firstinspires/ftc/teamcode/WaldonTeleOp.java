@@ -1,29 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode.tuning;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.IMU.Parameters;
-import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp")
+@TeleOp(name="TeleOp")
 
-public class TeleOp extends LinearOpMode {
+public class WaldonTeleOp extends LinearOpMode {
     @Override
         public void runOpMode() throws InterruptedException {
             // Declare our motors
