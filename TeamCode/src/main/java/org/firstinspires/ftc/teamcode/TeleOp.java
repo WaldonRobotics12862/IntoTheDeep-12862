@@ -77,13 +77,6 @@ public class TeleOp extends LinearOpMode {
                 if (gamepad2.y){
                     Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
                 }
-                waitForStart();
-                if(gamepad2.a) {
-                    Actions.runBlocking(new SequentialAction(DiveActions.Intake.WheelOn()));
-                    if (gamepad2.a)
-                        Actions.runBlocking(new SequentialAction(DiveActions.Intake.RevWheel()));
-                   if (isStopRequested()) return;
-                }
                 double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
                 // Rotate the movement direction counter to the bot's rotation
