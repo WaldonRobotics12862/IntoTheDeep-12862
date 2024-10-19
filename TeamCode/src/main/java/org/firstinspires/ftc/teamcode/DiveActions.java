@@ -254,8 +254,8 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
-                WristIntake.setPosition(Variables.wristDown);
-                Sample_ForIntake.setPower(Variables.sampleIntaking);
+               // WristIntake.setPosition(Variables.wristDown);
+               // Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
             }
         }
