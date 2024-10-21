@@ -26,13 +26,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class TeleOp extends LinearOpMode {
     @Override
         public void runOpMode() throws InterruptedException {
-            // Declare our motors
-            // Make sure your ID's match your configuration
-            DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
-            DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBack");
-            DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightBack");
-            DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
-            IMU imu = hardwareMap.get(IMU.class, "imu");
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
+        DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBack");
+        DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightBack");
+        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+
+        boolean intakeRunning = false;
 
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
@@ -78,11 +80,13 @@ public class TeleOp extends LinearOpMode {
                     Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
                 }
 
-                if(gamepad2.a) {
+                if(gamepad2.a && !intakeRunning) {
                     Actions.runBlocking(new SequentialAction(DiveActions.Intake.WheelOn()));
-                    if (gamepad2.a)
-                        Actions.runBlocking(new SequentialAction(DiveActions.Intake.RevWheel()));
-                    if (isStopRequested()) return;
+                    intakeRunning = true;
+                }
+                if (gamepad2.a && intakeRunning)
+                    Actions.runBlocking(new SequentialAction(DiveActions.Intake.Stop()));
+                    intakeRunning = false;
                 }
 
                 double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
