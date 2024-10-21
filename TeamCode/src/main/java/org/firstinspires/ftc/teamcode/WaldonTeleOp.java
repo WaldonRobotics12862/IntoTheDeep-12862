@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -13,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
-@TeleOp(name="TeleOp")
+@TeleOp(name="WaldonTeleOp")
 
 public class WaldonTeleOp extends LinearOpMode {
     @Override
@@ -24,7 +25,13 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class,"leftBack");
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightBack");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
+        DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
+
+        boolean intakeRunning = false;
+        boolean ExtendForward = false;
+        boolean LiftGoing = false;
+        boolean BucketUp = false;
 
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
@@ -37,6 +44,9 @@ public class WaldonTeleOp extends LinearOpMode {
         backRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         frontLeftMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        ascendMotor.setDirection(DcMotorEx.Direction.FORWARD);
+
+        ascendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -64,9 +74,49 @@ public class WaldonTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper){
                 Actions.runBlocking(new SequentialAction(DiveActions.SpecimenDelivery.close()));
             }
-            if (gamepad2.y){
+            if (gamepad2.y && !ExtendForward){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
+                ExtendForward = true;
             }
+            if (gamepad2.y && ExtendForward){
+                Actions.runBlocking(new SequentialAction(DiveActions.Intake.RetractArm()));
+                ExtendForward = false;
+            }
+
+            if(gamepad2.a && !intakeRunning) {
+                Actions.runBlocking(new SequentialAction(DiveActions.Intake.WheelOn()));
+                intakeRunning = true;
+            }
+            if (gamepad2.a && intakeRunning){
+                Actions.runBlocking(new SequentialAction(DiveActions.Intake.Stop()));
+                intakeRunning = false;
+            }
+
+            if(gamepad2.dpad_up && !LiftGoing) {
+                Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftUp()));
+                LiftGoing = true;
+            }
+            if(gamepad2.dpad_up && LiftGoing) {
+                Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftUp()));
+                LiftGoing = false;
+            }
+            if(gamepad2.x && !BucketUp){
+                Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
+                BucketUp = false;
+            }
+            if(gamepad2.x && BucketUp){
+                Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
+                BucketUp = true;
+            }
+              if(gamepad2.right_bumper){
+               Actions.runBlocking((new SequentialAction(DiveActions.SpecimenDelivery.open())));
+            }
+            if(gamepad2.left_bumper){
+                Actions.runBlocking((new SequentialAction(DiveActions.SpecimenDelivery.close())));
+            }
+
+            //Ascend Motor Control
+            ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
@@ -83,6 +133,7 @@ public class WaldonTeleOp extends LinearOpMode {
             double backLeftPower = (rotY - rotX + rx) / denominator;
             double frontRightPower = (rotY + rotX - rx) / denominator;
             double backRightPower = (rotY - rotX - rx) / denominator;
+
 
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
