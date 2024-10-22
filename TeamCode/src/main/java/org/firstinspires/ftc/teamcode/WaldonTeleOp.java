@@ -28,13 +28,20 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
+        double lastPressedX = 0;
+        double lastPressedY = 0;
+        double lastPressedA = 0;
+        double lastPressedB = 0;
+
         boolean intakeRunning = false;
         boolean ExtendForward = false;
         boolean LiftGoing = false;
         boolean BucketUp = false;
-
+        boolean wristUp = false;
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
+        DiveActions.SampleDelivery SampleDelivery = new DiveActions.SampleDelivery(hardwareMap);
+        DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -74,38 +81,42 @@ public class WaldonTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper){
                 Actions.runBlocking(new SequentialAction(DiveActions.SpecimenDelivery.close()));
             }
-            if (gamepad2.y && !ExtendForward){
+            if (gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
+                lastPressedY = System.currentTimeMillis();
                 ExtendForward = true;
             }
-            if (gamepad2.y && ExtendForward){
+            if (gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.RetractArm()));
+                lastPressedY = System.currentTimeMillis();
                 ExtendForward = false;
             }
 
-            if(gamepad2.a && !intakeRunning) {
+            if(gamepad2.a && !intakeRunning && System.currentTimeMillis() - lastPressedA > 500) {
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.WheelOn()));
+                lastPressedA = System.currentTimeMillis();
                 intakeRunning = true;
             }
-            if (gamepad2.a && intakeRunning){
+            if (gamepad2.a && intakeRunning && System.currentTimeMillis() - lastPressedA > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.Stop()));
+                lastPressedA = System.currentTimeMillis();
                 intakeRunning = false;
             }
 
-            if(gamepad2.dpad_up && !LiftGoing) {
+            if(gamepad2.dpad_up)  {
                 Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftUp()));
-                LiftGoing = true;
             }
-            if(gamepad2.dpad_up && LiftGoing) {
-                Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftUp()));
-                LiftGoing = false;
+            if(gamepad2.dpad_down ) {
+                Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftDown()));
             }
-            if(gamepad2.x && !BucketUp){
+            if(gamepad2.x && !BucketUp && System.currentTimeMillis() - lastPressedA > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
+                lastPressedX = System.currentTimeMillis();
                 BucketUp = false;
             }
-            if(gamepad2.x && BucketUp){
-                Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
+            if(gamepad2.x && BucketUp && System.currentTimeMillis() - lastPressedA > 500){
+                Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.dump()));
+                lastPressedX = System.currentTimeMillis();
                 BucketUp = true;
             }
               if(gamepad2.right_bumper){
@@ -117,6 +128,10 @@ public class WaldonTeleOp extends LinearOpMode {
 
             //Ascend Motor Control
             ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+
+            if(gamepad2.b && !wristUp) {
+                Actions.runBlocking((new SequentialAction(DiveActions.Intake.WristUp())));
+            }
 
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
