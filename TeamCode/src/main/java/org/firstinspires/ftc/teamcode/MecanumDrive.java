@@ -64,16 +64,16 @@ public class MecanumDrive {
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
 
         // drive model parameters
         public double inPerTick = 1; // SparkFun OTOS Note: you can probably leave this at 1
-        public double lateralInPerTick = 0.8314079123312399;
+        public double lateralInPerTick = 0.7193780455338838;
         public double trackWidthTicks = 14.99006505644476;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.9050702071156618;
-        public double kV = 0.18885306466032104;
+        public double kS = 1.0637141236417786;
+        public double kV = 0.20203387725003127;
         public double kA = 0.01;
 
         // path profile parameters (in inches)
@@ -144,6 +144,9 @@ public class MecanumDrive {
 
             // TODO: reverse encoders if needed
             //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+            leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+            rightFront.setDirection(DcMotorEx.Direction.REVERSE);
         }
 
         @Override
