@@ -28,12 +28,11 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
+        DcMotorEx lift = hardwareMap.get(DcMotorEx.class, "leftLift");
+
         DataLogger dataLog = new DataLogger("TeleOp_log");
-        dataLog.addField("Bucket Servo");
-        dataLog.addField("Intake Wrist");
-        dataLog.addField("Intake Extend");
-        dataLog.addField("Specimen Servo");
         dataLog.addField("Color Sensor");
+        dataLog.addField("Lift Height");
         dataLog.newLine();
 
         double lastPressedX = 0;
@@ -46,6 +45,8 @@ public class WaldonTeleOp extends LinearOpMode {
         boolean LiftGoing = false;
         boolean BucketUp = false;
         boolean wristUp = false;
+        boolean wristdown = false;
+
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
         DiveActions.SampleDelivery SampleDelivery = new DiveActions.SampleDelivery(hardwareMap);
@@ -79,6 +80,10 @@ public class WaldonTeleOp extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
+            dataLog.addField("Color Sensor");
+            dataLog.addField(lift.getCurrentPosition());
+            dataLog.newLine();
+
             if (gamepad1.a) {
                 imu.resetYaw();
             }
@@ -89,12 +94,12 @@ public class WaldonTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper){
                 Actions.runBlocking(new SequentialAction(DiveActions.SpecimenDelivery.close()));
             }
-            if (gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
+            if (gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 250){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.ExtendArm()));
                 lastPressedY = System.currentTimeMillis();
                 ExtendForward = true;
             }
-            if (gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
+            if (gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 250){
                 Actions.runBlocking(new SequentialAction(DiveActions.Intake.RetractArm()));
                 lastPressedY = System.currentTimeMillis();
                 ExtendForward = false;
@@ -137,10 +142,16 @@ public class WaldonTeleOp extends LinearOpMode {
             //Ascend Motor Control
             ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
-            if(gamepad2.b && !wristUp) {
-                Actions.runBlocking((new SequentialAction(DiveActions.Intake.WristUp())));
+            if(gamepad2.b && !wristdown && System.currentTimeMillis() - lastPressedB > 500) {
+                Actions.runBlocking((new SequentialAction(DiveActions.Intake.Wristdown())));
+                lastPressedB = System.currentTimeMillis();
+                wristdown = false;
             }
-
+            if(gamepad2.b && wristUp && System.currentTimeMillis() - lastPressedB > 500) {
+                Actions.runBlocking((new SequentialAction(DiveActions.Intake.WristUp())));
+                lastPressedB = System.currentTimeMillis();
+                wristUp = true;
+            }
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
             double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
