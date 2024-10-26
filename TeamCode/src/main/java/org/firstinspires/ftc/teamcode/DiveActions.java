@@ -254,8 +254,8 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
-               // WristIntake.setPosition(Variables.wristDown);
-               // Sample_ForIntake.setPower(Variables.sampleIntaking);
+                WristIntake.setPosition(Variables.wristDown);
+                // Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
             }
         }
@@ -279,7 +279,7 @@ public class DiveActions{
 
         //WheelOn does: just turns on the wheel
 
-        public static class WheelOn implements Action {
+        private static class WheelOn implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 Sample_ForIntake.setDirection(CRServo.Direction.FORWARD);
@@ -287,7 +287,7 @@ public class DiveActions{
                 return false;
             }
         }
-        public static Action WheelOn() {
+        protected static Action WheelOn() {
             return new WheelOn();
         }
 

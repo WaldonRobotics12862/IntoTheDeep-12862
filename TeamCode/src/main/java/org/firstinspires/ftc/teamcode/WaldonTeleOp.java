@@ -142,15 +142,15 @@ public class WaldonTeleOp extends LinearOpMode {
             //Ascend Motor Control
             ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
-            if(gamepad2.b && !wristdown && System.currentTimeMillis() - lastPressedB > 500) {
-                Actions.runBlocking((new SequentialAction(DiveActions.Intake.Wristdown())));
+            if(gamepad2.b && !intakeRunning && System.currentTimeMillis() - lastPressedB > 500) {
+                Actions.runBlocking((new SequentialAction(DiveActions.Intake.RevWheel())));
                 lastPressedB = System.currentTimeMillis();
-                wristdown = false;
+                intakeRunning = true;
             }
-            if(gamepad2.b && wristUp && System.currentTimeMillis() - lastPressedB > 500) {
-                Actions.runBlocking((new SequentialAction(DiveActions.Intake.WristUp())));
+            if(gamepad2.b && intakeRunning && System.currentTimeMillis() - lastPressedB > 500) {
+                Actions.runBlocking((new SequentialAction(DiveActions.Intake.Stop())));
                 lastPressedB = System.currentTimeMillis();
-                wristUp = true;
+                intakeRunning = false;
             }
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
