@@ -26,7 +26,7 @@ public class DiveActions{
         public Lift(HardwareMap hardwareMap) {
             liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
             liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-            liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
+            liftLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
             liftRight = hardwareMap.get(DcMotorEx.class, "rightLift");
             liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
