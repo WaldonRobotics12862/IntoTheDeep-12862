@@ -50,7 +50,7 @@ public class DiveActions{
                 double posL = liftLeft.getCurrentPosition();
                 double posR = liftRight.getCurrentPosition();
                 packet.put("liftPos", posL);
-                if (posR < 3000.0 & posL < 3000.0) {
+                if (posL < 2500.0) {
                     // true causes the action to rerun
                     return true;
                 } else {
@@ -84,7 +84,7 @@ public class DiveActions{
                 double posL = liftLeft.getCurrentPosition();
                 double posR = liftRight.getCurrentPosition();
                 packet.put("liftPos", posL);
-                if (posR > 10.0 & posL > 10.0) {
+                if (posL > 10.0) {
                     // true causes the action to rerun
                     return true;
                 } else {

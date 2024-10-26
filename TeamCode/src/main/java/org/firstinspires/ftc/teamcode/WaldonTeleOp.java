@@ -56,8 +56,8 @@ public class WaldonTeleOp extends LinearOpMode {
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         ascendMotor.setDirection(DcMotorEx.Direction.FORWARD);
@@ -122,15 +122,15 @@ public class WaldonTeleOp extends LinearOpMode {
             if(gamepad2.dpad_down ) {
                 Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftDown()));
             }
-            if(gamepad2.x && !BucketUp && System.currentTimeMillis() - lastPressedA > 500){
+            if(gamepad2.x && !BucketUp && System.currentTimeMillis() - lastPressedX > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
                 lastPressedX = System.currentTimeMillis();
-                BucketUp = false;
+                BucketUp = true;
             }
-            if(gamepad2.x && BucketUp && System.currentTimeMillis() - lastPressedA > 500){
+            if(gamepad2.x && BucketUp && System.currentTimeMillis() - lastPressedX > 500){
                 Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.dump()));
                 lastPressedX = System.currentTimeMillis();
-                BucketUp = true;
+                BucketUp = false;
             }
               if(gamepad2.right_bumper){
                Actions.runBlocking((new SequentialAction(DiveActions.SpecimenDelivery.open())));
