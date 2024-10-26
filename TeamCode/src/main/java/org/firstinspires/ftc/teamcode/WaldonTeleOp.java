@@ -28,6 +28,14 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
 
+        DataLogger dataLog = new DataLogger("TeleOp_log");
+        dataLog.addField("Bucket Servo");
+        dataLog.addField("Intake Wrist");
+        dataLog.addField("Intake Extend");
+        dataLog.addField("Specimen Servo");
+        dataLog.addField("Color Sensor");
+        dataLog.newLine();
+
         double lastPressedX = 0;
         double lastPressedY = 0;
         double lastPressedA = 0;
@@ -155,5 +163,6 @@ public class WaldonTeleOp extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
         }
+        dataLog.closeDataLogger();
     }
 }
