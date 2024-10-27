@@ -62,6 +62,12 @@ public class WaldonTeleOp extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         ascendMotor.setDirection(DcMotorEx.Direction.FORWARD);
 
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
         ascendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Adjust the orientation parameters to match your robot
