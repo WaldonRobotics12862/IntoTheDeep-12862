@@ -45,6 +45,7 @@ public class Variables {
    public static double specimenPinch = 1;
    public static double sampleLoad = .4;
    public static double sampleDump = 1;
+   public static double sampleEject = - .5;
    public static double ascend1Up = 1;
    public static double ascend2Up = 1;
    public static double ascend1Down = 0;

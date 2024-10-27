@@ -296,7 +296,7 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 Sample_ForIntake.setDirection(CRServo.Direction.REVERSE);
-                Sample_ForIntake.setPower(Variables.sampleIntaking);
+                Sample_ForIntake.setPower(Variables.sampleEject);
                 return false;
             }
         }
