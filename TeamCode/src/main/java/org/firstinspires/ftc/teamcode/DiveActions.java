@@ -7,13 +7,12 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DiveActions{
 
@@ -249,18 +248,46 @@ public class DiveActions{
             Sample_ForIntake = hardwareMap.get(CRServo.class,"sampleServo" );
         }
 
+        public static class DebugAction implements Action {
+            private String message;
+            private Telemetry telemetry;
+            public DebugAction(Telemetry telemetry, String message) {
+                this.telemetry = telemetry;
+                this.message = message;
+            }
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                telemetry.addData("Debug", message);
+                telemetry.update();
+
+                System.out.println(message);
+                return false;
+            }
+        }
+
         //ExtendArm does:extends the arm, lowers wrist and turns on the intake wheel
         public static class ExtendArm implements Action{
+            private Telemetry telemetry;
+            public ExtendArm(Telemetry telemetry) {
+                this.telemetry = telemetry;
+            }
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.extendedIntake);
                 WristIntake.setPosition(Variables.wristDown);
-                // Sample_ForIntake.setPower(Variables.sampleIntaking);
+                if (ExtendIntake.getPosition() != Variables.extendedIntake) {
+                    return true;
+                }
+                if (WristIntake.getPosition() != Variables.wristDown) {
+                    return true;
+                }
+                //Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
             }
         }
-        public static Action ExtendArm(){
-             return new ExtendArm();
+        public static Action extendArm(Telemetry telemetry){
+             return new ExtendArm(telemetry);
         }
 
         //RetractArm does: pulls arm in, pulls the wrist up and stops the wheel
@@ -269,25 +296,40 @@ public class DiveActions{
             public boolean run(@NonNull TelemetryPacket packet){
                 ExtendIntake.setPosition(Variables.retractedIntake);
                 WristIntake.setPosition(Variables.wristUp);
+                if (ExtendIntake.getPosition() != Variables.retractedIntake) {
+                    return true;
+                }
+                if (WristIntake.getPosition() != Variables.wristUp) {
+                    return true;
+                }
                 Sample_ForIntake.setPower(Variables.sampleStop);
                 return false;
             }
         }
-        public static Action RetractArm(){
+        public static Action retractArm(){
             return new RetractArm();
         }
 
         //WheelOn does: just turns on the wheel
 
         private static class WheelOn implements Action {
+            long startTime = -1;
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                if (startTime != -1) {
+                    if (System.currentTimeMillis() - startTime < 5000) {
+                        return true;
+                    }
+                    startTime = -1;
+                    return false;
+                }
                 Sample_ForIntake.setDirection(CRServo.Direction.FORWARD);
                 Sample_ForIntake.setPower(Variables.sampleIntaking);
-                return false;
+                startTime = System.currentTimeMillis();
+                return true;
             }
         }
-        protected static Action WheelOn() {
+        protected static Action wheelOn() {
             return new WheelOn();
         }
 

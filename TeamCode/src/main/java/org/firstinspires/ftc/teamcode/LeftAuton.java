@@ -1,28 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
-import androidx.annotation.NonNull;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SleepAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
 // Non-RR imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.CRServo;
-
-import org.firstinspires.ftc.teamcode.DiveActions;
-import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 
 @Config
 @Autonomous(name="LeftAuton", group="Autonomous")
@@ -31,6 +20,7 @@ public class LeftAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-36, -63, Math.toRadians(90));
+        Pose2d samplePickUp = new Pose2d(-25, -36, Math.toRadians(160));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
         DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
@@ -39,8 +29,19 @@ public class LeftAuton extends LinearOpMode {
         DiveActions.Ascend Ascend = new DiveActions.Ascend(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
 
+
+        Action DriveIntoSample = drive.actionBuilder(samplePickUp)
+                .lineToX(-24)
+                .build();
+
         Action AutonLeft = drive.actionBuilder(beginPose)
-                .splineTo(new Vector2d(-6.25, -45.00), Math.toRadians(90.00))
+                //lift up to delivery
+                .splineTo(new Vector2d(-5, -33.00), Math.toRadians(90.00))
+                //pull down on sample
+                .lineToY(-48)
+                //.turn(Math.toRadians(0))
+                //deploy
+                .splineTo(new Vector2d(-25, -36), Math.toRadians(160))
                 //.waitSeconds(3)
                 //.setTangent(0)
                 //.splineToConstantHeading(new Vector2d(-6.25, -50), Math.toRadians(90.00))
@@ -51,7 +52,7 @@ public class LeftAuton extends LinearOpMode {
                 //.turn(Math.toRadians(215))
                 //.splineTo(new Vector2d(-67, -47), Math.toRadians(90))
                 //.splineToConstantHeading(new Vector2d(-67, -14), Math.toRadians(90))
-                .splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
+                //.splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
                 .build();
 
         //actions that need to happen on init (if any)
@@ -62,14 +63,25 @@ public class LeftAuton extends LinearOpMode {
         if (isStopRequested()) return;
 
         Actions.runBlocking(
+//        Actions.runBlocking(DiveActions.Intake.ExtendArm());
+//        Actions.runBlocking(DiveActions.Intake.WheelOn());
+
                 new SequentialAction(
                         AutonLeft,
-                        DiveActions.SpecimenDelivery.open()
-        //new SleepAction(5),
+                        new DiveActions.Intake.DebugAction(this.telemetry, "Starting arm"),
+                        DiveActions.Intake.extendArm(telemetry),
+//                        new DiveActions.Intake.DebugAction(this.telemetry, "Starting wheel"),
+                        new SleepAction(2 ),
+                        new ParallelAction(
+                            DiveActions.Intake.wheelOn(),
+                            DriveIntoSample
+                        )
+                        //new SleepAction(5),
                         //DiveActions.Intake.WheelOn()
                         //new DiveActions.intake.ExtendArm()
                 )
         );
+        //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));
     }
 
 }
