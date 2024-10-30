@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode.tuning;
 
+import android.graphics.Color;
+
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,6 +15,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
@@ -40,6 +45,8 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
         DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "sampleColor");
+        RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
         DcMotorEx lift = hardwareMap.get(DcMotorEx.class, "leftLift");
 
@@ -50,6 +57,9 @@ public class WaldonTeleOp extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
 
         imu.initialize(parameters);
+
+        RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+        LED.setPattern(pattern);
 
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -78,14 +88,34 @@ public class WaldonTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            dataLog.addField("Color Sensor");
-            dataLog.addField(lift.getCurrentPosition());
-            dataLog.newLine();
 
             //Drive();
             RunIntake();
             RunDelivery();
 
+            //Get Color Sensor Data
+            int myColor = color.getNormalizedColors().toColor();
+            double hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
+
+            telemetry.addData("hue: ",hue);
+            telemetry.update();
+
+            dataLog.addField(hue);
+            dataLog.addField(lift.getCurrentPosition());
+            dataLog.newLine();
+
+
+            //Set LEDs
+            if (hue >210 & hue < 240) {
+
+
+                pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+            }
+
+
+            LED.setPattern(pattern);
+
+            // DRIVE IS HERE:
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
