@@ -121,7 +121,11 @@ public class WaldonTeleOp extends LinearOpMode {
             LED.setPattern(pattern);
             telemetry.addData("pattern:", pattern );
 
-        }
+            } else {
+                pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+                LED.setPattern(pattern);
+                telemetry.addData("pattern:", pattern);
+            }
 
 
             // DRIVE IS HERE:
