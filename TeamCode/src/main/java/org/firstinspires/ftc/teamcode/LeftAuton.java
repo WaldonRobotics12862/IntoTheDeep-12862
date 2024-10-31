@@ -34,6 +34,10 @@ public class LeftAuton extends LinearOpMode {
                 .lineToX(-24)
                 .build();
 
+        Action TurnIntoSample = drive.actionBuilder(samplePickUp)
+                .turn(.2)
+                .build();
+
         Action AutonLeft = drive.actionBuilder(beginPose)
                 //lift up to delivery
                 .splineTo(new Vector2d(-5, -33.00), Math.toRadians(90.00))
@@ -41,7 +45,7 @@ public class LeftAuton extends LinearOpMode {
                 .lineToY(-48)
                 //.turn(Math.toRadians(0))
                 //deploy
-                .splineTo(new Vector2d(-25, -36), Math.toRadians(160))
+                .splineTo(new Vector2d(-23.5, -36), Math.toRadians(160.18))
                 //.waitSeconds(3)
                 //.setTangent(0)
                 //.splineToConstantHeading(new Vector2d(-6.25, -50), Math.toRadians(90.00))
@@ -54,6 +58,10 @@ public class LeftAuton extends LinearOpMode {
                 //.splineToConstantHeading(new Vector2d(-67, -14), Math.toRadians(90))
                 //.splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
                 .build();
+        Action AutonLeftBlock1 = drive.actionBuilder(new Pose2d(-23.5, -36, Math.toRadians(160.18)))
+                .lineToX(-25.5)
+                .build();
+
 
         //actions that need to happen on init (if any)
         //example below
@@ -62,25 +70,29 @@ public class LeftAuton extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
 
-        Actions.runBlocking(
+
 //        Actions.runBlocking(DiveActions.Intake.ExtendArm());
 //        Actions.runBlocking(DiveActions.Intake.WheelOn());
 
+        Actions.runBlocking(
                 new SequentialAction(
-                        AutonLeft,
-                        new DiveActions.Intake.DebugAction(this.telemetry, "Starting arm"),
-                        DiveActions.Intake.extendArm(telemetry),
-//                        new DiveActions.Intake.DebugAction(this.telemetry, "Starting wheel"),
-                        new SleepAction(2 ),
-                        new ParallelAction(
-                            DiveActions.Intake.wheelOn(),
-                            DriveIntoSample
-                        )
-                        //new SleepAction(5),
-                        //DiveActions.Intake.WheelOn()
-                        //new DiveActions.intake.ExtendArm()
+                    AutonLeft,
+                    new DiveActions.Intake.DebugAction(this.telemetry, "Starting arm"),
+                    DiveActions.Intake.extendArm(telemetry),
+    //              new DiveActions.Intake.DebugAction(this.telemetry, "Starting wheel"),
+                    new SleepAction(2 ),
+                    new ParallelAction(
+                DiveActions.Intake.wheelOn(),
+                  //DriveIntoSample,
+                   //TurnIntoSample,
+                    AutonLeftBlock1
                 )
+                //new SleepAction(5),
+                //DiveActions.Intake.WheelOn()
+                //new DiveActions.intake.ExtendArm()
+            )
         );
+
         //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));
     }
 
