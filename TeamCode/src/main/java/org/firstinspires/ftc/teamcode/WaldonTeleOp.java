@@ -109,7 +109,7 @@ public class WaldonTeleOp extends LinearOpMode {
             if (hue >210 & hue < 240) {
 
 
-                pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+                pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE;
             }
 
 
