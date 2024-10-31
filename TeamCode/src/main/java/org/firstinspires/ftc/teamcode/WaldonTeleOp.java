@@ -108,7 +108,7 @@ public class WaldonTeleOp extends LinearOpMode {
 
             //Set LEDs
             if (hue > 210 && hue < 240) {
-                pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE;
+                pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
                 LED.setPattern(pattern);
                 telemetry.addData("pattern:", pattern );
             } else if (hue > 75 && hue < 90) {
@@ -117,12 +117,12 @@ public class WaldonTeleOp extends LinearOpMode {
                 telemetry.addData("pattern:", pattern );
 
             } else if (hue > 10 && hue < 30) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED;
+            pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
             LED.setPattern(pattern);
             telemetry.addData("pattern:", pattern );
 
             } else {
-                pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+                pattern = RevBlinkinLedDriver.BlinkinPattern.LAWN_GREEN;
                 LED.setPattern(pattern);
                 telemetry.addData("pattern:", pattern);
             }
