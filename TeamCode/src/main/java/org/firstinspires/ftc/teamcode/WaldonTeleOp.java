@@ -58,8 +58,9 @@ public class WaldonTeleOp extends LinearOpMode {
 
         imu.initialize(parameters);
 
-        //RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
-        //LED.setPattern(pattern);
+        RevBlinkinLedDriver.BlinkinPattern pattern;
+        pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+        LED.setPattern(pattern);
 
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -106,12 +107,16 @@ public class WaldonTeleOp extends LinearOpMode {
 
 
             //Set LEDs
-            if (hue >210 & hue < 240) {
-                RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE;
+            if (hue > 210 && hue < 240) {
+                pattern = RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE;
                 LED.setPattern(pattern);
+                telemetry.addData("pattern:", pattern );
+            } else if (hue > 75 && hue < 90) {
+                pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+                LED.setPattern(pattern);
+                telemetry.addData("pattern:", pattern );
+                
             }
-
-
 
 
             // DRIVE IS HERE:
