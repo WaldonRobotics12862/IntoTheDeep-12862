@@ -71,7 +71,7 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
                     return false;
                 }else {
                     return true;
@@ -93,7 +93,7 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                if (liftLeft.getCurrentPosition() < .9 * height && liftLeft.getCurrentPosition() > 1.1 * height){
                     return false;
                 }else {
                     return true;
@@ -115,7 +115,7 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                if (liftLeft.getCurrentPosition() < .9 * height && liftLeft.getCurrentPosition() > 1.1 * height){
                     return false;
                 }else {
                     return true;

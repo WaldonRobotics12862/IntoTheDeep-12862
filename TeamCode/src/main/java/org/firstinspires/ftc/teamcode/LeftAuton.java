@@ -67,6 +67,7 @@ public class LeftAuton extends LinearOpMode {
 //        Actions.runBlocking(DiveActions.Intake.WheelOn());
 
                 new SequentialAction(
+                        DiveActions.Lift.liftToHighChamber(),
                         AutonLeft,
                         new DiveActions.Intake.DebugAction(this.telemetry, "Starting arm"),
                         DiveActions.Intake.extendArm(telemetry),
@@ -75,7 +76,8 @@ public class LeftAuton extends LinearOpMode {
                         new ParallelAction(
                             DiveActions.Intake.wheelOn(),
                             DriveIntoSample
-                        )
+                        ),
+                        DiveActions.Lift.liftFullDown()
                         //new SleepAction(5),
                         //DiveActions.Intake.WheelOn()
                         //new DiveActions.intake.ExtendArm()
