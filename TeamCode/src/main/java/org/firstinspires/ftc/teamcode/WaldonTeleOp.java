@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -37,6 +39,8 @@ public class WaldonTeleOp extends LinearOpMode {
     boolean wristdown = false;
 
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
@@ -48,7 +52,16 @@ public class WaldonTeleOp extends LinearOpMode {
         RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "sampleColor");
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
-        DcMotorEx lift = hardwareMap.get(DcMotorEx.class, "leftLift");
+        DcMotorEx liftL = hardwareMap.get(DcMotorEx.class, "leftLift");
+        DcMotorEx liftR = hardwareMap.get(DcMotorEx.class, "rightLift");
+        liftR.setDirection(DcMotorEx.Direction.REVERSE);
+
+        liftL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        liftR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        liftL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        liftR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
         // Adjust the orientation parameters to match your robot
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
@@ -98,13 +111,50 @@ public class WaldonTeleOp extends LinearOpMode {
             int myColor = color.getNormalizedColors().toColor();
             double hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
 
-            telemetry.addData("hue: ",hue);
-            telemetry.update();
+            //telemetry.addData("hue: ",hue);
+            //telemetry.update();
 
             dataLog.addField(hue);
-            dataLog.addField(lift.getCurrentPosition());
+            dataLog.addField(liftL.getCurrentPosition());
             dataLog.newLine();
 
+            telemetry.addData("R Lift Height", liftR.getCurrentPosition());
+            telemetry.addData("L Lift Height", liftL.getCurrentPosition());
+            telemetry.update();
+
+//            if(gamepad2.dpad_left){
+//                liftL.setTargetPosition(-1500);
+//                liftR.setTargetPosition(-1500);
+//                liftL.setPower(1);
+//                liftR.setPower(1);
+//                liftL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                liftR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//            }
+//            if(gamepad2.dpad_up){
+//                liftL.setTargetPosition(-2250);
+//                liftR.setTargetPosition(-2250);
+//                liftL.setPower(1);
+//                liftR.setPower(1);
+//                liftL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                liftR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            }
+//            if (gamepad2.dpad_down){
+//                liftL.setTargetPosition(0);
+//                liftR.setTargetPosition(0);
+//                liftL.setPower(1);
+//                liftR.setPower(1);
+//                liftL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                liftR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            }
+//            if (gamepad2.dpad_right) {
+//                liftL.setTargetPosition(-750);
+//                liftR.setTargetPosition(-750);
+//                liftL.setPower(1);
+//                liftR.setPower(1);
+//                liftL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                liftR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            }
 
             //Set LEDs
             if (hue > 210 && hue < 240) {
@@ -197,12 +247,28 @@ public class WaldonTeleOp extends LinearOpMode {
     }
 
     private void RunDelivery(){
+
+
+
+
+
+
+
+
         if(gamepad2.dpad_up)  {
-            Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftUp()));
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHighBasket()));
         }
         if(gamepad2.dpad_down ) {
-            Actions.runBlocking(new SequentialAction(DiveActions.Lift.LiftDown()));
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftFullDown()));
         }
+        if(gamepad2.dpad_left){
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHighChamber()));
+        }
+        if(gamepad2.dpad_right){
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));
+        }
+
+
         if(gamepad2.x && !BucketUp && System.currentTimeMillis() - lastPressedX > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
             lastPressedX = System.currentTimeMillis();

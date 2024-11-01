@@ -18,8 +18,8 @@
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >
-            <goBILDA5202SeriesMotor name="rightLift" port="0" />
-            <goBILDA5202SeriesMotor name="ascend" port="1"/>
+            <goBILDA5202SeriesMotor name="rightLift" port="1" />
+            <goBILDA5202SeriesMotor name="ascend" port="0"/>
             <goBILDA5202SeriesMotor name="leftLift" port="2" />
 
             <Servo name="specimenServo" port="0" />

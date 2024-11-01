@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -26,12 +27,105 @@ public class DiveActions{
             liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
             liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
+            liftLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             liftRight = hardwareMap.get(DcMotorEx.class, "rightLift");
             liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             liftRight.setDirection(DcMotorEx.Direction.REVERSE);
+            liftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
+
+        public static class LiftToHighBasket implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = -2250;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
+
+                if (liftLeft.getCurrentPosition() < .9 * height && liftLeft.getCurrentPosition() > 1.1 * height){
+                    return false;
+                }else {
+                    return true;
+                }
+            }
+        }
+        public static Action liftToHighBasket() {
+            return new LiftToHighBasket();
+        }
+
+        public static class LiftFullDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = 0;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                    return false;
+                }else {
+                    return true;
+                }
+            }
+        }
+        public static Action liftFullDown() {
+            return new LiftFullDown();
+        }
+
+        public static class LiftToHighChamber implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = -1500;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                    return false;
+                }else {
+                    return true;
+                }
+            }
+        }
+        public static Action liftToHighChamber() {
+            return new LiftToHighChamber();
+        }
+
+        public static class DeliverHighChamber implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = -1200;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (liftLeft.getCurrentPosition() > .9 * height && liftLeft.getCurrentPosition() < 1.1 * height){
+                    return false;
+                }else {
+                    return true;
+                }
+            }
+        }
+        public static Action deliverHighChamber() {
+            return new DeliverHighChamber();
+        }
+
 
         public static class LiftUp implements Action {
             private boolean initialized = false;
