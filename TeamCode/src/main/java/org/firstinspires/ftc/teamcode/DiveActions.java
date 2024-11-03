@@ -36,16 +36,47 @@ public class DiveActions{
 
         }
 
-        public static class LiftToHighBasket implements Action {
+        public static class LiftToHeight implements Action {
+            private Integer height;
+            public LiftToHeight(Integer height){
+                this.height = height;
+            }
+
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = -2250;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
                 liftLeft.setPower(1);
                 liftRight.setPower(1);
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
+
+                double LeftError = Math.abs(liftLeft.getCurrentPosition()/height);
+                double RightError = Math.abs(liftRight.getCurrentPosition()/height);
+
+                if (LeftError > .9 && LeftError < 1.1 || RightError > .9 && RightError < 1.1){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        public static Action liftToHeight(Integer height){
+            return new LiftToHeight(height);
+        }
+
+        public static class LiftToHighBasket implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = -2250;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
 
                 packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
 
@@ -85,7 +116,7 @@ public class DiveActions{
         public static class LiftToHighChamber implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = -1500;
+                Integer height = -1200;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
                 liftLeft.setPower(1);
@@ -107,7 +138,7 @@ public class DiveActions{
         public static class DeliverHighChamber implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = -1200;
+                Integer height = -1000;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
                 liftLeft.setPower(1);
@@ -125,7 +156,6 @@ public class DiveActions{
         public static Action deliverHighChamber() {
             return new DeliverHighChamber();
         }
-
 
         public static class LiftUp implements Action {
             private boolean initialized = false;
@@ -156,7 +186,6 @@ public class DiveActions{
                 // 3000 encoder ticks, then powers it off
             }
         }
-
         public static Action LiftUp() {
             return new LiftUp();
         }
@@ -190,7 +219,6 @@ public class DiveActions{
                 // 10 encoder ticks, then powers it off
             }
         }
-
         public static Action LiftDown() {
             return new LiftDown();
         }
@@ -220,6 +248,7 @@ public class DiveActions{
         public static class close implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                packet.addLine(String.valueOf(specimenServo.getPosition()));
                 specimenServo.setPosition(Variables.specimenPinch);
                 return false;
             }
