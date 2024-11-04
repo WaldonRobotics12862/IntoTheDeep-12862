@@ -77,7 +77,7 @@ public class LeftAuton extends LinearOpMode {
                             DiveActions.Intake.wheelOn(),
                             DriveIntoSample
                         ),
-                        DiveActions.Lift.liftFullDown()
+                        DiveActions.Lift.liftFullDown(System.currentTimeMillis())
                         //new SleepAction(5),
                         //DiveActions.Intake.WheelOn()
                         //new DiveActions.intake.ExtendArm()

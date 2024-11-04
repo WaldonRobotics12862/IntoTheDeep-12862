@@ -77,8 +77,8 @@ public class WaldonTeleOp extends LinearOpMode {
 
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -116,6 +116,7 @@ public class WaldonTeleOp extends LinearOpMode {
 
             dataLog.addField(hue);
             dataLog.addField(liftL.getCurrentPosition());
+            dataLog.addField(liftR.getCurrentPosition());
             dataLog.newLine();
 
             telemetry.addData("R Lift Height", liftR.getCurrentPosition());
@@ -124,16 +125,16 @@ public class WaldonTeleOp extends LinearOpMode {
 
 //
             //Set LEDs
-            if (hue > 210 && hue < 240) {
+            if (hue > 179 && hue < 240) {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
                 LED.setPattern(pattern);
                 telemetry.addData("pattern:", pattern );
-            } else if (hue > 75 && hue < 90) {
+            } else if (hue > 75 && hue < 100) {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
                 LED.setPattern(pattern);
                 telemetry.addData("pattern:", pattern );
 
-            } else if (hue > 10 && hue < 30) {
+            } else if (hue > 10 && hue < 50) {
             pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
             LED.setPattern(pattern);
             telemetry.addData("pattern:", pattern );
@@ -220,14 +221,20 @@ public class WaldonTeleOp extends LinearOpMode {
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHighBasket()));
         }
         if(gamepad2.dpad_down ) {
-            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftFullDown()));
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftFullDown(System.currentTimeMillis())));
         }
         if(gamepad2.dpad_left){
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(Variables.HighChamber)));
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHighChamber()));
         }
         if(gamepad2.dpad_right){
-            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver)));
+            Actions.runBlocking(
+                    new SequentialAction(
+                            DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                            DiveActions.SpecimenDelivery.open(),
+                            DiveActions.Lift.liftFullDown(System.currentTimeMillis())
+                    )
+            );
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));
         }
 

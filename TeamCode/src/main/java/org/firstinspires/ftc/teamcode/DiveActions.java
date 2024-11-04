@@ -13,8 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 public class DiveActions{
 
     // Lift is the class that will support the lift
@@ -92,6 +90,10 @@ public class DiveActions{
         }
 
         public static class LiftFullDown implements Action {
+            private Long downStarted;
+            public LiftFullDown(long downStarted){
+                this.downStarted = downStarted;
+            }
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 Integer height = 0;
@@ -102,15 +104,19 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
+                if(System.currentTimeMillis() - downStarted > 1500) {
+                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     return false;
-                }else {
+                } else if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
+                    return false;
+                } else {
                     return true;
                 }
             }
         }
-        public static Action liftFullDown() {
-            return new LiftFullDown();
+        public static Action liftFullDown(long downStarted) {
+            return new LiftFullDown(downStarted);
         }
 
         public static class LiftToHighChamber implements Action {
