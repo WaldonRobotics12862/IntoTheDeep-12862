@@ -78,9 +78,6 @@ public class LeftAuton extends LinearOpMode {
                             DriveIntoSample
                         ),
                         DiveActions.Lift.liftFullDown(System.currentTimeMillis())
-                        //new SleepAction(5),
-                        //DiveActions.Intake.WheelOn()
-                        //new DiveActions.intake.ExtendArm()
                 )
         );
         //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));

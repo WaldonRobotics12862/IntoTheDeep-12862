@@ -193,7 +193,7 @@ public class WaldonTeleOp extends LinearOpMode {
             ExtendForward = false;
         }
         if(gamepad2.a && !intakeRunning && System.currentTimeMillis() - lastPressedA > 500) {
-            Actions.runBlocking(new SequentialAction(DiveActions.Intake.wheelOn()));
+            Actions.runBlocking(new SequentialAction(DiveActions.Intake.wheelOn0()));
             lastPressedA = System.currentTimeMillis();
             intakeRunning = true;
         }

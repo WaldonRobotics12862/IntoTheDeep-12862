@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,49 +12,92 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public final class RightAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d beginPose = new Pose2d(-34.87, -62.99, Math.toRadians(90));
+        // Define all the locations that we need
+        Pose2d beginPose = new Pose2d(12, -63, Math.toRadians(90));
+
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
+        DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
+        DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
+        DiveActions.SampleDelivery SampleDelivery = new DiveActions.SampleDelivery(hardwareMap);
+        DiveActions.LED LED = new DiveActions.LED(hardwareMap);
+        DiveActions.Ascend Ascend = new DiveActions.Ascend(hardwareMap);
+        DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
+
+
+
+        Pose2d SP1p = new Pose2d(5, -33, Math.toRadians(90));
+
+        Pose2d SP2 = new Pose2d(0, -32, Math.toRadians(90));
+        Pose2d SP2p = new Pose2d(0, -33, Math.toRadians(90));
+
+        Pose2d SP3 = new Pose2d(-5, -32, Math.toRadians(90));
+        Pose2d SP3p = new Pose2d(-5, -33, Math.toRadians(90));
+
+        Pose2d pickup = new Pose2d(48, -65, Math.toRadians(270));
+        Pose2d pickupP = new Pose2d(48, -63, Math.toRadians(270));
+
+        Action Deliver1 = drive.actionBuilder(beginPose)
+                .splineTo(new Vector2d(5, -32),Math.toRadians(90))
+                .build();
+
+        Action Pickup2 = drive.actionBuilder(SP1p)
+                .lineToY(-36)
+                .turn(Math.toRadians(270))
+                .splineTo(new Vector2d(48, -65), Math.toRadians(270))
+                .build();
+
+        Action Deliver2 = drive.actionBuilder(pickupP)
+                .lineToY(-58)
+                .turn(Math.toRadians(90))
+                .splineTo(new Vector2d(0, -32),Math.toRadians(90))
+                .build();
+
+        Action Pickup3 = drive.actionBuilder(SP2p)
+                .lineToY(-36)
+                .turn(Math.toRadians(270))
+                .splineTo(new Vector2d(48, -65), Math.toRadians(270))
+                .build();
+
+        Action Deliver3 = drive.actionBuilder(pickupP)
+                .lineToY(-58)
+                .turn(Math.toRadians(90))
+                .splineTo(new Vector2d(-5, -32), Math.toRadians(90))
+                .build();
+
+        Action Park = drive.actionBuilder(SP3p)
+                .lineToY(-36)
+                .turn(Math.toRadians(270))
+                .splineTo(new Vector2d(48, -65), Math.toRadians(270))
+                .build();
+
+
         waitForStart();
         Actions.runBlocking(
-                drive.actionBuilder(beginPose)
-                        //Deliver Specimen to High Chamber
-                          //1. raise lift to high chamber
-                          //2. drive to submersible
-                        //.splineTo(new Vector2d(x, y, Math.toRadians(90)))
-                          //3. drop lift to deliver
-                          //4. pull pin
-                          //5. drop all the way
-                        //Go over to red/blue samples and deliver to observation zone
-                          // 1.Drive up to red/blue sample area
-                          // 2.Pick up a red/blue sample
-                            // 1.Activate intake
-                            // 2.Slowly go into sample until picked up
-                            // 3.Transfer sample to delivery side
-                            // 4.Activate delivery to drop sample into the observation zone
-                            // moves backwards out of observation zone
-                            // the human player takes the sample and then puts on the clip then drops in  certain area
-                            // the robot moves back into observation zone
-                            // activate intake to pick up specimen
-                            // transfer intake to deliver
-                            // drive to high chamber
-                            // raise linear slide
-                            // activate deliver to put specimen on high chamber
-                            // back up off linear slide
-                            // lower linear slide
-                            // repeat back to step 1.
-
-
-                            // Drive back to samples then Repeat to step one until all samples gone
-                        //Park
-                            //drive to observation zone
-
-
-
-
-//                        .splineTo(new Vector2d(-7.62, -39.81), Math.toRadians(90.00))
-//                        .splineTo(new Vector2d(-26.29, -34.87), Math.toRadians(188.70))
-//                        .splineTo(new Vector2d(-39.17, -25.86), Math.toRadians(176.73))
-//                        .splineTo(new Vector2d(-57.84, -57.62), Math.toRadians(225.00))
-                        .build());
+                new SequentialAction(
+                        DiveActions.Lift.liftToHighChamber(),
+                        Deliver1,
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                        new SleepAction(0.5 ),
+                        DiveActions.SpecimenDelivery.open(),
+                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        Pickup2,
+                        DiveActions.SpecimenDelivery.close(),
+                        DiveActions.Lift.liftToHighChamber(),
+                        Deliver2,
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                        new SleepAction(0.5 ),
+                        DiveActions.SpecimenDelivery.open(),
+                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        Pickup3,
+                        DiveActions.SpecimenDelivery.close(),
+                        DiveActions.Lift.liftToHighChamber(),
+                        Deliver3,
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                        new SleepAction(0.5 ),
+                        DiveActions.SpecimenDelivery.open(),
+                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        Park
+                )
+       );
     }
 }

@@ -462,6 +462,19 @@ public class DiveActions{
             return new WheelOn();
         }
 
+        //WheelOn0 is different than just WheelOn() in that it does not wait for x amount of time. This will be used in Teleop.
+        private static class WheelOn0 implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Sample_ForIntake.setDirection(CRServo.Direction.FORWARD);
+                Sample_ForIntake.setPower(Variables.sampleIntaking);
+                return false;
+            }
+        }
+        protected static Action wheelOn0() {
+            return new WheelOn0();
+        }
+
         //RevWheel does: just turns on the wheel
         public static class RevWheel implements Action {
             @Override
