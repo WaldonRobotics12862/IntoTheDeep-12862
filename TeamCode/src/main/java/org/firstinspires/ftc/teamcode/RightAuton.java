@@ -8,7 +8,10 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-@Autonomous(name="RightAuton")
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+@Autonomous(name="RightAuton", preselectTeleOp = "WaldonTeleOp")
 public final class RightAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -22,6 +25,19 @@ public final class RightAuton extends LinearOpMode {
         DiveActions.LED LED = new DiveActions.LED(hardwareMap);
         DiveActions.Ascend Ascend = new DiveActions.Ascend(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
+
+        DcMotorEx liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
+        liftLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        liftLeft.setDirection(DcMotorEx.Direction.FORWARD);
+        liftLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        DcMotorEx liftRight = hardwareMap.get(DcMotorEx.class, "rightLift");
+        liftRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        liftRight.setDirection(DcMotorEx.Direction.REVERSE);
+        liftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -42,31 +58,31 @@ public final class RightAuton extends LinearOpMode {
 
         Action Pickup2 = drive.actionBuilder(SP1p)
                 .lineToY(-36)
-                .turn(Math.toRadians(270))
+                .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(48, -65), Math.toRadians(270))
                 .build();
 
         Action Deliver2 = drive.actionBuilder(pickupP)
                 .lineToY(-58)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(0, -32),Math.toRadians(90))
                 .build();
 
         Action Pickup3 = drive.actionBuilder(SP2p)
                 .lineToY(-36)
-                .turn(Math.toRadians(270))
+                .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(48, -65), Math.toRadians(270))
                 .build();
 
         Action Deliver3 = drive.actionBuilder(pickupP)
                 .lineToY(-58)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(-5, -32), Math.toRadians(90))
                 .build();
 
         Action Park = drive.actionBuilder(SP3p)
                 .lineToY(-36)
-                .turn(Math.toRadians(270))
+                .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(48, -65), Math.toRadians(270))
                 .build();
 
@@ -77,9 +93,11 @@ public final class RightAuton extends LinearOpMode {
                         DiveActions.Lift.liftToHighChamber(),
                         Deliver1,
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.5 ),
                         DiveActions.SpecimenDelivery.open(),
+                        new SleepAction(0.5 ),
+                        //DiveActions.Lift.autonDown(),
                         DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        //DiveActions.Lift.liftToHeight(0),
                         Pickup2,
                         DiveActions.SpecimenDelivery.close(),
                         DiveActions.Lift.liftToHighChamber(),

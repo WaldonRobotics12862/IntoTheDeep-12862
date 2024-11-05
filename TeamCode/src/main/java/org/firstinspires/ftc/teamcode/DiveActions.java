@@ -90,7 +90,7 @@ public class DiveActions{
         }
 
         public static class LiftFullDown implements Action {
-            private Long downStarted;
+            long downStarted = -1;
             public LiftFullDown(long downStarted){
                 this.downStarted = downStarted;
             }
@@ -99,24 +99,61 @@ public class DiveActions{
                 Integer height = 0;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
-                liftLeft.setPower(1);
-                liftRight.setPower(1);
+                liftLeft.setPower(-1);
+                liftRight.setPower(-1);
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if(System.currentTimeMillis() - downStarted > 1500) {
-                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    return false;
-                } else if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
-                    return false;
-                } else {
+//                if (System.currentTimeMillis() - downStarted > 1500) {
+//                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//                    return false;
+//                }
+                if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
                     return true;
+                } else {
+                    return false;
                 }
             }
         }
         public static Action liftFullDown(long downStarted) {
             return new LiftFullDown(downStarted);
+        }
+
+        public static class AutonDown implements Action {
+            long downStarted = -1;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (downStarted != -1) {
+                    if (System.currentTimeMillis() - downStarted < 500) {
+                        packet.addLine("Timer ran out");
+                        return true;
+                    }
+                    packet.addLine("down started");
+                    downStarted = -1;
+                    return false;
+                }
+
+                if(liftRight.getCurrentPosition()<10){
+                    return false;
+                }
+
+
+                liftLeft.setTargetPosition(0);
+                liftRight.setTargetPosition(0);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                packet.addLine(String.valueOf(System.currentTimeMillis() - downStarted));
+                packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
+                packet.addLine(String.valueOf(liftRight.getCurrentPosition()));
+                return true;
+            }
+        }
+        public static Action autonDown() {
+            return new AutonDown();
         }
 
         public static class LiftToHighChamber implements Action {
