@@ -5,27 +5,22 @@ import android.graphics.Color;
 
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
 @TeleOp(name="WaldonTeleOp")
-
 public class WaldonTeleOp extends LinearOpMode {
-
-
     double lastPressedX = 0;
     double lastPressedY = 0;
     double lastPressedA = 0;
@@ -34,7 +29,7 @@ public class WaldonTeleOp extends LinearOpMode {
     boolean ExtendForward = false;
     boolean intakeRunning = false;
     boolean LiftGoing = false;
-    boolean BucketUp = false;
+    public boolean bucketUp = false;
     boolean wristUp = false;
     boolean wristdown = false;
 
@@ -111,40 +106,25 @@ public class WaldonTeleOp extends LinearOpMode {
             int myColor = color.getNormalizedColors().toColor();
             double hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
 
-            //telemetry.addData("hue: ",hue);
-            //telemetry.update();
-
             dataLog.addField(hue);
             dataLog.addField(liftL.getCurrentPosition());
             dataLog.addField(liftR.getCurrentPosition());
             dataLog.newLine();
 
-            telemetry.addData("R Lift Height", liftR.getCurrentPosition());
-            telemetry.addData("L Lift Height", liftL.getCurrentPosition());
-            telemetry.update();
-
-//
             //Set LEDs
-            if (hue > 179 && hue < 240) {
+            if (hue > 181 && hue < 240) {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
                 LED.setPattern(pattern);
-                telemetry.addData("pattern:", pattern );
             } else if (hue > 75 && hue < 100) {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
                 LED.setPattern(pattern);
-                telemetry.addData("pattern:", pattern );
-
             } else if (hue > 10 && hue < 50) {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
-            LED.setPattern(pattern);
-            telemetry.addData("pattern:", pattern );
-
+                pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
+                LED.setPattern(pattern);
             } else {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN;
                 LED.setPattern(pattern);
-                telemetry.addData("pattern:", pattern);
             }
-
 
             // DRIVE IS HERE:
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -230,7 +210,7 @@ public class WaldonTeleOp extends LinearOpMode {
         if(gamepad2.dpad_right){
             Actions.runBlocking(
                     new SequentialAction(
-                            DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                            DiveActions.Lift.deliverHighChamber(),
                             DiveActions.SpecimenDelivery.open(),
                             DiveActions.Lift.liftFullDown(System.currentTimeMillis())
                     )
@@ -238,16 +218,15 @@ public class WaldonTeleOp extends LinearOpMode {
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));
         }
 
-
-        if(gamepad2.x && !BucketUp && System.currentTimeMillis() - lastPressedX > 500){
+        if(gamepad2.x && !bucketUp && System.currentTimeMillis() - lastPressedX > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));
             lastPressedX = System.currentTimeMillis();
-            BucketUp = true;
+            bucketUp = true;
         }
-        if(gamepad2.x && BucketUp && System.currentTimeMillis() - lastPressedX > 500){
+        if(gamepad2.x && bucketUp && System.currentTimeMillis() - lastPressedX > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.dump()));
             lastPressedX = System.currentTimeMillis();
-            BucketUp = false;
+            bucketUp = false;
         }
         if(gamepad2.right_bumper){
             Actions.runBlocking((new SequentialAction(DiveActions.SpecimenDelivery.open())));

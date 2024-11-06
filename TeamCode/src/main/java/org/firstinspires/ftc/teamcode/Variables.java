@@ -43,7 +43,7 @@ public class Variables {
    public static double leftUpLift = 0.8;
    public static double specimenLoose = 0.0;
    public static double specimenPinch = 1;
-   public static double sampleLoad = 0.4;
+   public static double sampleLoad = -1.0;
    public static double sampleDump = 1.0;
    public static double sampleEject = -0.5;
    public static double ascend1Up = 1;

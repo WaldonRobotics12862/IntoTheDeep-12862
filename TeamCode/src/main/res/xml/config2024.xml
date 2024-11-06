@@ -7,7 +7,7 @@
             <goBILDA5202SeriesMotor name="rightBack" port="2" />
             <goBILDA5202SeriesMotor name="rightFront" port="3" />
 
-            <Servo name="bucketServo" port="0" />
+            <Servo name="bucketServo" port="1" />
             <Servo name="intakeWrist" port="2" />
             <ContinuousRotationServo name="sampleServo" port="4" />
             <Servo name="intakeExtend" port="5" />

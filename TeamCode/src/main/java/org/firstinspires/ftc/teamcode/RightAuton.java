@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,7 +23,6 @@ public final class RightAuton extends LinearOpMode {
         DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
         DiveActions.SampleDelivery SampleDelivery = new DiveActions.SampleDelivery(hardwareMap);
-        DiveActions.LED LED = new DiveActions.LED(hardwareMap);
         DiveActions.Ascend Ascend = new DiveActions.Ascend(hardwareMap);
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
 
@@ -38,6 +38,11 @@ public final class RightAuton extends LinearOpMode {
 
         liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        RevBlinkinLedDriver.BlinkinPattern pattern;
+        pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+        LED.setPattern(pattern);
 
 
 
@@ -95,9 +100,7 @@ public final class RightAuton extends LinearOpMode {
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.5 ),
-                        //DiveActions.Lift.autonDown(),
-                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
-                        //DiveActions.Lift.liftToHeight(0),
+                        DiveActions.Lift.autonDown(),
                         Pickup2,
                         DiveActions.SpecimenDelivery.close(),
                         DiveActions.Lift.liftToHighChamber(),
@@ -105,7 +108,7 @@ public final class RightAuton extends LinearOpMode {
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
                         new SleepAction(0.5 ),
                         DiveActions.SpecimenDelivery.open(),
-                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        DiveActions.Lift.autonDown(),
                         Pickup3,
                         DiveActions.SpecimenDelivery.close(),
                         DiveActions.Lift.liftToHighChamber(),
@@ -113,7 +116,7 @@ public final class RightAuton extends LinearOpMode {
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
                         new SleepAction(0.5 ),
                         DiveActions.SpecimenDelivery.open(),
-                        DiveActions.Lift.liftFullDown(System.currentTimeMillis()),
+                        DiveActions.Lift.autonDown(),
                         Park
                 )
        );

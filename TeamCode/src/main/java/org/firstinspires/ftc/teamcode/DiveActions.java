@@ -104,12 +104,11 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-//                if (System.currentTimeMillis() - downStarted > 1500) {
-//                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//                    return false;
-//                }
-                if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
+                if (System.currentTimeMillis() - downStarted > 1500) {
+                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    return false;
+                } else if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
                     return true;
                 } else {
                     return false;
@@ -125,31 +124,19 @@ public class DiveActions{
 
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                if (downStarted != -1) {
-                    if (System.currentTimeMillis() - downStarted < 500) {
-                        packet.addLine("Timer ran out");
-                        return true;
-                    }
-                    packet.addLine("down started");
-                    downStarted = -1;
-                    return false;
-                }
-
-                if(liftRight.getCurrentPosition()<10){
-                    return false;
-                }
-
-
-                liftLeft.setTargetPosition(0);
-                liftRight.setTargetPosition(0);
-                liftLeft.setPower(1);
-                liftRight.setPower(1);
+                Integer height = 0;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(-1);
+                liftRight.setPower(-1);
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                packet.addLine(String.valueOf(System.currentTimeMillis() - downStarted));
-                packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
-                packet.addLine(String.valueOf(liftRight.getCurrentPosition()));
-                return true;
+
+               if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
         public static Action autonDown() {
@@ -316,7 +303,7 @@ public class DiveActions{
 
         //since this is the basket, we probably don't want these actions called open and close servo
         // they probably should be something like 'dump' and 'load' or something.
-        public static class load implements Action {
+        public static class Load implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 bucketServo.setPosition(Variables.sampleLoad);
@@ -325,10 +312,10 @@ public class DiveActions{
         }
 
         public static Action load() {
-            return new load();
+            return new Load();
         }
 
-        public static class dump implements Action {
+        public static class Dump implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
                 bucketServo.setPosition(Variables.sampleDump);
@@ -337,7 +324,7 @@ public class DiveActions{
         }
 
         public static Action dump() {
-            return new dump();
+            return new Dump();
         }
     }
 
