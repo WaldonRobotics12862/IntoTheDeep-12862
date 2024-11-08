@@ -37,7 +37,6 @@ public class WaldonTeleOp extends LinearOpMode {
 
 
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
@@ -49,8 +48,9 @@ public class WaldonTeleOp extends LinearOpMode {
         RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "sampleColor");
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
-        DcMotorEx liftL = hardwareMap.get(DcMotorEx.class, "leftLift");
         DcMotorEx liftR = hardwareMap.get(DcMotorEx.class, "rightLift");
+        DcMotorEx liftL = hardwareMap.get(DcMotorEx.class, "leftLift");
+
         liftR.setDirection(DcMotorEx.Direction.REVERSE);
 
         liftL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -102,7 +102,7 @@ public class WaldonTeleOp extends LinearOpMode {
 
             //Drive();
             RunIntake();
-            RunDelivery();
+            RunDelivery(liftL, liftR);
 
             //Get Color Sensor Data
             int myColor = color.getNormalizedColors().toColor();
@@ -208,7 +208,7 @@ public class WaldonTeleOp extends LinearOpMode {
         }
     }
 
-    private void RunDelivery(){
+    private void RunDelivery(DcMotorEx liftL, DcMotorEx liftR){
 
         if(gamepad2.dpad_up)  {
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(Variables.HighBasket)));

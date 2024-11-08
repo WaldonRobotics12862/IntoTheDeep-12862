@@ -49,15 +49,10 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                packet.addLine(String.valueOf(liftLeft.getCurrentPosition()));
-
-                double LeftError = Math.abs(liftLeft.getCurrentPosition()/height);
-                double RightError = Math.abs(liftRight.getCurrentPosition()/height);
-
-                if (LeftError > .9 && LeftError < 1.1 || RightError > .9 && RightError < 1.1){
-                    return false;
-                } else {
+                if (liftLeft.isBusy() || liftRight.isBusy()){
                     return true;
+                } else {
+                    return false;
                 }
             }
         }
@@ -108,9 +103,11 @@ public class DiveActions{
                     liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     return false;
-                } else if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
+                } else if (liftLeft.isBusy() || liftRight.isBusy()){
                     return true;
                 } else {
+                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     return false;
                 }
             }
@@ -156,10 +153,10 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() < .9 * height && liftLeft.getCurrentPosition() > 1.1 * height){
-                    return false;
-                }else {
+                if (liftLeft.isBusy() || liftRight.isBusy()){
                     return true;
+                }else {
+                    return false;
                 }
             }
         }
@@ -178,10 +175,10 @@ public class DiveActions{
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (liftLeft.getCurrentPosition() < .9 * height && liftLeft.getCurrentPosition() > 1.1 * height){
-                    return false;
-                }else {
+                if (liftLeft.isBusy() || liftRight.isBusy()){
                     return true;
+                }else {
+                    return false;
                 }
             }
         }
@@ -358,17 +355,17 @@ public class DiveActions{
     // back in.
     // ITD-84
     public static class Ascend {
-         static Servo ascendServo1;
-         static Servo ascendServo2;
-         static DcMotorEx ascend;
+        static Servo ascendServo1;
+        static Servo ascendServo2;
+        static DcMotorEx ascend;
 
-         public Ascend(HardwareMap hardwareMap){
-             ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
-             ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
-             ascend = hardwareMap.get(DcMotorEx.class, "ascend");
-         }
+        public Ascend(HardwareMap hardwareMap){
+            ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
+            ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
+            ascend = hardwareMap.get(DcMotorEx.class, "ascend");
+        }
 
-         public static class Deploy implements Action {
+        public static class Deploy implements Action {
              @Override
              public boolean run(@NonNull TelemetryPacket packet) {
                  ascendServo1.setPosition(Variables.ascend1Up);
@@ -376,7 +373,11 @@ public class DiveActions{
                  return false;
              }
          }
-         public static class UnDeploy implements Action   {
+        public static Action deploy(){
+            return new Deploy();
+        }
+
+        public static class PullUp implements Action   {
              @Override
              public boolean run(@NonNull TelemetryPacket packet){
                  ascend.setPower(Variables.ascend);
@@ -384,10 +385,9 @@ public class DiveActions{
                  return false;
              }
          }
-
-         public static Action Deploy(){
-             return new Deploy();
-        }
+        public static Action pullUp(){
+             return new PullUp();
+         }
     }
 
     // Intake is the class that supports us pulling in the sample from the field
