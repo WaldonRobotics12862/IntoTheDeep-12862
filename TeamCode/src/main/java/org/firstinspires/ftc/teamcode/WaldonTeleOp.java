@@ -29,7 +29,7 @@ public class WaldonTeleOp extends LinearOpMode {
     boolean ExtendForward = false;
     boolean intakeRunning = false;
     boolean LiftGoing = false;
-    public boolean bucketUp = false;
+    public boolean bucketUp = true;
     boolean wristUp = false;
     boolean wristdown = false;
 
