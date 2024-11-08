@@ -133,7 +133,9 @@ public class DiveActions{
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                if (liftLeft.getCurrentPosition() > -10 && liftLeft.getCurrentPosition() < 10){
-                    return true;
+                   liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                   liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                   return true;
                 } else {
                     return false;
                 }

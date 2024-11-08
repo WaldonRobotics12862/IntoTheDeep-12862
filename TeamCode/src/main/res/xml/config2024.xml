@@ -19,7 +19,7 @@
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >
             <goBILDA5202SeriesMotor name="rightLift" port="1" />
-            <goBILDA5202SeriesMotor name="ascend" port="4"/>
+            <goBILDA5202SeriesMotor name="ascend" port="3"/>
             <goBILDA5202SeriesMotor name="leftLift" port="2" />
 
             <Servo name="specimenServo" port="0" />

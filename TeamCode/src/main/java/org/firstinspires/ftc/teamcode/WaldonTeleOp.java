@@ -33,6 +33,8 @@ public class WaldonTeleOp extends LinearOpMode {
     boolean wristUp = false;
     boolean wristdown = false;
 
+    double slow_mode = 1;
+
 
 
 
@@ -116,7 +118,7 @@ public class WaldonTeleOp extends LinearOpMode {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE;
                 LED.setPattern(pattern);
             } else if (hue > 75 && hue < 100) {
-                pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+                pattern = RevBlinkinLedDriver.BlinkinPattern.GOLD;
                 LED.setPattern(pattern);
             } else if (hue > 10 && hue < 50) {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
@@ -129,6 +131,11 @@ public class WaldonTeleOp extends LinearOpMode {
             // DRIVE IS HERE:
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             // Rotate the movement direction counter to the bot's rotation
+            if(gamepad1.right_bumper) {
+                slow_mode = .5;
+            } else {
+                slow_mode = 1;
+            }
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
@@ -146,10 +153,10 @@ public class WaldonTeleOp extends LinearOpMode {
             // This ensures all the powers maintain the same ratio,
             // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-            double frontLeftPower = (rotY + rotX + rx) / denominator;
-            double backLeftPower = (rotY - rotX + rx) / denominator;
-            double frontRightPower = (rotY + rotX - rx) / denominator;
-            double backRightPower = (rotY - rotX - rx) / denominator;
+            double frontLeftPower = ((rotY + rotX + rx) / denominator) * slow_mode;
+            double backLeftPower = ((rotY - rotX + rx) / denominator) * slow_mode;
+            double frontRightPower = ((rotY + rotX - rx) / denominator) * slow_mode;
+            double backRightPower = ((rotY - rotX - rx) / denominator) * slow_mode;
 
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
@@ -157,6 +164,13 @@ public class WaldonTeleOp extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
             //Ascend Motor Control
             ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+
+            if(gamepad2.guide){
+                ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                ascendMotor.setTargetPosition(2000);
+                ascendMotor.setPower(1);
+                ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            }
         }
         dataLog.closeDataLogger();
     }
