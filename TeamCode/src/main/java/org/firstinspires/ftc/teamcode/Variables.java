@@ -54,7 +54,7 @@ public class Variables {
 
    public static int HighBasket = -2250;
    public static int HighChamber = -1300;
-   public static int HighChamberDeliver = -1000;
+   public static int HighChamberDeliver = -1050;
 
    public Variables(MecanumDrive.Params params) {
    }

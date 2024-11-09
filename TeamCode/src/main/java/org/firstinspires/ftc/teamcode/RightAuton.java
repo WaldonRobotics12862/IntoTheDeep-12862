@@ -108,8 +108,8 @@ public final class RightAuton extends LinearOpMode {
                         DiveActions.SpecimenDelivery.close(),
                         DiveActions.Lift.liftToHighChamber(),
                         new ParallelAction(
-                                DiveActions.Lift.liftToHighChamber(),
-                                Deliver2
+                                Deliver2,
+                                DiveActions.Lift.liftToHighChamber()
                         ),
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
                         new SleepAction(0.5 ),

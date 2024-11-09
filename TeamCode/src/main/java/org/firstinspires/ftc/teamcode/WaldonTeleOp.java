@@ -224,9 +224,9 @@ public class WaldonTeleOp extends LinearOpMode {
         if(gamepad2.dpad_right){
             Actions.runBlocking(
                     new SequentialAction(
-                            DiveActions.Lift.deliverHighChamber(),
-                            DiveActions.SpecimenDelivery.open(),
-                            DiveActions.Lift.liftFullDown(System.currentTimeMillis())
+                            DiveActions.Lift.deliverHighChamber()
+                            //DiveActions.SpecimenDelivery.open(),
+                            //DiveActions.Lift.liftFullDown(System.currentTimeMillis())
                     )
             );
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));

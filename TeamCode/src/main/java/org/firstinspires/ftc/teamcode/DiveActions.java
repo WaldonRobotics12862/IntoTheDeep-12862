@@ -169,11 +169,11 @@ public class DiveActions{
         public static class DeliverHighChamber implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = -1000;
+                Integer height = Variables.HighChamberDeliver;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
-                liftLeft.setPower(1);
-                liftRight.setPower(1);
+                liftLeft.setPower(.8);
+                liftRight.setPower(.8);
                 liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
