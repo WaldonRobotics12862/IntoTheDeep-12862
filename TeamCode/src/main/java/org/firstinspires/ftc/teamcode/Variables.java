@@ -31,7 +31,7 @@ public class Variables {
 
    public static double extendedIntake = 1;
    public static double retractedIntake = .2;
-   public static double wristUp = 0.05;
+   public static double wristUp = 0.15;
    public static double wristDown = 1;
    public static double sampleIntaking = -1;
    public static double sampleStop = 0;
@@ -54,7 +54,7 @@ public class Variables {
 
    public static int HighBasket = -2250;
    public static int HighChamber = -1300;
-   public static int HighChamberDeliver = -1050;
+   public static int HighChamberDeliver = -1000;
 
    public Variables(MecanumDrive.Params params) {
    }

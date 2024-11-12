@@ -327,6 +327,8 @@ public class DiveActions{
         public static Action dump() {
             return new Dump();
         }
+
+
     }
 
     // LED is the class that supports displaying LEDs to indicate status of the robot
@@ -357,21 +359,20 @@ public class DiveActions{
     // back in.
     // ITD-84
     public static class Ascend {
-        static Servo ascendServo1;
-        static Servo ascendServo2;
-        static DcMotorEx ascend;
+//        static Servo ascendServo1;
+//        static Servo ascendServo2;
+        private static DcMotorEx ascendMotor;
 
-        public Ascend(HardwareMap hardwareMap){
-            ascendServo1 = hardwareMap.get(Servo.class, "ascendServo1");
-            ascendServo2 = hardwareMap.get(Servo.class, "ascendServo2");
-            ascend = hardwareMap.get(DcMotorEx.class, "ascend");
+        public Ascend (HardwareMap hardwareMap){
+            ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
+            ascendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         public static class Deploy implements Action {
              @Override
              public boolean run(@NonNull TelemetryPacket packet) {
-                 ascendServo1.setPosition(Variables.ascend1Up);
-                 ascendServo2.setPosition(Variables.ascend2Up);
+//                 ascendServo1.setPosition(Variables.ascend1Up);
+//                 ascendServo2.setPosition(Variables.ascend2Up);
                  return false;
              }
          }
@@ -382,9 +383,16 @@ public class DiveActions{
         public static class PullUp implements Action   {
              @Override
              public boolean run(@NonNull TelemetryPacket packet){
-                 ascend.setPower(Variables.ascend);
+                 ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                 ascendMotor.setTargetPosition(2000);
+                 ascendMotor.setPower(1);
+                 ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                 if (ascendMotor.isBusy()){
+                     return true;
+                 }else {
+                     return false;
+                 }
 
-                 return false;
              }
          }
         public static Action pullUp(){

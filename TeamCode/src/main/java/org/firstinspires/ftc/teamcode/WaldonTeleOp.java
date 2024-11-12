@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -166,10 +167,11 @@ public class WaldonTeleOp extends LinearOpMode {
             ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
             if(gamepad2.guide){
-                ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                ascendMotor.setTargetPosition(2000);
-                ascendMotor.setPower(1);
-                ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                DiveActions.Ascend.pullUp();
+//                ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//                ascendMotor.setTargetPosition(2000);
+//                ascendMotor.setPower(1);
+//                ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
             }
         }
         dataLog.closeDataLogger();
@@ -224,9 +226,10 @@ public class WaldonTeleOp extends LinearOpMode {
         if(gamepad2.dpad_right){
             Actions.runBlocking(
                     new SequentialAction(
-                            DiveActions.Lift.deliverHighChamber()
-                            //DiveActions.SpecimenDelivery.open(),
-                            //DiveActions.Lift.liftFullDown(System.currentTimeMillis())
+                            DiveActions.Lift.deliverHighChamber(),
+                            DiveActions.SpecimenDelivery.open(),
+                            new SleepAction(0.5),
+                            DiveActions.Lift.liftFullDown(System.currentTimeMillis())
                     )
             );
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));
