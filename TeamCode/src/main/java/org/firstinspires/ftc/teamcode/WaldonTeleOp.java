@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
@@ -38,6 +39,8 @@ public class WaldonTeleOp extends LinearOpMode {
 
 
 
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class,"leftFront");
@@ -45,7 +48,9 @@ public class WaldonTeleOp extends LinearOpMode {
         DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class,"rightBack");
         DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class,"rightFront");
         DcMotorEx ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
+//        Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
         IMU imu = hardwareMap.get(IMU.class, "imu");
+        Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
         RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "sampleColor");
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
@@ -102,7 +107,7 @@ public class WaldonTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             //Drive();
-            RunIntake();
+            RunIntake(ExtendIntake);
             RunDelivery(liftL, liftR);
 
             //Get Color Sensor Data
@@ -177,16 +182,21 @@ public class WaldonTeleOp extends LinearOpMode {
         dataLog.closeDataLogger();
     }
 
-    private void RunIntake(){
+    private void RunIntake(Servo ExtendIntake){
         if (gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
-            Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm(telemetry)));
+            Actions.runBlocking(new SequentialAction(DiveActions.Intake.wristdown()));
+            //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm(telemetry)));
             lastPressedY = System.currentTimeMillis();
             ExtendForward = true;
         }
         if (gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
-            Actions.runBlocking(new SequentialAction(DiveActions.Intake.retractArm()));
+            Actions.runBlocking(new SequentialAction(DiveActions.Intake.wristUp()));
+            //            Actions.runBlocking(new SequentialAction(DiveActions.Intake.retractArm()));
             lastPressedY = System.currentTimeMillis();
             ExtendForward = false;
+        }
+        if(ExtendForward){
+            ExtendIntake.setPosition(gamepad2.left_stick_x);
         }
         if(gamepad2.a && !intakeRunning && System.currentTimeMillis() - lastPressedA > 500) {
             Actions.runBlocking(new SequentialAction(DiveActions.Intake.wheelOn0()));
@@ -233,6 +243,10 @@ public class WaldonTeleOp extends LinearOpMode {
                     )
             );
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));
+        }
+
+        if(gamepad2.start){
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(250)));
         }
 
         if(gamepad2.x && !bucketUp && System.currentTimeMillis() - lastPressedX > 500){

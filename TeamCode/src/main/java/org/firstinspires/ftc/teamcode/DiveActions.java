@@ -543,7 +543,7 @@ public class DiveActions{
                 return false;
             }
         }
-        public static Action WristUp(){
+        public static Action wristUp(){
             return new WristUp();
         }
 
@@ -554,7 +554,7 @@ public class DiveActions{
                 return false;
             }
         }
-        public static Action Wristdown(){
+        public static Action wristdown(){
             return new Wristdown();
         }
     }

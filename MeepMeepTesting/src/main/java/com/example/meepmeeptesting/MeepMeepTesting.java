@@ -1,5 +1,6 @@
 package com.example.meepmeeptesting;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
@@ -16,15 +17,16 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-24, -63, Math.toRadians(90)))
-                //lift up to delivery
-                .splineTo(new Vector2d(-57, -57), Math.toRadians(225.00))
-                .waitSeconds(2)
-                .splineTo(new Vector2d(-57, -57), Math.toRadians(0))
-                //pull down on sample
-//                .lineToY(-48)
-                //.turn(Math.toRadians(0))
-                //deploy
-//                .splineTo(new Vector2d(-25, -36), Math.toRadians(160))
+                .lineToY(-38)
+                .setTangent(0)
+                .splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
+                .splineTo(new Vector2d(34,-12), Math.toRadians(90))
+                .setTangent(0)
+                .splineToLinearHeading(new Pose2d(60,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
+                .setTangent(0)
+                .lineToX(55)
+                .splineToLinearHeading(new Pose2d(40, -30, Math.toRadians(-90)), 0)
+//                .splineToConstantHeading(new Vector2d(45, -65), Math.toRadians(0))
                 .build()
         );
 

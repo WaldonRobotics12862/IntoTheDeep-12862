@@ -18,7 +18,7 @@ public final class RightAuton2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Define all the locations that we need
-        Pose2d beginPose = new Pose2d(12, -63, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(15, -63, Math.toRadians(90));
 
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
         DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
@@ -47,7 +47,7 @@ public final class RightAuton2 extends LinearOpMode {
 
 
 
-        Pose2d SP1p = new Pose2d(5, -33, Math.toRadians(90));
+        Pose2d SP1p = new Pose2d(15, -33, Math.toRadians(90));
         Pose2d SP1pp = new Pose2d(40, -30, Math.toRadians(270));
 
         Pose2d SP2 = new Pose2d(0, -32, Math.toRadians(90));
@@ -59,15 +59,20 @@ public final class RightAuton2 extends LinearOpMode {
         Pose2d pickup = new Pose2d(40, -65, Math.toRadians(270));
         Pose2d pickupP = new Pose2d(40, -63, Math.toRadians(270));
 
+        Action backup2 = drive.actionBuilder(SP2)
+                .splineTo(new Vector2d(-2,-32), Math.toRadians(90))
+                .build();
+
         Action Deliver1 = drive.actionBuilder(beginPose)
-                .splineTo(new Vector2d(5, -32),Math.toRadians(90))
+                .lineToY(-32)
+                //.splineTo(new Vector2d(15, -32),Math.toRadians(90))
                 .build();
 
         Action Pickup2 = drive.actionBuilder(SP1p)
                 .lineToY(-38)
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
-                .splineTo(new Vector2d(36,-12), Math.toRadians(90))
+                .splineTo(new Vector2d(33,-12), Math.toRadians(90))
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(60,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
                 .setTangent(0)
@@ -113,15 +118,13 @@ public final class RightAuton2 extends LinearOpMode {
         waitForStart();
         Actions.runBlocking(
                 new SequentialAction(
-                        new SleepAction(11),
-                        DiveActions.Lift.liftToHighChamber(),
                         Deliver1,
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        DiveActions.SpecimenDelivery.open(),
-                        new SleepAction(0.5 ),
+                        new SleepAction(0.2 ),
+//                        backup2,
                         DiveActions.Lift.autonDown(),
                         Pickup2,
-                        new SleepAction(5),
+                        new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
                         //Pickup23, //backup off wall 2 inches
                         DiveActions.SpecimenDelivery.close(),
@@ -133,20 +136,20 @@ public final class RightAuton2 extends LinearOpMode {
                                 Deliver2
                         ),
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.5 ),
+                        new SleepAction(0.2 ),
                         DiveActions.SpecimenDelivery.open(),
                         DiveActions.Lift.autonDown(),
-//                        Pickup3,
-//                        DiveActions.SpecimenDelivery.close(),
-//                        DiveActions.Lift.liftToHighChamber(),
-//                        new ParallelAction(
-//                                DiveActions.Lift.liftToHighChamber(),
-//                                Deliver3
-//                        ),
-//                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-//                        new SleepAction(0.5 ),
-//                        DiveActions.SpecimenDelivery.open(),
-//                        DiveActions.Lift.autonDown(),
+                        Pickup3,
+                        DiveActions.SpecimenDelivery.close(),
+                        DiveActions.Lift.liftToHighChamber(),
+                        new ParallelAction(
+                                DiveActions.Lift.liftToHighChamber(),
+                                Deliver3
+                        ),
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                        new SleepAction(0.2 ),
+                        DiveActions.SpecimenDelivery.open(),
+                        DiveActions.Lift.autonDown(),
                         Park
                 )
        );
