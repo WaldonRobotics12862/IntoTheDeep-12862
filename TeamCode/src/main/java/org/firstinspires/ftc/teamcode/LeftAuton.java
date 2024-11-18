@@ -20,7 +20,6 @@ public class LeftAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-24, -63, Math.toRadians(90));
-        Pose2d samplePickUp = new Pose2d(-25, -36, Math.toRadians(160));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
         DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
@@ -30,51 +29,78 @@ public class LeftAuton extends LinearOpMode {
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
 
 
-        Action DriveIntoSample = drive.actionBuilder(samplePickUp)
-                .lineToX(-24)
+        Action DeliverSpecimen = drive.actionBuilder(new Pose2d(-15,-63,Math.toRadians(90)))
+                .lineToY(-32)
                 .build();
 
-        Action AutonLeft = drive.actionBuilder(beginPose)
+        Action backup = drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(90)))
+                .lineToY(-5)
+                .build();
+
+        Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -65, Math.toRadians(90)))
                 //lift up to delivery
-                .splineTo(new Vector2d(-57, -57), Math.toRadians(225.00))
-                //pull down on sample
-//                .lineToY(-48)
-                //.turn(Math.toRadians(0))
-                //deploy
-//                .splineTo(new Vector2d(-25, -36), Math.toRadians(160))
-                //.waitSeconds(3)
-                //.setTangent(0)
-                //.splineToConstantHeading(new Vector2d(-6.25, -50), Math.toRadians(90.00))
-                //.splineToConstantHeading(new Vector2d(-55.25, -50), Math.toRadians(90.00))
-                //.splineToConstantHeading(new Vector2d(-55.25, -46.0), Math.toRadians(90.00))
-                //.splineTo(new Vector2d(-58.5, -58), Math.toRadians(225))
-                //.splineTo(new Vector2d(-59, -47), Math.toRadians(90))
-                //.turn(Math.toRadians(215))
-                //.splineTo(new Vector2d(-67, -47), Math.toRadians(90))
-                //.splineToConstantHeading(new Vector2d(-67, -14), Math.toRadians(90))
-                //.splineTo(new Vector2d(-20, -14), Math.toRadians(180.00))
+                .turnTo(Math.toRadians(350))
+                .lineToX(-45)
                 .build();
 
-        //actions that need to happen on init (if any)
-        //example below
-        //Actions.runBlocking(claw.closeClaw());
+        Action deliverSample1 = drive.actionBuilder(new Pose2d(-45, -24,Math.toRadians(350)))
+                .splineTo(new Vector2d(-60,-60),Math.toRadians(225))
+                .build();
+
+        Action pickupSample2 = drive.actionBuilder(new Pose2d(-60,-60,Math.toRadians(225)))
+                .lineToY(-40)
+                .turnTo(Math.toRadians(320))
+                .lineToX(-55)
+                .build();
+
+        Action deliverSample2 = drive.actionBuilder(new Pose2d(-45,-24,Math.toRadians(320)))
+                .splineTo(new Vector2d(-60,-60),Math.toRadians(225))
+                .build();
 
         waitForStart();
         if (isStopRequested()) return;
 
         Actions.runBlocking(
-//        Actions.runBlocking(DiveActions.Intake.ExtendArm());
-//        Actions.runBlocking(DiveActions.Intake.WheelOn());
-
                 new SequentialAction(
-                        AutonLeft,
+                        DeliverSpecimen,
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
+                        new SleepAction(0.1),
+                        new ParallelAction(
+                                backup,
+                                DiveActions.Lift.autonDown()
+                        ),
+                        DiveActions.Intake.wristdown(),
+                        new ParallelAction(
+                                DiveActions.Intake.wheelOn(),
+                                pickupSample1
+                        ),
+                        DiveActions.Intake.Stop(),
+                        DiveActions.Intake.wristUp(),
+                        deliverSample1,
+                        DiveActions.Intake.RevWheel(),
+                        new SleepAction(0.5),
                         DiveActions.Lift.liftToHeight(Variables.HighBasket),
-
-                        DiveActions.SampleDelivery.dump()
-
-                        //DiveActions.SampleDelivery.load(),
-                        //DiveActions.Lift.liftFullDown(System.currentTimeMillis())
-
+                        DiveActions.Intake.Stop(),
+                        DiveActions.SampleDelivery.load(),
+                        new SleepAction(1),
+                        DiveActions.SampleDelivery.dump(),
+                        DiveActions.Lift.autonDown(),
+                        DiveActions.Intake.wristdown(),
+                        new ParallelAction(
+                            DiveActions.Intake.wheelOn(),
+                            pickupSample2
+                        ),
+                        DiveActions.Intake.Stop(),
+                        DiveActions.Intake.wristUp(),
+                        deliverSample2,
+                        DiveActions.Intake.RevWheel(),
+                        new SleepAction(0.5),
+                        DiveActions.Lift.liftToHeight(Variables.HighBasket),
+                        DiveActions.Intake.Stop(),
+                        DiveActions.SampleDelivery.load(),
+                        new SleepAction(1),
+                        DiveActions.SampleDelivery.dump(),
+                        DiveActions.Lift.autonDown()
                 )
         );
         //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));

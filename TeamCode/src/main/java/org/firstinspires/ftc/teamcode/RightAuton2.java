@@ -45,30 +45,21 @@ public final class RightAuton2 extends LinearOpMode {
         pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
         LED.setPattern(pattern);
 
+        //RIGHT AUTON 2 PATH
+        //This delivers one, then goes and pushes the specimen over into the observations zone and immeadiatly picks up a second
+        //specimen that is already with the human player.
+        //The human player builds a 3rd specimen while the second is being delivered
+        //This path is only used if our partner does NOT load a specimen but this is our preferred path
 
-
-        Pose2d SP1p = new Pose2d(15, -33, Math.toRadians(90));
-        Pose2d SP1pp = new Pose2d(40, -30, Math.toRadians(270));
-
-        Pose2d SP2 = new Pose2d(0, -32, Math.toRadians(90));
-        Pose2d SP2p = new Pose2d(0, -33, Math.toRadians(90));
-
-        Pose2d SP3 = new Pose2d(-5, -32, Math.toRadians(90));
-        Pose2d SP3p = new Pose2d(-5, -33, Math.toRadians(90));
-
-        Pose2d pickup = new Pose2d(40, -65, Math.toRadians(270));
-        Pose2d pickupP = new Pose2d(40, -63, Math.toRadians(270));
-
-        Action backup2 = drive.actionBuilder(SP2)
-                .splineTo(new Vector2d(-2,-32), Math.toRadians(90))
-                .build();
-
-        Action Deliver1 = drive.actionBuilder(beginPose)
+        Action Deliver1 = drive.actionBuilder(new Pose2d(15, -63, Math.toRadians(90)))
                 .lineToY(-32)
-                //.splineTo(new Vector2d(15, -32),Math.toRadians(90))
                 .build();
 
-        Action Pickup2 = drive.actionBuilder(SP1p)
+        Action backup2 = drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(90)))
+                .lineToY(-2)
+                .build();
+
+        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -33, Math.toRadians(90)))
                 .lineToY(-38)
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
@@ -78,36 +69,31 @@ public final class RightAuton2 extends LinearOpMode {
                 .setTangent(0)
                 .lineToX(55)
                 .splineToLinearHeading(new Pose2d(40, -30, Math.toRadians(-90)), 0)
-//                .splineToConstantHeading(new Vector2d(45, -65), Math.toRadians(0))
                 .build();
 
-        Action Pickup22 = drive.actionBuilder(SP1pp)
+        Action Pickup22 = drive.actionBuilder(new Pose2d(40, -30, Math.toRadians(270)))
                 .lineToY(-66)
                 .build();
 
-        Action Pickup23 = drive.actionBuilder(SP1pp)
-                .lineToY(-30)
-                .build();
-
-        Action Deliver2 = drive.actionBuilder(pickupP)
+        Action Deliver2 = drive.actionBuilder(new Pose2d(40, -63, Math.toRadians(270)))
                 .lineToY(-58)
                 .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(0, -28),Math.toRadians(90))
+                .splineTo(new Vector2d(6, -28),Math.toRadians(90))
                 .build();
 
-        Action Pickup3 = drive.actionBuilder(SP2p)
+        Action Pickup3 = drive.actionBuilder(new Pose2d(6, -33, Math.toRadians(90)))
                 .lineToY(-38)
                 .turn(Math.toRadians(-90))
                 .splineTo(new Vector2d(40, -70), Math.toRadians(270)) // was 48, -65
                 .build();
 
-        Action Deliver3 = drive.actionBuilder(pickupP)
+        Action Deliver3 = drive.actionBuilder(new Pose2d(40, -63, Math.toRadians(270)))
                 .lineToY(-58)
                 .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(-3, -26), Math.toRadians(90)) // was -5, -32
+                .splineTo(new Vector2d(0, -26), Math.toRadians(90)) // was -5, -32
                 .build();
 
-        Action Park = drive.actionBuilder(SP3p)
+        Action Park = drive.actionBuilder(new Pose2d(0, -33, Math.toRadians(90)))
                 .lineToY(-38)
                 .turn(Math.toRadians(-120)) // was 90
                 .lineToX(48)
@@ -126,7 +112,6 @@ public final class RightAuton2 extends LinearOpMode {
                         Pickup2,
                         new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
-                        //Pickup23, //backup off wall 2 inches
                         DiveActions.SpecimenDelivery.close(),
 //                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
 //                        DiveActions.Lift.liftToHighChamber(),
