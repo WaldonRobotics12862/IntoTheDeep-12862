@@ -8,7 +8,7 @@ public class Variables {
    //OTOS Variables
    public double linearScalar = 0.0592;
    public double angularScalar = -0.9876;
-   public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(-0.4506, -0.024, -0.0017);
+   public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(-1.2736, -0.2043, -0.0017);
 
 
    //generic variables

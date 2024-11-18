@@ -120,8 +120,8 @@ public final class RightAuton2 extends LinearOpMode {
                 new SequentialAction(
                         Deliver1,
                         DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.2 ),
-//                        backup2,
+                        new SleepAction(0.1),
+                        backup2,
                         DiveActions.Lift.autonDown(),
                         Pickup2,
                         new SleepAction(.1),// this is the pause to let someone build the specimen

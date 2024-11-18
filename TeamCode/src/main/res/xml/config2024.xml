@@ -7,25 +7,24 @@
             <goBILDA5202SeriesMotor name="rightBack" port="2" />
             <goBILDA5202SeriesMotor name="rightFront" port="3" />
 
-            <Servo name="bucketServo" port="1" />
-            <Servo name="intakeWrist" port="2" />
-            <ContinuousRotationServo name="sampleServo" port="4" />
-            <Servo name="intakeExtend" port="5" />
+            <Servo name="intakeWrist" port="1" />
+            <Servo name="bucketServo" port="2" />
+            <ContinuousRotationServo name="sampleServo" port="3" />
+            <Servo name="intakeExtend" port="4" />
+            <Servo name="specimenServo" port="5" />
 
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <DistanceSensor name="liftSensor" port="0" bus="1"/>
             <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
+
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >
             <goBILDA5202SeriesMotor name="rightLift" port="1" />
             <goBILDA5202SeriesMotor name="ascend" port="3"/>
             <goBILDA5202SeriesMotor name="leftLift" port="2" />
 
-            <Servo name="specimenServo" port="0" />
-            <Servo name="ascendServo1" port="2" />
             <RevBlinkinLedDriver name="blinkin" port="3" />
-            <Servo name="ascendServo2" port="4" />
         </LynxModule>
     </LynxUsbDevice>
 </Robot>

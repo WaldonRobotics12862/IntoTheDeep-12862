@@ -359,13 +359,14 @@ public class DiveActions{
     // back in.
     // ITD-84
     public static class Ascend {
-//        static Servo ascendServo1;
-//        static Servo ascendServo2;
         private static DcMotorEx ascendMotor;
 
         public Ascend (HardwareMap hardwareMap){
             ascendMotor = hardwareMap.get(DcMotorEx.class, "ascend");
             ascendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            ascendMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            ascendMotor.setDirection(DcMotorEx.Direction.FORWARD);
+            ascendMotor.setTargetPositionTolerance(15);
         }
 
         public static class Deploy implements Action {
@@ -383,7 +384,7 @@ public class DiveActions{
         public static class PullUp implements Action   {
              @Override
              public boolean run(@NonNull TelemetryPacket packet){
-                 ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                 //ascendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                  ascendMotor.setTargetPosition(2000);
                  ascendMotor.setPower(1);
                  ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -447,7 +448,7 @@ public class DiveActions{
                 if (WristIntake.getPosition() != Variables.wristDown) {
                     return true;
                 }
-                //Sample_ForIntake.setPower(Variables.sampleIntaking);
+//                Sample_ForIntake.setPower(Variables.sampleIntaking);
                 return false;
             }
         }
@@ -467,7 +468,7 @@ public class DiveActions{
                 if (WristIntake.getPosition() != Variables.wristUp) {
                     return true;
                 }
-                Sample_ForIntake.setPower(Variables.sampleStop);
+//                Sample_ForIntake.setPower(Variables.sampleStop);
                 return false;
             }
         }
