@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class LeftAuton extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d beginPose = new Pose2d(-24, -63, Math.toRadians(90));
+        Pose2d beginPose = new Pose2d(-9, -63, Math.toRadians(90));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
         DiveActions.Lift Lift = new DiveActions.Lift(hardwareMap);
         DiveActions.SpecimenDelivery SpecimenDelivery = new DiveActions.SpecimenDelivery(hardwareMap);
@@ -29,18 +29,18 @@ public class LeftAuton extends LinearOpMode {
         DiveActions.Intake Intake = new DiveActions.Intake(hardwareMap);
 
 
-        Action DeliverSpecimen = drive.actionBuilder(new Pose2d(-15,-63,Math.toRadians(90)))
+        Action DeliverSpecimen = drive.actionBuilder(new Pose2d(-9,-63,Math.toRadians(90)))
                 .lineToY(-32)
                 .build();
 
         Action backup = drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(90)))
-                .lineToY(-5)
+                .lineToY(-48)
                 .build();
 
         Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -65, Math.toRadians(90)))
                 //lift up to delivery
-                .turnTo(Math.toRadians(350))
-                .lineToX(-45)
+                .turnTo(Math.toRadians(90))
+                .lineToX(-48)
                 .build();
 
         Action deliverSample1 = drive.actionBuilder(new Pose2d(-45, -24,Math.toRadians(350)))

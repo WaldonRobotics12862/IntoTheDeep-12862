@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Color;
 
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -32,14 +31,15 @@ public class WaldonTeleOp extends LinearOpMode {
     boolean ExtendForward = false;
     boolean intakeRunning = false;
     boolean LiftGoing = false;
-    public boolean bucketUp = false;
+    public boolean bucketUp = true;
     boolean wristUp = false;
     boolean wristdown = false;
-    boolean startedAscend = false;
 
     double slow_mode = 1;
 
-    double extendPos = 0;
+
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -88,6 +88,8 @@ public class WaldonTeleOp extends LinearOpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        ascendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         DataLogger dataLog = new DataLogger("TeleOp_log");
         dataLog.addField("Color Sensor");
         dataLog.addField("Lift Height");
@@ -112,7 +114,6 @@ public class WaldonTeleOp extends LinearOpMode {
             int myColor = color.getNormalizedColors().toColor();
             double hue = JavaUtil.rgbToHue(Color.red(myColor), Color.green(myColor), Color.blue(myColor));
 
-
             dataLog.addField(hue);
             dataLog.addField(liftL.getCurrentPosition());
             dataLog.addField(liftR.getCurrentPosition());
@@ -132,8 +133,6 @@ public class WaldonTeleOp extends LinearOpMode {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN;
                 LED.setPattern(pattern);
             }
-
-
 
             // DRIVE IS HERE:
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -169,34 +168,12 @@ public class WaldonTeleOp extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
-
-
             //Ascend Motor Control
-            if(!startedAscend){
-                ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-            }
+            ascendMotor.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
 
             if(gamepad2.guide){
-                if(startedAscend){
-                    Actions.runBlocking(
-                            new ParallelAction(
-                                DiveActions.Lift.liftToHighBasket(),
-                                DiveActions.SampleDelivery.load()
-//                                DiveActions.Ascend.pullUp())
-                            )
-                    );
-                    ascendMotor.setTargetPosition(2000);
-                    ascendMotor.setPower(1);
-                    ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                    Actions.runBlocking(new SequentialAction( new SleepAction(2),DiveActions.Lift.liftToHeight(-800)));
-                }
-                else{
-                    //ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    startedAscend = true;
-                }
-                telemetry.addLine("I pressed guide");
-                telemetry.update();
-//                DiveActions.Ascend.pullUp();
+                DiveActions.Ascend.pullUp();
+//                ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 //                ascendMotor.setTargetPosition(2000);
 //                ascendMotor.setPower(1);
 //                ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -206,26 +183,27 @@ public class WaldonTeleOp extends LinearOpMode {
     }
 
     private void RunIntake(Servo ExtendIntake){
-        extendPos = gamepad2.left_stick_x;
-        ExtendIntake.setPosition(extendPos);
-        if(gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
+        if (gamepad2.y && !ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.Intake.wristdown()));
-//            Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm(telemetry)));
+            //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm(telemetry)));
             lastPressedY = System.currentTimeMillis();
             ExtendForward = true;
         }
-        if(gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
+        if (gamepad2.y && ExtendForward && System.currentTimeMillis() - lastPressedY > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.Intake.wristUp()));
-//            Actions.runBlocking(new SequentialAction(DiveActions.Intake.retractArm()));
+            //            Actions.runBlocking(new SequentialAction(DiveActions.Intake.retractArm()));
             lastPressedY = System.currentTimeMillis();
             ExtendForward = false;
+        }
+        if(ExtendForward){
+            ExtendIntake.setPosition(gamepad2.left_stick_x);
         }
         if(gamepad2.a && !intakeRunning && System.currentTimeMillis() - lastPressedA > 500) {
             Actions.runBlocking(new SequentialAction(DiveActions.Intake.wheelOn0()));
             lastPressedA = System.currentTimeMillis();
             intakeRunning = true;
         }
-        if(gamepad2.a && intakeRunning && System.currentTimeMillis() - lastPressedA > 500){
+        if (gamepad2.a && intakeRunning && System.currentTimeMillis() - lastPressedA > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.Intake.Stop()));
             lastPressedA = System.currentTimeMillis();
             intakeRunning = false;

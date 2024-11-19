@@ -55,14 +55,14 @@ public final class RightAuton2 extends LinearOpMode {
                 .lineToY(-32)
                 .build();
 
-        Action backup2 = drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(90)))
-                .lineToY(-2)
+        Action backup2 = drive.actionBuilder(new Pose2d(15, -32, Math.toRadians(90)))
+                .lineToY(-40)
                 .build();
 
-        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -33, Math.toRadians(90)))
-                .lineToY(-38)
+        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -40, Math.toRadians(90)))
+                //.lineToY(-40)
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
+                .splineToLinearHeading(new Pose2d(18,-40, Math.toRadians(90)), 0) // this should strafe right
                 .splineTo(new Vector2d(33,-12), Math.toRadians(90))
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(60,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
@@ -72,7 +72,7 @@ public final class RightAuton2 extends LinearOpMode {
                 .build();
 
         Action Pickup22 = drive.actionBuilder(new Pose2d(40, -30, Math.toRadians(270)))
-                .lineToY(-66)
+                .lineToY(-68)
                 .build();
 
         Action Deliver2 = drive.actionBuilder(new Pose2d(40, -63, Math.toRadians(270)))
@@ -112,7 +112,9 @@ public final class RightAuton2 extends LinearOpMode {
                         Pickup2,
                         new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
+                        new SleepAction(1),
                         DiveActions.SpecimenDelivery.close(),
+                        new SleepAction(1),
 //                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
 //                        DiveActions.Lift.liftToHighChamber(),
 //                        new DiveActions.Lift.AutonDown(),
