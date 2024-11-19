@@ -63,44 +63,44 @@ public class LeftAuton extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         DeliverSpecimen,
-                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.1),
-                        new ParallelAction(
-                                backup,
-                                DiveActions.Lift.autonDown()
-                        ),
-                        DiveActions.Intake.wristdown(),
-                        new ParallelAction(
-                                DiveActions.Intake.wheelOn(),
-                                pickupSample1
-                        ),
-                        DiveActions.Intake.Stop(),
-                        DiveActions.Intake.wristUp(),
-                        deliverSample1,
-                        DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.5),
-                        DiveActions.Lift.liftToHeight(Variables.HighBasket),
-                        DiveActions.Intake.Stop(),
-                        DiveActions.SampleDelivery.load(),
-                        new SleepAction(1),
-                        DiveActions.SampleDelivery.dump(),
-                        DiveActions.Lift.autonDown(),
-                        DiveActions.Intake.wristdown(),
-                        new ParallelAction(
-                            DiveActions.Intake.wheelOn(),
-                            pickupSample2
-                        ),
-                        DiveActions.Intake.Stop(),
-                        DiveActions.Intake.wristUp(),
-                        deliverSample2,
-                        DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.5),
-                        DiveActions.Lift.liftToHeight(Variables.HighBasket),
-                        DiveActions.Intake.Stop(),
-                        DiveActions.SampleDelivery.load(),
-                        new SleepAction(1),
-                        DiveActions.SampleDelivery.dump(),
-                        DiveActions.Lift.autonDown()
+                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver)//,
+//                        new SleepAction(0.1),
+//                        new ParallelAction(
+//                                backup,
+//                                DiveActions.Lift.autonDown()
+//                        ),
+//                        DiveActions.Intake.wristdown(),
+//                        new ParallelAction(
+//                                DiveActions.Intake.wheelOn(),
+//                                pickupSample1
+//                        ),
+//                        DiveActions.Intake.Stop(),
+//                        DiveActions.Intake.wristUp(),
+//                        deliverSample1,
+//                        DiveActions.Intake.RevWheel(),
+//                        new SleepAction(0.5),
+//                        DiveActions.Lift.liftToHeight(Variables.HighBasket),
+//                        DiveActions.Intake.Stop(),
+//                        DiveActions.SampleDelivery.load(),
+//                        new SleepAction(1),
+//                        DiveActions.SampleDelivery.dump(),
+//                        DiveActions.Lift.autonDown(),
+//                        DiveActions.Intake.wristdown(),
+//                        new ParallelAction(
+//                            DiveActions.Intake.wheelOn(),
+//                            pickupSample2
+//                        ),
+//                        DiveActions.Intake.Stop(),
+//                        DiveActions.Intake.wristUp(),
+//                        deliverSample2,
+//                        DiveActions.Intake.RevWheel(),
+//                        new SleepAction(0.5),
+//                        DiveActions.Lift.liftToHeight(Variables.HighBasket),
+//                        DiveActions.Intake.Stop(),
+//                        DiveActions.SampleDelivery.load(),
+//                        new SleepAction(1),
+//                        DiveActions.SampleDelivery.dump(),
+//                        DiveActions.Lift.autonDown()
                 )
         );
         //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));

@@ -1,17 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import java.util.Arrays;
 
 @Autonomous(name="RightAuton2", preselectTeleOp = "WaldonTeleOp")
 public final class RightAuton2 extends LinearOpMode {
@@ -51,7 +57,15 @@ public final class RightAuton2 extends LinearOpMode {
         //The human player builds a 3rd specimen while the second is being delivered
         //This path is only used if our partner does NOT load a specimen but this is our preferred path
 
+        //new TranslationalVelConstraint(20.0)
+
+        VelConstraint baseVelConstraint = new MinVelConstraint(Arrays.asList(
+                new TranslationalVelConstraint(50.0),
+                new AngularVelConstraint(Math.PI / 2)
+        ));
+
         Action Deliver1 = drive.actionBuilder(new Pose2d(15, -63, Math.toRadians(90)))
+
                 .lineToY(-32)
                 .build();
 
@@ -68,10 +82,10 @@ public final class RightAuton2 extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(60,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
                 .setTangent(0)
                 .lineToX(55)
-                .splineToLinearHeading(new Pose2d(40, -30, Math.toRadians(-90)), 0)
+                .splineToLinearHeading(new Pose2d(40, -45, Math.toRadians(-90)), 0)
                 .build();
 
-        Action Pickup22 = drive.actionBuilder(new Pose2d(40, -30, Math.toRadians(270)))
+        Action Pickup22 = drive.actionBuilder(new Pose2d(40, -45, Math.toRadians(270)))
                 .lineToY(-68)
                 .build();
 
@@ -104,27 +118,27 @@ public final class RightAuton2 extends LinearOpMode {
         waitForStart();
         Actions.runBlocking(
                 new SequentialAction(
+                        new ParallelAction(
+                                Deliver1,
+                                DiveActions.SpecimenDelivery.open()
+                        ),
                         Deliver1,
-                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.1),
+                        DiveActions.Lift.liftToHeight(-950),
+//                        new SleepAction(0.1),
                         backup2,
                         DiveActions.Lift.autonDown(),
                         Pickup2,
-                        new SleepAction(.1),// this is the pause to let someone build the specimen
+//                        new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
-                        new SleepAction(1),
                         DiveActions.SpecimenDelivery.close(),
-                        new SleepAction(1),
-//                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-//                        DiveActions.Lift.liftToHighChamber(),
-//                        new DiveActions.Lift.AutonDown(),
+                        DiveActions.Lift.liftToHighChamber(),
                         new ParallelAction(
                                 DiveActions.Lift.liftToHighChamber(),
                                 Deliver2
                         ),
-                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.2 ),
+                        DiveActions.Lift.liftToHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
+                        new SleepAction(0.05 ),
                         DiveActions.Lift.autonDown(),
                         Pickup3,
                         DiveActions.SpecimenDelivery.close(),
@@ -133,9 +147,9 @@ public final class RightAuton2 extends LinearOpMode {
                                 DiveActions.Lift.liftToHighChamber(),
                                 Deliver3
                         ),
-                        DiveActions.Lift.liftToHeight(Variables.HighChamberDeliver),
-                        new SleepAction(0.2 ),
+                        DiveActions.Lift.liftToHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
+                        new SleepAction(0.05 ),
                         DiveActions.Lift.autonDown(),
                         Park
                 )
