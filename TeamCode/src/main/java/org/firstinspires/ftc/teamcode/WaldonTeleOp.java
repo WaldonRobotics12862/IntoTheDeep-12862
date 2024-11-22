@@ -185,7 +185,7 @@ public class WaldonTeleOp extends LinearOpMode {
 //                                DiveActions.Ascend.pullUp())
                             )
                     );
-                    ascendMotor.setTargetPosition(-100);
+                    ascendMotor.setTargetPosition(0);
                     ascendMotor.setPower(1);
                     ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                     Actions.runBlocking(new SequentialAction( new SleepAction(2),DiveActions.Lift.liftToHeight(-800)));
@@ -270,6 +270,8 @@ public class WaldonTeleOp extends LinearOpMode {
         if(gamepad2.start){
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(250)));
         }
+
+
 
         if(gamepad2.x && !bucketUp && System.currentTimeMillis() - lastPressedX > 500){
             Actions.runBlocking(new SequentialAction(DiveActions.SampleDelivery.load()));

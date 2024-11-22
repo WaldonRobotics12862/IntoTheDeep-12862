@@ -483,7 +483,7 @@ public class DiveActions{
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (startTime != -1) {
-                    if (System.currentTimeMillis() - startTime < 4000) {
+                    if (System.currentTimeMillis() - startTime < 1000) {
                         return true;
                     }
                     startTime = -1;

@@ -19,8 +19,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.Arrays;
 
-@Autonomous(name="RightAuton2", preselectTeleOp = "WaldonTeleOp")
-public final class RightAuton2 extends LinearOpMode {
+@Autonomous(name="RightAuton3", preselectTeleOp = "WaldonTeleOp")
+public final class RightAuton3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Define all the locations that we need
@@ -69,48 +69,50 @@ public final class RightAuton2 extends LinearOpMode {
                 .build();
 
         Action backup2 = drive.actionBuilder(new Pose2d(15, -32, Math.toRadians(90)))
-                .lineToY(-40)
+                .lineToY(-33)
                 .build();
 
-        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -40, Math.toRadians(90)))
-                //.lineToY(-40)
+        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -33, Math.toRadians(90)))
+                .lineToY(-38)
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(18,-40, Math.toRadians(90)), 0) // this should strafe right
-                .splineTo(new Vector2d(33,-12), Math.toRadians(90))
+                //.splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
+                .strafeTo(new Vector2d(20,-38))
+                .splineTo(new Vector2d(34,-12), Math.toRadians(90))
                 .setTangent(0)
-                .splineToLinearHeading(new Pose2d(60,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
+                .splineToLinearHeading(new Pose2d(58,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
                 .setTangent(0)
                 .lineToX(55)
                 .splineToLinearHeading(new Pose2d(40, -45, Math.toRadians(-90)), 0)
                 .build();
 
         Action Pickup22 = drive.actionBuilder(new Pose2d(40, -45, Math.toRadians(270)))
-                .lineToY(-66)
+                .setTangent(Math.toRadians(270))
+                .lineToY(-68)
                 .build();
 
-        Action Deliver2 = drive.actionBuilder(new Pose2d(40, -63, Math.toRadians(270)))
+        Action Deliver2 = drive.actionBuilder(new Pose2d(40, -68, Math.toRadians(270)))
                 .lineToY(-58)
-                .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(6, -28),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(6,-32,Math.toRadians(90)),Math.toRadians(90))
+                .lineToY(-28)
                 .build();
 
-        Action Pickup3 = drive.actionBuilder(new Pose2d(6, -33, Math.toRadians(90)))
+        Action Pickup3 = drive.actionBuilder(new Pose2d(6, -28, Math.toRadians(90)))
                 .lineToY(-38)
-                .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(40, -70), Math.toRadians(270)) // was 48, -65
+                .splineToSplineHeading(new Pose2d(40,-60,Math.toRadians(270)),Math.toRadians(-90))
+                .lineToY(-68)
                 .build();
 
-        Action Deliver3 = drive.actionBuilder(new Pose2d(40, -63, Math.toRadians(270)))
+        Action Deliver3 = drive.actionBuilder(new Pose2d(40, -66, Math.toRadians(270)))
                 .lineToY(-58)
-                .turn(Math.toRadians(-90))
-                .splineTo(new Vector2d(0, -26), Math.toRadians(90)) // was -5, -32
+                .splineToSplineHeading(new Pose2d(3,-35,Math.toRadians(90)),Math.toRadians(90))
+                .lineToY(-28)
                 .build();
 
-        Action Park = drive.actionBuilder(new Pose2d(0, -33, Math.toRadians(90)))
+        Action Park = drive.actionBuilder(new Pose2d(3, -28, Math.toRadians(90)))
                 .lineToY(-38)
-                .turn(Math.toRadians(-120)) // was 90
-                .lineToX(48)
-//                .splineTo(new Vector2d(40, -68), Math.toRadians(270))
+                .setTangent(0)
+//                .splineTo(new Vector2d(40,-50),Math.toRadians(150))
+                .splineToLinearHeading(new Pose2d(46,-56,Math.toRadians(150)),Math.toRadians(90))
                 .build();
 
 
@@ -150,7 +152,10 @@ public final class RightAuton2 extends LinearOpMode {
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
                         DiveActions.Lift.autonDown(),
-                        Park
+                        new ParallelAction(
+                                Park,
+                                DiveActions.Intake.wristdown()
+                        )
                 )
        );
     }
