@@ -1,27 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ftc.Actions;
-
-// Non-RR imports
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
 
-@Autonomous(name="LeftAuton-1+3", preselectTeleOp = "WaldonTeleOp")
+@Autonomous(name="LeftAuton-0+4", preselectTeleOp = "WaldonTeleOp")
 
-public class LeftAuton extends LinearOpMode {
+public class LeftAuton2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d beginPose = new Pose2d(-15, -63, Math.toRadians(90));
@@ -52,17 +49,13 @@ public class LeftAuton extends LinearOpMode {
         LED.setPattern(pattern);
 
 
-        Action DeliverSpecimen = drive.actionBuilder(beginPose)
-                .lineToY(-32)
+        Action deliverSample0 = drive.actionBuilder(beginPose)
+                .splineToLinearHeading(new Pose2d(-58.25,-58.25,Math.toRadians(225)),Math.toRadians(180))
                 .build();
-//
-        Action backup = drive.actionBuilder(new Pose2d(-15, -32, Math.toRadians(90)))
-                .lineToY(-37)
-                .build();
-//
-        Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -37, Math.toRadians(90)))
-                .setTangent(Math.toRadians(-90))
-                .splineTo(new Vector2d(-39,-32),Math.toRadians(180))
+
+        Action pickupSample1 = drive.actionBuilder(new Pose2d(-58.25, -58.25, Math.toRadians(225)))
+                .setTangent(Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-39,-32,Math.toRadians(0)),Math.toRadians(180))
                 .build();
 
         Action deliverSample1 = drive.actionBuilder(new Pose2d(-39, -32,Math.toRadians(0)))
@@ -94,14 +87,14 @@ public class LeftAuton extends LinearOpMode {
         waitForStart();
         Actions.runBlocking(
                 new SequentialAction(
-                        DeliverSpecimen,
-                        DiveActions.Lift.liftToHeight(-950),
-                        new SleepAction(0.1),
-                        new ParallelAction(
-                                backup,
-                                DiveActions.Lift.autonDown()
-                        ),
+                        deliverSample0,
+                        DiveActions.Lift.liftToHighBasket(),
+                        DiveActions.Intake.Stop(),
+                        DiveActions.SampleDelivery.load(),
+                        new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
+                        new SleepAction(0.5),
+                        DiveActions.Lift.autonDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 1
                         //////////////////////////////////////////////////////////////////

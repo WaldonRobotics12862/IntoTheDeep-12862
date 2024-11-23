@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.Arrays;
 
-@Autonomous(name="RightAuton3", preselectTeleOp = "WaldonTeleOp")
+@Autonomous(name="RightAuton-3", preselectTeleOp = "WaldonTeleOp")
 public final class RightAuton3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
