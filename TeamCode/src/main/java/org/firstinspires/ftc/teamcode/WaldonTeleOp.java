@@ -271,6 +271,10 @@ public class WaldonTeleOp extends LinearOpMode {
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(250)));
         }
 
+        if(gamepad2.back){
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.resetDown(System.currentTimeMillis())));
+        }
+
 
 
 

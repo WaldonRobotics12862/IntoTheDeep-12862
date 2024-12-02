@@ -118,6 +118,41 @@ public class DiveActions{
             return new LiftFullDown(downStarted);
         }
 
+        public static class ResetDown implements Action {
+            long downStarted = -1;
+            public ResetDown(long downStarted){
+                this.downStarted = downStarted;
+            }
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Integer height = 0;
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(-1);
+                liftRight.setPower(-1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (System.currentTimeMillis() - downStarted > 1500) {
+                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    return false;
+                } else if (liftLeft.isBusy() || liftRight.isBusy()){
+                    return true;
+                } else {
+                    liftLeft.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    liftRight.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+                    liftLeft.setPower(1);
+                    liftRight.setPower(1);
+                    return false;
+                }
+            }
+        }
+        public static Action resetDown(long downStarted) {
+            return new ResetDown(downStarted);
+        }
+
+
         public static class AutonDown implements Action {
             long downStarted = -1;
 
