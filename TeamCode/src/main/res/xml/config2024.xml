@@ -14,15 +14,16 @@
             <Servo name="specimenServo" port="5" />
 
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <DistanceSensor name="liftSensor" port="0" bus="1"/>
             <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
+            <DigitalDevice name="liftSensor" port="0"/>
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >
             <goBILDA5202SeriesMotor name="rightLift" port="1" />
             <goBILDA5202SeriesMotor name="ascend" port="3"/>
             <goBILDA5202SeriesMotor name="leftLift" port="2" />
+            <goBILDA5202SeriesMotor name="ascendLift" port="0" />
 
             <RevBlinkinLedDriver name="blinkin" port="3" />
         </LynxModule>

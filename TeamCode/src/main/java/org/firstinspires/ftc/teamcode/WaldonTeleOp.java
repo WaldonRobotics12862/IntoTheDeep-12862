@@ -188,7 +188,12 @@ public class WaldonTeleOp extends LinearOpMode {
                     ascendMotor.setTargetPosition(0);
                     ascendMotor.setPower(1);
                     ascendMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                    Actions.runBlocking(new SequentialAction( new SleepAction(2),DiveActions.Lift.liftToHeight(-800)));
+                    Actions.runBlocking(
+                        new SequentialAction(
+                            new SleepAction(2),
+                            DiveActions.Lift.threeAscend()
+                        )
+                    );
                 }
                 else{
                     //ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

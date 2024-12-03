@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -20,6 +21,8 @@ public class DiveActions{
     public static class Lift  {
         private static DcMotorEx liftLeft;
         private static DcMotorEx liftRight;
+        private static DcMotorEx ascendLift;
+        private static DigitalChannel liftSensor;
 
         public Lift(HardwareMap hardwareMap) {
             liftLeft = hardwareMap.get(DcMotorEx.class, "leftLift");
@@ -34,6 +37,8 @@ public class DiveActions{
             liftRight.setTargetPositionTolerance(15);
             liftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+            ascendLift = hardwareMap.get(DcMotorEx.class, "ascendLift");
+            liftSensor = hardwareMap.get(DigitalChannel.class, "liftSensor");
         }
 
         public static class LiftToHeight implements Action {
@@ -93,24 +98,19 @@ public class DiveActions{
             }
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = 0;
-                liftLeft.setTargetPosition(height);
-                liftRight.setTargetPosition(height);
+                liftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                liftRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 liftLeft.setPower(-1);
                 liftRight.setPower(-1);
-                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (System.currentTimeMillis() - downStarted > 1500) {
+                if (liftSensor.getState()) {
+                    liftLeft.setPower(0);
+                    liftRight.setPower(0);
                     liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     return false;
-                } else if (liftLeft.isBusy() || liftRight.isBusy()){
-                    return true;
                 } else {
-                    liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    return false;
+                    return true;
                 }
             }
         }
@@ -140,7 +140,7 @@ public class DiveActions{
                 }
             }
         }
-        public static Action autonDown() {
+        public static Action autonDown0() {
             return new AutonDown();
         }
 
@@ -252,6 +252,28 @@ public class DiveActions{
         }
         public static Action LiftDown() {
             return new LiftDown();
+        }
+
+        public static class ThreeAscend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                liftLeft.setTargetPosition(-800);
+                liftRight.setTargetPosition(-800);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                ascendLift.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (liftLeft.isBusy() || liftRight.isBusy()){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        public static Action threeAscend() {
+            return new ThreeAscend();
         }
     }
 
