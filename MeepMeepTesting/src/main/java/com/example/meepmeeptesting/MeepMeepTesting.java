@@ -70,20 +70,9 @@ public class MeepMeepTesting {
 
 
         myBot.runAction(myBot.getDrive()
-                .actionBuilder(new Pose2d(-15, -63,Math.toRadians(90)))
-
-                .lineToY(-32)
-                .lineToY(-37)
+                .actionBuilder(new Pose2d(-58.25, -58.25, Math.toRadians(225)))
                 .setTangent(Math.toRadians(-90))
-                .splineTo(new Vector2d(-40,-26),Math.toRadians(180))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58,-58,Math.toRadians(225)),Math.toRadians(180))
-                .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-48,-26,Math.toRadians(0)),Math.toRadians(180))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58,-58,Math.toRadians(225)),Math.toRadians(180))
-                .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-56,-26,Math.toRadians(0)),Math.toRadians(180))
+                .splineTo(new Vector2d(-39,-32),Math.toRadians(180))
                 .build()
         );
 

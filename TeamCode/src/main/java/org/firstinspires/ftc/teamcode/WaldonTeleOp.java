@@ -61,8 +61,8 @@ public class WaldonTeleOp extends LinearOpMode {
 
         liftL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         liftR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        liftL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        liftR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        liftL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        liftR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -275,6 +275,12 @@ public class WaldonTeleOp extends LinearOpMode {
         if(gamepad2.start){
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(250)));
         }
+
+        if(gamepad2.back){
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.resetDown(System.currentTimeMillis())));
+        }
+
+
 
 
 

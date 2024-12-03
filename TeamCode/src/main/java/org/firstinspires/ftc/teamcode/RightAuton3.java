@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.Arrays;
 
-@Autonomous(name="RightAuton3", preselectTeleOp = "WaldonTeleOp")
+@Autonomous(name="RightAuton-3", preselectTeleOp = "WaldonTeleOp")
 public final class RightAuton3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -92,11 +92,11 @@ public final class RightAuton3 extends LinearOpMode {
 
         Action Deliver2 = drive.actionBuilder(new Pose2d(40, -68, Math.toRadians(270)))
                 .lineToY(-58)
-                .splineToSplineHeading(new Pose2d(6,-32,Math.toRadians(90)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(5,-32,Math.toRadians(90)),Math.toRadians(90))
                 .lineToY(-28)
                 .build();
 
-        Action Pickup3 = drive.actionBuilder(new Pose2d(6, -28, Math.toRadians(90)))
+        Action Pickup3 = drive.actionBuilder(new Pose2d(5, -28, Math.toRadians(90)))
                 .lineToY(-38)
                 .splineToSplineHeading(new Pose2d(40,-60,Math.toRadians(270)),Math.toRadians(-90))
                 .lineToY(-68)
@@ -104,11 +104,11 @@ public final class RightAuton3 extends LinearOpMode {
 
         Action Deliver3 = drive.actionBuilder(new Pose2d(40, -66, Math.toRadians(270)))
                 .lineToY(-58)
-                .splineToSplineHeading(new Pose2d(3,-35,Math.toRadians(90)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(1,-35,Math.toRadians(90)),Math.toRadians(90))
                 .lineToY(-28)
                 .build();
 
-        Action Park = drive.actionBuilder(new Pose2d(3, -28, Math.toRadians(90)))
+        Action Park = drive.actionBuilder(new Pose2d(1, -28, Math.toRadians(90)))
                 .lineToY(-38)
                 .setTangent(0)
 //                .splineTo(new Vector2d(40,-50),Math.toRadians(150))
@@ -127,6 +127,7 @@ public final class RightAuton3 extends LinearOpMode {
                         DiveActions.Lift.liftToHeight(-950),
 //                        new SleepAction(0.1),
                         backup2,
+                        new SleepAction(0.2),
                         DiveActions.Lift.autonDown(),
                         Pickup2,
 //                        new SleepAction(.1),// this is the pause to let someone build the specimen
@@ -152,10 +153,11 @@ public final class RightAuton3 extends LinearOpMode {
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
                         DiveActions.Lift.autonDown(),
-                        new ParallelAction(
-                                Park,
-                                DiveActions.Intake.wristdown()
-                        )
+                        Park
+//                        new ParallelAction(
+//                                Park,
+//                                DiveActions.Intake.wristdown()
+//                        )
                 )
        );
     }
