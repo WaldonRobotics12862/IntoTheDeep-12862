@@ -94,7 +94,7 @@ public class LeftAuton2 extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 1
                         //////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ public class LeftAuton2 extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 2
                         //////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ public class LeftAuton2 extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 3
                         //////////////////////////////////////////////////////////////////
@@ -154,7 +154,7 @@ public class LeftAuton2 extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         new SleepAction(2) // for some reason, we need this extra sleep to ensure that the bucket goes all the way down at the end.
                 )
         );

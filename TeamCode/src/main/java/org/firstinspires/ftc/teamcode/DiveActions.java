@@ -92,10 +92,6 @@ public class DiveActions{
         }
 
         public static class LiftFullDown implements Action {
-            long downStarted = -1;
-            public LiftFullDown(long downStarted){
-                this.downStarted = downStarted;
-            }
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 liftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -114,8 +110,8 @@ public class DiveActions{
                 }
             }
         }
-        public static Action liftFullDown(long downStarted) {
-            return new LiftFullDown(downStarted);
+        public static Action liftFullDown() {
+            return new LiftFullDown();
         }
 
         public static class ResetDown implements Action {

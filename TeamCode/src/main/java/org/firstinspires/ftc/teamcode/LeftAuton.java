@@ -99,7 +99,7 @@ public class LeftAuton extends LinearOpMode {
                         new SleepAction(0.1),
                         new ParallelAction(
                                 backup,
-                                DiveActions.Lift.autonDown()
+                                DiveActions.Lift.liftFullDown()
                         ),
                         DiveActions.SampleDelivery.dump(),
                         //////////////////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ public class LeftAuton extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 2
                         //////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ public class LeftAuton extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 3
                         //////////////////////////////////////////////////////////////////
@@ -161,7 +161,7 @@ public class LeftAuton extends LinearOpMode {
                         new SleepAction(1),
                         DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         new SleepAction(2) // for some reason, we need this extra sleep to ensure that the bucket goes all the way down at the end.
                 )
         );

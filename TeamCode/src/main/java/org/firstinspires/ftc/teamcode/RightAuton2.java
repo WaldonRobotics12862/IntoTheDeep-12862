@@ -126,7 +126,7 @@ public final class RightAuton2 extends LinearOpMode {
                         DiveActions.Lift.liftToHeight(-950),
 //                        new SleepAction(0.1),
                         backup2,
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         Pickup2,
 //                        new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
@@ -139,7 +139,7 @@ public final class RightAuton2 extends LinearOpMode {
                         DiveActions.Lift.liftToHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         Pickup3,
                         DiveActions.SpecimenDelivery.close(),
                         DiveActions.Lift.liftToHighChamber(),
@@ -150,7 +150,7 @@ public final class RightAuton2 extends LinearOpMode {
                         DiveActions.Lift.liftToHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
-                        DiveActions.Lift.autonDown(),
+                        DiveActions.Lift.liftFullDown(),
                         Park
                 )
        );
