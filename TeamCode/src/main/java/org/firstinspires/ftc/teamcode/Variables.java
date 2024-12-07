@@ -31,8 +31,8 @@ public class Variables {
 
    public static double extendedIntake = 1;
    public static double retractedIntake = .2;
-   public static double wristUp = 0;
-   public static double wristDown = 1;
+   public static double wristUp = 1;
+   public static double wristDown = 0;
    public static double sampleIntaking = -1;
    public static double sampleStop = 0;
    public static double rightDownLift = -0.8;
@@ -44,7 +44,7 @@ public class Variables {
    public static double specimenLoose = 0.0;
    public static double specimenPinch = 1;
    public static double sampleLoad = 0.98;
-   public static double sampleDump = 0.4;
+   public static double sampleDump = 0;
    public static double sampleEject = -1;
    public static double ascend1Up = 1;
    public static double ascend2Up = 1;

@@ -57,37 +57,38 @@ public class LeftAuton extends LinearOpMode {
                 .build();
 //
         Action backup = drive.actionBuilder(new Pose2d(-15, -32, Math.toRadians(90)))
-                .lineToY(-37)
+                .lineToY(-38)
                 .build();
 //
-        Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -37, Math.toRadians(90)))
+        Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -38, Math.toRadians(90)))
                 .setTangent(Math.toRadians(-90))
-                .splineTo(new Vector2d(-39,-32),Math.toRadians(180))
+                .splineToSplineHeading((new Pose2d(-24,-48,Math.toRadians(0))),Math.toRadians(245))
+                .splineToLinearHeading(new Pose2d(-35,-31,Math.toRadians(-45)),Math.toRadians(180))
                 .build();
 
-        Action deliverSample1 = drive.actionBuilder(new Pose2d(-39, -32,Math.toRadians(0)))
+        Action deliverSample1 = drive.actionBuilder(new Pose2d(-35, -31,Math.toRadians(-45)))
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58.25,-58.25,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
                 .build();
 
-        Action pickupSample2 = drive.actionBuilder(new Pose2d(-58.25,-58.25,Math.toRadians(225)))
+        Action pickupSample2 = drive.actionBuilder(new Pose2d(-56,-56,Math.toRadians(225)))
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-47,-32,Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-43,-32,Math.toRadians(-45)),Math.toRadians(180))
                 .build();
 //
-        Action deliverSample2 = drive.actionBuilder(new Pose2d(-47,-32,Math.toRadians(0)))
+        Action deliverSample2 = drive.actionBuilder(new Pose2d(-43,-32,Math.toRadians(0)))
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58.25,-58.25,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
                 .build();
 
-        Action pickupSample3 = drive.actionBuilder(new Pose2d(-58.25,-58.25,Math.toRadians(225)))
+        Action pickupSample3 = drive.actionBuilder(new Pose2d(-56,-56,Math.toRadians(225)))
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-55,-32,Math.toRadians(0)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-50,-29.5,Math.toRadians(-45)),Math.toRadians(180))
                 .build();
 
-        Action deliverSample3 = drive.actionBuilder(new Pose2d(-55,-32,Math.toRadians(0)))
+        Action deliverSample3 = drive.actionBuilder(new Pose2d(-50,-29.5,Math.toRadians(0)))
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-58.25,-58.25,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
                 .build();
 
 
@@ -101,46 +102,50 @@ public class LeftAuton extends LinearOpMode {
                                 backup,
                                 DiveActions.Lift.liftFullDown()
                         ),
+                        DiveActions.Lift.liftFullDown(),
                         DiveActions.SampleDelivery.dump(),
                         //////////////////////////////////////////////////////////////////
                         // sample 1
                         //////////////////////////////////////////////////////////////////
                         DiveActions.Intake.wristdown(),
                         new ParallelAction(
+                                DiveActions.Intake.wristdown(),
                                 DiveActions.Intake.wheelOn(),
                                 pickupSample1
                         ),
+                        new SleepAction(0.5), // pause for just a little to make sure we pull in
                         DiveActions.Intake.wristUp(),
                         DiveActions.Intake.Stop(),
                         deliverSample1,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.2),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),
-                        new SleepAction(1),
-                        DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
+                        DiveActions.SampleDelivery.dump(),
+                        new SleepAction(0.1),
                         DiveActions.Lift.liftFullDown(),
-                        //////////////////////////////////////////////////////////////////
-                        // sample 2
-                        //////////////////////////////////////////////////////////////////
+//                        //////////////////////////////////////////////////////////////////
+//                        // sample 2
+//                        //////////////////////////////////////////////////////////////////
                         DiveActions.Intake.wristdown(),
                         new ParallelAction(
                                 DiveActions.Intake.wheelOn(),
                                 pickupSample2
                         ),
+                        new SleepAction(0.5),
                         DiveActions.Intake.wristUp(),
                         DiveActions.Intake.Stop(),
                         deliverSample2,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.2),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),
-                        new SleepAction(1),
-                        DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
+                        DiveActions.SampleDelivery.dump(),
+                        new SleepAction(0.1),
                         DiveActions.Lift.liftFullDown(),
                         //////////////////////////////////////////////////////////////////
                         // sample 3
@@ -150,20 +155,23 @@ public class LeftAuton extends LinearOpMode {
                                 DiveActions.Intake.wheelOn(),
                                 pickupSample3
                         ),
+                        new SleepAction (0.5),
                         DiveActions.Intake.wristUp(),
                         DiveActions.Intake.Stop(),
                         deliverSample3,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.2),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),
-                        new SleepAction(1),
-                        DiveActions.SampleDelivery.dump(),
                         new SleepAction(0.5),
+                        DiveActions.SampleDelivery.dump(),
+                        new SleepAction(0.1),
                         DiveActions.Lift.liftFullDown(),
-                        new SleepAction(2) // for some reason, we need this extra sleep to ensure that the bucket goes all the way down at the end.
+                        new SleepAction(2), // for some reason, we need this extra sleep to ensure that the bucket goes all the way down at the end.
+                        new SleepAction(1)
                 )
+
         );
         //Actions.runBlocking(new SequentialAction(DiveActions.Intake.extendArm()));
     }

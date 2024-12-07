@@ -63,8 +63,8 @@ public class WaldonTeleOp extends LinearOpMode {
         liftR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 //        liftL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 //        liftR.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-
+        ascendMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        ascendMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         // Adjust the orientation parameters to match your robot
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
@@ -77,6 +77,7 @@ public class WaldonTeleOp extends LinearOpMode {
         RevBlinkinLedDriver.BlinkinPattern pattern;
         pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
         LED.setPattern(pattern);
+        //LED.resetDeviceConfigurationForOpMode();
 
         frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
@@ -254,7 +255,7 @@ public class WaldonTeleOp extends LinearOpMode {
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHighBasket()));
         }
         if(gamepad2.dpad_down ) {
-            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftFullDown(System.currentTimeMillis())));
+            Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftFullDown()));
         }
         if(gamepad2.dpad_left){
             Actions.runBlocking(new SequentialAction(DiveActions.Lift.liftToHeight(Variables.HighChamber)));
@@ -266,7 +267,7 @@ public class WaldonTeleOp extends LinearOpMode {
                             DiveActions.Lift.deliverHighChamber(),
                             DiveActions.SpecimenDelivery.open(),
                             new SleepAction(0.5),
-                            DiveActions.Lift.liftFullDown(System.currentTimeMillis())
+                            DiveActions.Lift.liftFullDown()
                     )
             );
             //Actions.runBlocking(new SequentialAction(DiveActions.Lift.deliverHighChamber()));

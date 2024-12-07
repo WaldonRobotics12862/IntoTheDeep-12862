@@ -16,7 +16,7 @@
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
-            <DigitalDevice name="liftSensor" port="0"/>
+            <DigitalDevice name="liftSensor" port="1"/>
 
         </LynxModule>
         <LynxModule name="Expansion Hub 2" port = "2" >

@@ -96,8 +96,8 @@ public class DiveActions{
             public boolean run(@NonNull TelemetryPacket packet) {
                 liftLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 liftRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                liftLeft.setPower(-1);
-                liftRight.setPower(-1);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
 
                 if (liftSensor.getState()) {
                     liftLeft.setPower(0);
@@ -288,8 +288,8 @@ public class DiveActions{
         public static class ThreeAscend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                liftLeft.setTargetPosition(-800);
-                liftRight.setTargetPosition(-800);
+                liftLeft.setTargetPosition(-400);
+                liftRight.setTargetPosition(-400);
                 liftLeft.setPower(1);
                 liftRight.setPower(1);
                 ascendLift.setPower(1);
@@ -299,6 +299,7 @@ public class DiveActions{
                 if (liftLeft.isBusy() || liftRight.isBusy()){
                     return true;
                 } else {
+                    ascendLift.setPower(0);
                     return false;
                 }
             }

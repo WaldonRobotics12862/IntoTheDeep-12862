@@ -61,20 +61,23 @@ public class MeepMeepTesting {
 //                .build()
 //        );
 
+
         myBot.runAction(myBot.getDrive()
-                .actionBuilder(new Pose2d(0, 0,Math.toRadians(90)))
-                .setTangent(Math.toRadians(-90))
-                .splineTo(new Vector2d(-50,-50),Math.toRadians(180))
-                .build()
+                .actionBuilder(new Pose2d(-15, -37, Math.toRadians(90)))
+                        .setTangent(Math.toRadians(-90))
+                        .splineToSplineHeading((new Pose2d(-24,-48,Math.toRadians(0))),Math.toRadians(245))
+                        .splineToLinearHeading(new Pose2d(-35,-30,Math.toRadians(-15)),Math.toRadians(180))
+                        .build()
+
         );
 
 
-        myBot.runAction(myBot.getDrive()
-                .actionBuilder(new Pose2d(-58.25, -58.25, Math.toRadians(225)))
-                .setTangent(Math.toRadians(-90))
-                .splineTo(new Vector2d(-39,-32),Math.toRadians(180))
-                .build()
-        );
+//        myBot.runAction(myBot.getDrive()
+//                .actionBuilder(new Pose2d(-58.25, -58.25, Math.toRadians(225)))
+//                .setTangent(Math.toRadians(-90))
+//                .splineTo(new Vector2d(-39,-32),Math.toRadians(180))
+//                .build()
+//        );
 
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_OFFICIAL)
