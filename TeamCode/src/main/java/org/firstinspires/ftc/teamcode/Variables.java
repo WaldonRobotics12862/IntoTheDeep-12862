@@ -44,7 +44,7 @@ public class Variables {
    public static double specimenLoose = 0.0;
    public static double specimenPinch = 1;
    public static double sampleLoad = 0.98;
-   public static double sampleDump = 0;
+   public static double sampleDump = 0.07;
    public static double sampleEject = -1;
    public static double ascend1Up = 1;
    public static double ascend2Up = 1;
@@ -53,7 +53,7 @@ public class Variables {
    public static double ascend = 1;
 
    public static int HighBasket = -2250;
-   public static int HighChamber = -1300;
+   public static int HighChamber = -1350;
    public static int HighChamberDeliver = -1000;
 
    public Variables(MecanumDrive.Params params) {

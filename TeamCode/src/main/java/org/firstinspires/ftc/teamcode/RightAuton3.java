@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Arrays;
 
@@ -45,6 +46,9 @@ public final class RightAuton3 extends LinearOpMode {
 
         liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
+        ExtendIntake.setPosition(0);
 
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         RevBlinkinLedDriver.BlinkinPattern pattern;
@@ -125,31 +129,34 @@ public final class RightAuton3 extends LinearOpMode {
                         ),
                         Deliver1,
                         DiveActions.Lift.liftToHeight(-950),
-//                        new SleepAction(0.1),
                         backup2,
-                        new SleepAction(0.2),
+                        new SleepAction(0.1),
                         DiveActions.Lift.liftFullDown(),
-                        Pickup2,
+                        new SleepAction(0.2),
+                        new ParallelAction(
+                            DiveActions.Lift.liftFullDown(),
+                            Pickup2
+                        ),
 //                        new SleepAction(.1),// this is the pause to let someone build the specimen
                         Pickup22,
                         DiveActions.SpecimenDelivery.close(),
-                        DiveActions.Lift.liftToHighChamber(),
+                        DiveActions.Lift.liftToHeight(Variables.HighChamber),
                         new ParallelAction(
-                                DiveActions.Lift.liftToHighChamber(),
+                                DiveActions.Lift.liftToHeight(Variables.HighChamber),
                                 Deliver2
                         ),
-                        DiveActions.Lift.liftToHighChamber(),
+                        DiveActions.Lift.deliverHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
                         DiveActions.Lift.liftFullDown(),
                         Pickup3,
                         DiveActions.SpecimenDelivery.close(),
-                        DiveActions.Lift.liftToHighChamber(),
+                        DiveActions.Lift.liftToHeight(Variables.HighChamber),
                         new ParallelAction(
-                                DiveActions.Lift.liftToHighChamber(),
+                                DiveActions.Lift.liftToHeight(Variables.HighChamber),
                                 Deliver3
                         ),
-                        DiveActions.Lift.liftToHighChamber(),
+                        DiveActions.Lift.deliverHighChamber(),
                         DiveActions.SpecimenDelivery.open(),
                         new SleepAction(0.05 ),
                         DiveActions.Lift.liftFullDown(),

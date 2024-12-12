@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 
@@ -46,6 +47,9 @@ public class LeftAuton extends LinearOpMode {
         liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
+        Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
+        ExtendIntake.setPosition(0);
+
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         RevBlinkinLedDriver.BlinkinPattern pattern;
         pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
@@ -55,11 +59,11 @@ public class LeftAuton extends LinearOpMode {
         Action DeliverSpecimen = drive.actionBuilder(beginPose)
                 .lineToY(-32)
                 .build();
-//
+
         Action backup = drive.actionBuilder(new Pose2d(-15, -32, Math.toRadians(90)))
                 .lineToY(-38)
                 .build();
-//
+
         Action pickupSample1 = drive.actionBuilder(new Pose2d(-15, -38, Math.toRadians(90)))
                 .setTangent(Math.toRadians(-90))
                 .splineToSplineHeading((new Pose2d(-24,-48,Math.toRadians(0))),Math.toRadians(245))
@@ -68,27 +72,27 @@ public class LeftAuton extends LinearOpMode {
 
         Action deliverSample1 = drive.actionBuilder(new Pose2d(-35, -31,Math.toRadians(-45)))
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-57,-57,Math.toRadians(225)),Math.toRadians(180))
                 .build();
 
-        Action pickupSample2 = drive.actionBuilder(new Pose2d(-56,-56,Math.toRadians(225)))
+        Action pickupSample2 = drive.actionBuilder(new Pose2d(-57,-57,Math.toRadians(225)))
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-43,-32,Math.toRadians(-45)),Math.toRadians(180))
-                .build();
-//
-        Action deliverSample2 = drive.actionBuilder(new Pose2d(-43,-32,Math.toRadians(0)))
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-46,-42,Math.toRadians(-45)),Math.toRadians(180))
                 .build();
 
-        Action pickupSample3 = drive.actionBuilder(new Pose2d(-56,-56,Math.toRadians(225)))
+        Action deliverSample2 = drive.actionBuilder(new Pose2d(-46,-42,Math.toRadians(-45)))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-57,-57,Math.toRadians(225)),Math.toRadians(180))
+                .build();
+
+        Action pickupSample3 = drive.actionBuilder(new Pose2d(-57,-57,Math.toRadians(225)))
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-50,-29.5,Math.toRadians(-45)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-55,-42,Math.toRadians(-45)),Math.toRadians(180))
                 .build();
 
-        Action deliverSample3 = drive.actionBuilder(new Pose2d(-50,-29.5,Math.toRadians(0)))
+        Action deliverSample3 = drive.actionBuilder(new Pose2d(-55,-42,Math.toRadians(-45)))
                 .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-56,-56,Math.toRadians(225)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-57,-57,Math.toRadians(225)),Math.toRadians(180))
                 .build();
 
 
@@ -118,7 +122,7 @@ public class LeftAuton extends LinearOpMode {
                         DiveActions.Intake.Stop(),
                         deliverSample1,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.2),
+                        new SleepAction(0.4),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),
@@ -139,7 +143,7 @@ public class LeftAuton extends LinearOpMode {
                         DiveActions.Intake.Stop(),
                         deliverSample2,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.2),
+                        new SleepAction(0.4),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),
@@ -160,7 +164,7 @@ public class LeftAuton extends LinearOpMode {
                         DiveActions.Intake.Stop(),
                         deliverSample3,
                         DiveActions.Intake.RevWheel(),
-                        new SleepAction(0.2),
+                        new SleepAction(0.4),
                         DiveActions.Lift.liftToHighBasket(),
                         DiveActions.Intake.Stop(),
                         DiveActions.SampleDelivery.load(),

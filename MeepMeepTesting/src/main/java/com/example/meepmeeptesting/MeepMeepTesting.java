@@ -63,12 +63,13 @@ public class MeepMeepTesting {
 
 
         myBot.runAction(myBot.getDrive()
-                .actionBuilder(new Pose2d(-15, -37, Math.toRadians(90)))
-                        .setTangent(Math.toRadians(-90))
-                        .splineToSplineHeading((new Pose2d(-24,-48,Math.toRadians(0))),Math.toRadians(245))
-                        .splineToLinearHeading(new Pose2d(-35,-30,Math.toRadians(-15)),Math.toRadians(180))
-                        .build()
-
+                .actionBuilder(new Pose2d(-55, -59, Math.toRadians(225)))
+                .setTangent(Math.toRadians(-90))
+                .splineToSplineHeading((new Pose2d(-58,-43,Math.toRadians(240))),Math.toRadians(90))
+                // strafe straight in X
+                .setTangent(120)
+                .splineToConstantHeading(new Vector2d(-56,-43),Math.toRadians(240))
+                .build()
         );
 
 

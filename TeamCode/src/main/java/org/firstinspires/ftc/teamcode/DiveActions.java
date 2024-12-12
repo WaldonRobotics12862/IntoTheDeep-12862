@@ -46,7 +46,6 @@ public class DiveActions{
             public LiftToHeight(Integer height){
                 this.height = height;
             }
-
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 liftLeft.setTargetPosition(height);
@@ -66,6 +65,34 @@ public class DiveActions{
         public static Action liftToHeight(Integer height){
             return new LiftToHeight(height);
         }
+
+        public static class LiftToHeight2 implements Action {
+            private Integer height;
+            public LiftToHeight2(Integer height){
+                this.height = height;
+            }
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                liftLeft.setTargetPosition(height);
+                liftRight.setTargetPosition(height);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                return false;
+
+//                if (liftLeft.isBusy() || liftRight.isBusy()){
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+            }
+        }
+        public static Action liftToHeight2(Integer height){
+            return new LiftToHeight2(height);
+        }
+
 
         public static class LiftToHighBasket implements Action {
             @Override
@@ -178,7 +205,7 @@ public class DiveActions{
         public static class LiftToHighChamber implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Integer height = -1200;
+                Integer height = -1250;
                 liftLeft.setTargetPosition(height);
                 liftRight.setTargetPosition(height);
                 liftLeft.setPower(1);
@@ -288,8 +315,8 @@ public class DiveActions{
         public static class ThreeAscend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                liftLeft.setTargetPosition(-400);
-                liftRight.setTargetPosition(-400);
+                liftLeft.setTargetPosition(-1700);
+                liftRight.setTargetPosition(-1700);
                 liftLeft.setPower(1);
                 liftRight.setPower(1);
                 ascendLift.setPower(1);

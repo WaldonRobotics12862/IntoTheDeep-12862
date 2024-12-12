@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name="RightAuton-2", preselectTeleOp = "WaldonTeleOp")
 public final class RightAuton extends LinearOpMode {
@@ -40,6 +41,9 @@ public final class RightAuton extends LinearOpMode {
 
         liftLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         liftRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
+        ExtendIntake.setPosition(0);
 
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         RevBlinkinLedDriver.BlinkinPattern pattern;
