@@ -45,6 +45,9 @@ public final class RightAuton extends LinearOpMode {
         Servo ExtendIntake = hardwareMap.get(Servo.class, "intakeExtend");
         ExtendIntake.setPosition(0);
 
+        Servo WristServo = hardwareMap.get(Servo.class, "intakeWrist");
+        WristServo.setPosition(Variables.wristUp);
+
         RevBlinkinLedDriver LED = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         RevBlinkinLedDriver.BlinkinPattern pattern;
         pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;

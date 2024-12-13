@@ -14,7 +14,7 @@
             <Servo name="specimenServo" port="5" />
 
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <RevColorSensorV3 name="sampleColor" port="0" bus="2"/>
+            <RevColorSensorV3 name="sampleColor" port="0" bus="1"/>
             <SparkFunOTOS2 name="sensor_otos" port="0" bus="3" />
             <DigitalDevice name="liftSensor" port="1"/>
 
