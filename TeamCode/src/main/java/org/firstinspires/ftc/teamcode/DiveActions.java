@@ -334,6 +334,29 @@ public class DiveActions{
         public static Action threeAscend() {
             return new ThreeAscend();
         }
+
+        public static class ThreeAscend2 implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet){
+                liftLeft.setTargetPosition(-500);
+                liftRight.setTargetPosition(-500);
+                liftLeft.setPower(1);
+                liftRight.setPower(1);
+                ascendLift.setPower(1);
+                liftLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if (liftLeft.isBusy() || liftRight.isBusy()){
+                    return true;
+                } else {
+                    ascendLift.setPower(0);
+                    return false;
+                }
+            }
+        }
+        public static Action threeAscend2() {
+            return new ThreeAscend2();
+        }
     }
 
     // SpecimenDelivery is the class that supports the squeeze clamp for specimen delivery
