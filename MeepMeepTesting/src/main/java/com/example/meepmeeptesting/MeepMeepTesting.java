@@ -63,13 +63,18 @@ public class MeepMeepTesting {
 
 
         myBot.runAction(myBot.getDrive()
-                .actionBuilder(new Pose2d(-55, -59, Math.toRadians(225)))
-                .setTangent(Math.toRadians(-90))
-                .splineToSplineHeading((new Pose2d(-58,-43,Math.toRadians(240))),Math.toRadians(90))
-                // strafe straight in X
-                .setTangent(120)
-                .splineToConstantHeading(new Vector2d(-56,-43),Math.toRadians(240))
-                .build()
+                .actionBuilder(new Pose2d(15, -38, Math.toRadians(90)))
+                        .lineToY(-38)
+                        .setTangent(0)
+                        .strafeTo(new Vector2d(20,-38))
+                        .splineTo(new Vector2d(34,-12), Math.toRadians(90))
+                        .strafeTo(new Vector2d(50,-55))
+                        .setTangent(0)
+//                        .splineToLinearHeading(new Pose2d(50,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
+                        .setTangent(-90)
+                        .lineToX(55)
+                        .splineToLinearHeading(new Pose2d(40, -45, Math.toRadians(-90)), 0)
+                        .build()
         );
 
 

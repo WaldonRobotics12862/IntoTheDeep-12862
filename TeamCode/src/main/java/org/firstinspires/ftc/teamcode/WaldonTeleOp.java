@@ -209,16 +209,16 @@ public class WaldonTeleOp extends LinearOpMode {
             }
 
             if(gamepad1.guide){
-                if(startedAscend){
+//                if(startedAscend){
                     ascendMotor.setTargetPosition(150);
                     sleep(500);
-                    ascendMotor.setTargetPosition(400);
+                    ascendMotor.setTargetPosition(500);
                     Actions.runBlocking(
                             new SequentialAction(
                                     DiveActions.Lift.threeAscend2()
                             )
                     );
-                }
+//                }
             }
         }
 

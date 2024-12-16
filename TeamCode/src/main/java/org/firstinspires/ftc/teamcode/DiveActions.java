@@ -315,8 +315,8 @@ public class DiveActions{
         public static class ThreeAscend implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet){
-                liftLeft.setTargetPosition(-1700);
-                liftRight.setTargetPosition(-1700);
+                liftLeft.setTargetPosition(-1800);
+                liftRight.setTargetPosition(-1800);
                 liftLeft.setPower(1);
                 liftRight.setPower(1);
                 ascendLift.setPower(1);

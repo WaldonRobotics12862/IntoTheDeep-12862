@@ -89,10 +89,10 @@ public class LeftAuton extends LinearOpMode {
 
         Action pickupSample3 = drive.actionBuilder(new Pose2d(-57,-57,Math.toRadians(225)))
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-55,-42,Math.toRadians(-45)),Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-55,-42,Math.toRadians(-35)),Math.toRadians(180))
                 .build();
 
-        Action deliverSample3 = drive.actionBuilder(new Pose2d(-55,-42,Math.toRadians(-45)))
+        Action deliverSample3 = drive.actionBuilder(new Pose2d(-55,-42,Math.toRadians(-35)))
                 .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(new Pose2d(-57,-57,Math.toRadians(225)),Math.toRadians(180))
                 .build();

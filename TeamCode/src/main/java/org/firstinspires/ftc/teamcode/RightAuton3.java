@@ -72,20 +72,21 @@ public final class RightAuton3 extends LinearOpMode {
         ));
 
         Action Deliver1 = drive.actionBuilder(new Pose2d(15, -63, Math.toRadians(90)))
-                .lineToY(-32)
-                .build();
-
-        Action backup2 = drive.actionBuilder(new Pose2d(15, -32, Math.toRadians(90)))
                 .lineToY(-33)
                 .build();
 
-        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -33, Math.toRadians(90)))
+        Action backup2 = drive.actionBuilder(new Pose2d(15, -33, Math.toRadians(90)))
+                .lineToY(-38)
+                .build();
+
+        Action Pickup2 = drive.actionBuilder(new Pose2d(15, -38, Math.toRadians(90)))
                 .lineToY(-38)
                 .setTangent(0)
                 //.splineToLinearHeading(new Pose2d(18,-38, Math.toRadians(90)), 0) // this should strafe right
                 .strafeTo(new Vector2d(20,-38))
                 .splineTo(new Vector2d(34,-12), Math.toRadians(90))
                 .setTangent(0)
+                .splineToConstantHeading(new Vector2d(30,-24), Math.toRadians(90)) //this is the line that I added
                 .splineToLinearHeading(new Pose2d(58,-55, Math.toRadians(180)),Math.toRadians(45)) // push the sample over to the observation zone
                 .setTangent(0)
                 .lineToX(55)
@@ -132,8 +133,10 @@ public final class RightAuton3 extends LinearOpMode {
                         ),
                         Deliver1,
                         DiveActions.Lift.liftToHeight(-950),
-                        backup2,
-                        new SleepAction(0.1),
+                        new SequentialAction(
+                                backup2,
+                                new SleepAction(0.1)
+                        ),
                         DiveActions.Lift.liftFullDown(),
                         new SleepAction(0.2),
                         new ParallelAction(
